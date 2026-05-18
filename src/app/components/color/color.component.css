@@ -1,3 +1,3 @@
-.cursorPointer{
-    cursor: pointer;
-}
+.simple-page { padding: 56px 15px; }
+.simple-page h1 { font-weight: 900; color: #0f172a; }
+.simple-page p { color: #64748b; }

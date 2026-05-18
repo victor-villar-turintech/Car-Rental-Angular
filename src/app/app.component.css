@@ -1,4 +1,4 @@
-.cursorPointer{
-    cursor: pointer;
+.app-shell {
+  min-height: calc(100vh - 220px);
+  background: #f8fafc;
 }
-

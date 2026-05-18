@@ -1,0 +1,240 @@
+import { Brand } from '../models/brand';
+import { Car } from '../models/car';
+import { CarImage } from '../models/carImage';
+import { Color } from '../models/color';
+
+export const MOCK_BRANDS: Brand[] = [
+  { brandId: 1, brandName: 'Mercedes-Benz' },
+  { brandId: 2, brandName: 'BMW' },
+  { brandId: 3, brandName: 'Audi' },
+  { brandId: 4, brandName: 'Tesla' },
+  { brandId: 5, brandName: 'Volkswagen' },
+  { brandId: 6, brandName: 'Range Rover' },
+  { brandId: 7, brandName: 'Toyota' },
+  { brandId: 8, brandName: 'Ford' },
+  { brandId: 9, brandName: 'Nissan' },
+  { brandId: 10, brandName: 'Volvo' },
+  { brandId: 11, brandName: 'Hyundai' },
+  { brandId: 12, brandName: 'Porsche' },
+  { brandId: 13, brandName: 'Kia' },
+  { brandId: 14, brandName: 'Peugeot' },
+  { brandId: 15, brandName: 'MINI' },
+  { brandId: 16, brandName: 'Jaguar' },
+  { brandId: 17, brandName: 'Lexus' },
+  { brandId: 18, brandName: 'Honda' },
+  { brandId: 19, brandName: 'Skoda' },
+  { brandId: 20, brandName: 'Renault' }
+];
+
+export const MOCK_COLORS: Color[] = [
+  { colorId: 1, colorName: 'Black' },
+  { colorId: 2, colorName: 'White' },
+  { colorId: 3, colorName: 'Grey' },
+  { colorId: 4, colorName: 'Blue' },
+  { colorId: 5, colorName: 'Red' },
+  { colorId: 6, colorName: 'Silver' },
+  { colorId: 7, colorName: 'Green' },
+  { colorId: 8, colorName: 'Orange' },
+  { colorId: 9, colorName: 'Yellow' },
+  { colorId: 10, colorName: 'Navy' },
+  { colorId: 11, colorName: 'Bronze' },
+  { colorId: 12, colorName: 'Burgundy' }
+];
+
+const imageBrandMap: { [key: string]: string } = {
+  'Mercedes-Benz': 'Mercedes-Benz',
+  BMW: 'BMW',
+  Audi: 'Audi',
+  Tesla: 'Tesla',
+  Volkswagen: 'Volkswagen',
+  'Range Rover': 'Land Rover',
+  Toyota: 'Toyota',
+  Ford: 'Ford',
+  Nissan: 'Nissan',
+  Volvo: 'Volvo',
+  Hyundai: 'Hyundai',
+  Porsche: 'Porsche',
+  Kia: 'Kia',
+  Peugeot: 'Peugeot',
+  MINI: 'MINI',
+  Jaguar: 'Jaguar',
+  Lexus: 'Lexus',
+  Honda: 'Honda',
+  Skoda: 'Skoda',
+  Renault: 'Renault'
+};
+
+const imageModelFamilyMap: { [key: string]: string } = {
+  'C-Class AMG Line': 'C-Class',
+  'E-Class Estate': 'E-Class',
+  'GLC 300': 'GLC',
+  '3 Series M Sport': '3 Series',
+  'X3 xDrive': 'X3',
+  '5 Series Touring': '5 Series',
+  'A4 Avant': 'A4',
+  'Q5 S line': 'Q5',
+  'A3 Sportback': 'A3',
+  'Model 3 Long Range': 'Model 3',
+  'Model Y Performance': 'Model Y',
+  'Model S Dual Motor': 'Model S',
+  'Golf GTI': 'Golf',
+  'Tiguan R-Line': 'Tiguan',
+  'ID.4 Pro': 'ID.4',
+  'Velar Dynamic': 'Range Rover Velar',
+  'Sport HSE': 'Range Rover Sport',
+  'Evoque Autobiography': 'Range Rover Evoque',
+  'Corolla Hybrid': 'Corolla',
+  'RAV4 Hybrid': 'RAV4',
+  'Yaris Cross': 'Yaris Cross',
+  'Focus ST-Line': 'Focus',
+  'Mustang GT': 'Mustang',
+  'Kuga Titanium': 'Kuga',
+  'Qashqai Tekna': 'Qashqai',
+  'Juke N-Connecta': 'Juke',
+  'Leaf e+': 'Leaf',
+  'XC60 Plus': 'XC60',
+  'V60 Recharge': 'V60',
+  'XC90 Ultimate': 'XC90',
+  'Tucson Hybrid': 'Tucson',
+  'i30 N Line': 'i30',
+  'Kona Electric': 'Kona',
+  'Macan S': 'Macan',
+  '718 Cayman': '718 Cayman',
+  'Panamera 4': 'Panamera',
+  'Picanto GT-Line': 'Picanto',
+  'Niro Hybrid': 'Niro',
+  'Sportage GT-Line': 'Sportage',
+  '208 GT': '208',
+  '3008 Allure': '3008',
+  '5008 GT': '5008',
+  'Cooper Classic': 'Cooper',
+  'Countryman Cooper S': 'Countryman',
+  'Electric Level 2': 'Cooper Electric',
+  'F-Pace R-Dynamic': 'F-Pace',
+  'XF Portfolio': 'XF',
+  'I-Pace EV400': 'I-Pace',
+  'UX 250h': 'UX',
+  'NX 350h': 'NX',
+  'RX 450h+': 'RX',
+  'Civic e:HEV': 'Civic',
+  'CR-V Advance': 'CR-V',
+  'Jazz Crosstar': 'Jazz',
+  'Octavia Estate': 'Octavia',
+  'Kodiaq SportLine': 'Kodiaq',
+  'Enyaq iV': 'Enyaq',
+  'Clio Esprit Alpine': 'Clio',
+  'Captur E-Tech': 'Captur',
+  'Megane E-Tech': 'Megane E-Tech'
+};
+
+function generatedVehicleImageUrl(brand: string, model: string, colour: string, year: number, seed: number): string {
+  // v11: use real public vehicle photographs via LoremFlickr.
+  // This avoids the watermark problem from vehicle-render APIs and avoids the broken source.unsplash redirects.
+  // The query is built from the car description so the returned photo is biased toward the same colour, brand and model family.
+  // Exact trim/paint matching still requires a licensed image dataset or manually curated local assets.
+  const imageBrand = imageBrandMap[brand] || brand;
+  const imageModel = imageModelFamilyMap[model] || model;
+  const terms = `${colour},${imageBrand},${imageModel},car,vehicle`;
+  const slug = terms
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, ',')
+    .replace(/^,+|,+$/g, '');
+
+  return `https://loremflickr.com/900/560/${slug}/all?lock=${seed}`;
+}
+
+const car = (
+  carId: number,
+  brandId: number,
+  colorId: number,
+  brandName: string,
+  colorName: string,
+  carName: string,
+  modelYear: number,
+  dailyPrice: number,
+  category: string,
+  seats: number,
+  transmission: string
+): Car => ({
+  carId,
+  brandId,
+  colorId,
+  brandName,
+  colorName,
+  carName,
+  modelYear,
+  dailyPrice,
+  description: `${category}. ${seats} seats, ${transmission} transmission, London pickup, optional insurance and door delivery available.`,
+  imagePath: generatedVehicleImageUrl(brandName, carName, colorName, modelYear, carId)
+});
+
+export const MOCK_CARS: Car[] = [
+  car(1, 1, 1, 'Mercedes-Benz', 'Black', 'C-Class AMG Line', 2023, 95, 'Executive saloon with premium comfort', 5, 'automatic'),
+  car(2, 1, 6, 'Mercedes-Benz', 'Silver', 'E-Class Estate', 2022, 118, 'Large estate with excellent luggage capacity', 5, 'automatic'),
+  car(3, 1, 2, 'Mercedes-Benz', 'White', 'GLC 300', 2024, 142, 'Premium SUV for business or family travel', 5, 'automatic'),
+  car(4, 2, 4, 'BMW', 'Blue', '3 Series M Sport', 2022, 88, 'Sporty executive saloon', 5, 'automatic'),
+  car(5, 2, 2, 'BMW', 'White', 'X3 xDrive', 2023, 124, 'Premium all-wheel-drive SUV', 5, 'automatic'),
+  car(6, 2, 1, 'BMW', 'Black', '5 Series Touring', 2024, 128, 'Spacious executive estate', 5, 'automatic'),
+  car(7, 3, 3, 'Audi', 'Grey', 'A4 Avant', 2021, 78, 'Practical premium estate', 5, 'automatic'),
+  car(8, 3, 1, 'Audi', 'Black', 'Q5 S line', 2023, 119, 'Refined SUV with excellent comfort', 5, 'automatic'),
+  car(9, 3, 5, 'Audi', 'Red', 'A3 Sportback', 2024, 72, 'Compact premium hatchback', 5, 'automatic'),
+  car(10, 4, 2, 'Tesla', 'White', 'Model 3 Long Range', 2024, 105, 'Electric saloon with long range', 5, 'automatic'),
+  car(11, 4, 5, 'Tesla', 'Red', 'Model Y Performance', 2024, 132, 'Electric SUV with strong performance', 5, 'automatic'),
+  car(12, 4, 10, 'Tesla', 'Navy', 'Model S Dual Motor', 2023, 185, 'Luxury electric saloon', 5, 'automatic'),
+  car(13, 5, 5, 'Volkswagen', 'Red', 'Golf GTI', 2022, 72, 'Compact hot hatch', 5, 'automatic'),
+  car(14, 5, 3, 'Volkswagen', 'Grey', 'Tiguan R-Line', 2021, 82, 'Family SUV with flexible space', 5, 'automatic'),
+  car(15, 5, 4, 'Volkswagen', 'Blue', 'ID.4 Pro', 2024, 89, 'Electric family SUV', 5, 'automatic'),
+  car(16, 6, 1, 'Range Rover', 'Black', 'Velar Dynamic', 2023, 135, 'Luxury SUV with premium cabin', 5, 'automatic'),
+  car(17, 6, 7, 'Range Rover', 'Green', 'Sport HSE', 2022, 165, 'High-end SUV with commanding driving position', 5, 'automatic'),
+  car(18, 6, 11, 'Range Rover', 'Bronze', 'Evoque Autobiography', 2024, 128, 'Compact luxury SUV', 5, 'automatic'),
+  car(19, 7, 2, 'Toyota', 'White', 'Corolla Hybrid', 2023, 55, 'Efficient hybrid hatchback', 5, 'automatic'),
+  car(20, 7, 6, 'Toyota', 'Silver', 'RAV4 Hybrid', 2022, 79, 'Practical hybrid SUV', 5, 'automatic'),
+  car(21, 7, 4, 'Toyota', 'Blue', 'Yaris Cross', 2024, 58, 'Compact hybrid crossover', 5, 'automatic'),
+  car(22, 8, 4, 'Ford', 'Blue', 'Focus ST-Line', 2021, 49, 'Affordable compact hatchback', 5, 'manual'),
+  car(23, 8, 8, 'Ford', 'Orange', 'Mustang GT', 2022, 148, 'Performance coupe with V8 character', 4, 'automatic'),
+  car(24, 8, 1, 'Ford', 'Black', 'Kuga Titanium', 2023, 69, 'Comfortable family SUV', 5, 'automatic'),
+  car(25, 9, 3, 'Nissan', 'Grey', 'Qashqai Tekna', 2023, 64, 'Comfortable compact SUV', 5, 'automatic'),
+  car(26, 9, 5, 'Nissan', 'Red', 'Juke N-Connecta', 2022, 58, 'Small crossover with bold styling', 5, 'automatic'),
+  car(27, 9, 2, 'Nissan', 'White', 'Leaf e+', 2021, 62, 'Electric hatchback for urban travel', 5, 'automatic'),
+  car(28, 10, 1, 'Volvo', 'Black', 'XC60 Plus', 2023, 112, 'Safety-focused premium SUV', 5, 'automatic'),
+  car(29, 10, 2, 'Volvo', 'White', 'V60 Recharge', 2022, 104, 'Plug-in hybrid estate', 5, 'automatic'),
+  car(30, 10, 10, 'Volvo', 'Navy', 'XC90 Ultimate', 2024, 168, 'Seven-seat luxury SUV', 7, 'automatic'),
+  car(31, 11, 6, 'Hyundai', 'Silver', 'Tucson Hybrid', 2023, 74, 'Modern hybrid SUV', 5, 'automatic'),
+  car(32, 11, 4, 'Hyundai', 'Blue', 'i30 N Line', 2021, 52, 'Well-equipped hatchback', 5, 'manual'),
+  car(33, 11, 7, 'Hyundai', 'Green', 'Kona Electric', 2024, 76, 'Compact electric crossover', 5, 'automatic'),
+  car(34, 12, 3, 'Porsche', 'Grey', 'Macan S', 2023, 175, 'Performance SUV with premium handling', 5, 'automatic'),
+  car(35, 12, 8, 'Porsche', 'Orange', '718 Cayman', 2022, 185, 'Two-seat sports coupe', 2, 'automatic'),
+  car(36, 12, 12, 'Porsche', 'Burgundy', 'Panamera 4', 2024, 220, 'Luxury performance saloon', 4, 'automatic'),
+  car(37, 13, 9, 'Kia', 'Yellow', 'Picanto GT-Line', 2022, 38, 'Compact city car', 4, 'manual'),
+  car(38, 13, 7, 'Kia', 'Green', 'Niro Hybrid', 2023, 61, 'Efficient crossover', 5, 'automatic'),
+  car(39, 13, 3, 'Kia', 'Grey', 'Sportage GT-Line', 2024, 72, 'Family SUV with modern equipment', 5, 'automatic'),
+  car(40, 14, 4, 'Peugeot', 'Blue', '208 GT', 2023, 46, 'Stylish compact hatchback', 5, 'automatic'),
+  car(41, 14, 1, 'Peugeot', 'Black', '3008 Allure', 2022, 67, 'Comfortable family crossover', 5, 'automatic'),
+  car(42, 14, 2, 'Peugeot', 'White', '5008 GT', 2024, 92, 'Seven-seat SUV', 7, 'automatic'),
+  car(43, 15, 7, 'MINI', 'Green', 'Cooper Classic', 2022, 54, 'Iconic compact city car', 4, 'manual'),
+  car(44, 15, 5, 'MINI', 'Red', 'Countryman Cooper S', 2023, 78, 'Compact premium crossover', 5, 'automatic'),
+  car(45, 15, 9, 'MINI', 'Yellow', 'Electric Level 2', 2024, 69, 'Electric city hatchback', 4, 'automatic'),
+  car(46, 16, 10, 'Jaguar', 'Navy', 'F-Pace R-Dynamic', 2023, 138, 'Premium performance SUV', 5, 'automatic'),
+  car(47, 16, 12, 'Jaguar', 'Burgundy', 'XF Portfolio', 2022, 96, 'Executive saloon', 5, 'automatic'),
+  car(48, 16, 6, 'Jaguar', 'Silver', 'I-Pace EV400', 2024, 155, 'Electric luxury SUV', 5, 'automatic'),
+  car(49, 17, 2, 'Lexus', 'White', 'UX 250h', 2023, 82, 'Premium compact hybrid crossover', 5, 'automatic'),
+  car(50, 17, 1, 'Lexus', 'Black', 'NX 350h', 2024, 116, 'Refined hybrid SUV', 5, 'automatic'),
+  car(51, 17, 6, 'Lexus', 'Silver', 'RX 450h+', 2024, 152, 'Large plug-in hybrid SUV', 5, 'automatic'),
+  car(52, 18, 4, 'Honda', 'Blue', 'Civic e:HEV', 2023, 68, 'Efficient hybrid hatchback', 5, 'automatic'),
+  car(53, 18, 5, 'Honda', 'Red', 'CR-V Advance', 2024, 94, 'Spacious hybrid SUV', 5, 'automatic'),
+  car(54, 18, 9, 'Honda', 'Yellow', 'Jazz Crosstar', 2022, 46, 'Compact hybrid city car', 5, 'automatic'),
+  car(55, 19, 3, 'Skoda', 'Grey', 'Octavia Estate', 2023, 63, 'Large practical estate', 5, 'automatic'),
+  car(56, 19, 7, 'Skoda', 'Green', 'Kodiaq SportLine', 2024, 92, 'Seven-seat family SUV', 7, 'automatic'),
+  car(57, 19, 4, 'Skoda', 'Blue', 'Enyaq iV', 2024, 88, 'Electric SUV with strong range', 5, 'automatic'),
+  car(58, 20, 8, 'Renault', 'Orange', 'Clio Esprit Alpine', 2023, 48, 'Stylish compact hatchback', 5, 'manual'),
+  car(59, 20, 11, 'Renault', 'Bronze', 'Captur E-Tech', 2024, 62, 'Efficient hybrid crossover', 5, 'automatic'),
+  car(60, 20, 2, 'Renault', 'White', 'Megane E-Tech', 2024, 74, 'Electric family hatchback', 5, 'automatic')
+];
+
+export const MOCK_CAR_IMAGES: CarImage[] = MOCK_CARS.map((item) => ({
+  imageId: item.carId,
+  carId: item.carId,
+  imagePath: item.imagePath,
+  date: new Date()
+}));

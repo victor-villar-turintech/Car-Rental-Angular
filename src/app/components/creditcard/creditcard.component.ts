@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CreditCard } from 'src/app/models/creditCard';
-
 import { Rental } from 'src/app/models/rental';
 import { creditCardService } from 'src/app/services/creditcard.service';
-
 import { RentalService } from 'src/app/services/rental.service';
 
 @Component({
@@ -14,51 +12,51 @@ import { RentalService } from 'src/app/services/rental.service';
   styleUrls: ['./creditcard.component.css']
 })
 export class CreditCardComponent implements OnInit {
-  rental:Rental;
-  nameOnTheCard:string;
-  cardNumber:string;
-  cardCvv:string;
-  creditCard:CreditCard;
-  cardExist:Boolean = false;
-  cardExpiration:string;
+  rental: Rental;
+  nameOnTheCard = 'Demo User';
+  cardNumber = '4111111111111111';
+  cardCvv = '123';
+  cardExpiration = '12/30';
+  paymentCompleted = false;
+
   constructor(
-    private activatedRoute:ActivatedRoute,
-    private creditCardService:creditCardService,
-    private rentalService:RentalService,
-    private toastrService:ToastrService) { }
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private creditCardService: creditCardService,
+    private rentalService: RentalService,
+    private toastrService: ToastrService
+  ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params=>{
-      if(params["rental"]){
-        this.rental = JSON.parse(params['rental']);
+    this.activatedRoute.params.subscribe((params) => {
+      if (params.rental) {
+        this.rental = JSON.parse(params.rental);
       }
-    })
+    });
   }
 
-  async rentACar(){
-    let creditCard:CreditCard = {cardName:this.nameOnTheCard,cardNumber:this.cardNumber,cardCvc:this.cardCvv,cardExpiration:this.cardExpiration}
-    this.cardExist = await this.isCardExist(creditCard)
-    if(this.cardExist){
-      this.creditCard = await((this.getFakeCardByCardNumber(this.cardNumber))) 
-      this.creditCard.moneyInTheCard = this.creditCard.moneyInTheCard - this.rental.totalRentPrice
-      this.updateCard(creditCard)
-      this.rentalService.addRental(this.rental)
-      this.toastrService.success("You rented the car","Operation successful")
-    }else{
-      this.toastrService.error("Your bank did not approve your details","Card not found")
-    }
+  rentACar(): void {
+    const creditCard: CreditCard = {
+      cardName: this.nameOnTheCard,
+      cardNumber: this.cardNumber,
+      cardCvc: this.cardCvv,
+      cardExpiration: this.cardExpiration
+    };
+
+    this.creditCardService.isCardExist(creditCard).subscribe((cardResponse) => {
+      if (!cardResponse.success) {
+        this.toastrService.error('Your bank did not approve your details', 'Card not found');
+        return;
+      }
+
+      this.rentalService.addRental(this.rental).subscribe(() => {
+        this.paymentCompleted = true;
+        this.toastrService.success('You rented the car', 'Operation successful');
+      });
+    });
   }
 
-  async isCardExist(creditCard:CreditCard){
-    return (await this.creditCardService.isCardExist(creditCard).toPromise()).success
+  backToCars(): void {
+    this.router.navigate(['/cars']);
   }
-
-  async getFakeCardByCardNumber(cardNumber:string){
-    return (await (this.creditCardService.getCardByNumber(cardNumber)).toPromise()).data[0]
-  }
-
-  updateCard(creditCard:CreditCard){
-    this.creditCardService.updateCard(creditCard);
-  }
-
 }

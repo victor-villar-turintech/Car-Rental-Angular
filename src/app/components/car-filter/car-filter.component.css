@@ -1,0 +1,27 @@
+.filter-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 1.2rem;
+  box-shadow: 0 18px 48px rgba(15,23,42,.08);
+}
+.filter-header {
+  margin-bottom: 1.25rem;
+}
+.filter-header span {
+  color: #2563eb;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .72rem;
+  font-weight: 900;
+}
+.filter-header strong {
+  display: block;
+  color: #0f172a;
+  font-size: 1.2rem;
+}
+.form-group { margin-bottom: 1rem; }
+label { color: #334155; font-weight: 800; }
+.form-control { border-radius: 12px; border-color: #cbd5e1; }
+.filter-actions { display: grid; gap: .6rem; margin-top: 1.25rem; }
+.filter-actions .btn { border-radius: 12px; font-weight: 800; }

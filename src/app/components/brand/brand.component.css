@@ -1,3 +1,72 @@
-.cursorPointer{
-    cursor: pointer;
+.services-hero {
+  padding: 76px 0;
+  color: #fff;
+  background: radial-gradient(circle at 15% 20%, rgba(96,165,250,.32), transparent 32%), linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+}
+.services-hero span, .location-panel span {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-weight: 950;
+  font-size: .76rem;
+  color: #bfdbfe;
+  margin-bottom: .8rem;
+}
+.services-hero h1 {
+  max-width: 820px;
+  font-size: clamp(2.4rem, 5vw, 5rem);
+  line-height: .94;
+  letter-spacing: -.06em;
+  font-weight: 950;
+  margin-bottom: 1rem;
+}
+.services-hero p { max-width: 680px; color: #dbeafe; font-size: 1.15rem; }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.service-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 28px;
+  padding: 1.6rem;
+  box-shadow: 0 18px 48px rgba(15,23,42,.08);
+}
+.service-card.highlight { grid-column: span 2; }
+.service-card span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 950;
+  margin-bottom: 1rem;
+}
+.service-card h2 { color: #0f172a; font-size: 1.45rem; font-weight: 950; letter-spacing: -.03em; }
+.service-card p, .service-card li { color: #64748b; }
+.service-card ul { padding-left: 1.1rem; margin-bottom: 0; }
+.location-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: #0f172a;
+  color: #fff;
+  border-radius: 30px;
+  padding: 2rem;
+  margin-bottom: 4rem;
+}
+.location-panel h2 { font-weight: 950; letter-spacing: -.03em; }
+.location-panel p { color: #cbd5e1; max-width: 820px; }
+.location-panel .btn { border-radius: 16px; font-weight: 900; }
+@media (max-width: 991.98px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .service-card.highlight { grid-column: span 1; }
+  .location-panel { flex-direction: column; align-items: flex-start; }
 }

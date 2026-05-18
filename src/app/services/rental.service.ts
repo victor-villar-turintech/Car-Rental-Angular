@@ -1,27 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 import { ListResponseModel } from '../models/listResponseModel';
 import { Rental } from '../models/rental';
 import { ResponseModel } from '../models/responseModel';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class RentalService {
-apiUrl="https://localhost:44388/api/"
-  constructor(private httpClient:HttpClient) { }
+  private rentals: Rental[] = [];
 
-  getRental(): Observable<ListResponseModel<Rental>>{
-    let newPath = this.apiUrl+"rentals/getallrentaldto"
-    return this.httpClient.get<ListResponseModel<Rental>>(newPath);
+  getRental(): Observable<ListResponseModel<Rental>> {
+    return of({ success: true, message: 'Rentals loaded.', data: this.rentals });
   }
-  addRental(rental:Rental){
-    let newPath = this.apiUrl + "rentals/add"
-    this.httpClient.post(newPath,rental).subscribe()
+
+  addRental(rental: Rental): Observable<ResponseModel> {
+    const nextId = Math.max(...this.rentals.map((item) => item.rentalId || 0), 0) + 1;
+    this.rentals = [...this.rentals, { ...rental, rentalId: nextId }];
+    return of({ success: true, message: 'Rental saved.' });
   }
-  isRentable(rental:Rental):Observable<ResponseModel>{
-    let newPath = this.apiUrl + "rentals/isrentable"
-    return this.httpClient.post<ResponseModel>(newPath,rental);
+
+  isRentable(rental: Rental): Observable<ResponseModel> {
+    return of({ success: true, message: 'Car is available for the selected dates.' });
   }
 }

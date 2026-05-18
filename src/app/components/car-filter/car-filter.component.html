@@ -1,20 +1,27 @@
-  
-<div class="row mb-2">
-    <div class="col-md-4">
-        <select [(ngModel)]="brandIdFilter"  class="form-select" aria-label="Default select example">
-            <option *ngFor="let brand of brands" [value]="brand.brandId" selected="{{selectedBrand(brand.brandId)}}">{{brand.brandName}}</option>
-          </select>
-    </div>
-    <div class="col-md-4">
-        <select [(ngModel)]="colorIdFilter" class="form-select" aria-label="Default select example">
-            
-            <option *ngFor="let color of colors" [value]="color.colorId" >{{color.colorName}}</option>
-          </select>
-    </div>
-    <div class="col-md-2">
-        <a routerLink="/cars/filter/{{brandIdFilter}}/{{colorIdFilter}}" class="btn btn-success">Filtrele</a>
-        </div>
-        <div class="col-md-2">
-            <a routerLink="/cars" class="btn btn-danger">Temizle</a>
-        </div>
+<div class="filter-card">
+  <div class="filter-header">
+    <span>Filters</span>
+    <strong>Refine search</strong>
+  </div>
+
+  <div class="form-group">
+    <label for="brandFilter">Brand</label>
+    <select id="brandFilter" class="form-control" [(ngModel)]="brandIdFilter">
+      <option [ngValue]="undefined">All brands</option>
+      <option *ngFor="let brand of brands" [ngValue]="brand.brandId">{{ brand.brandName }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="colorFilter">Colour</label>
+    <select id="colorFilter" class="form-control" [(ngModel)]="colorIdFilter">
+      <option [ngValue]="undefined">All colours</option>
+      <option *ngFor="let color of colors" [ngValue]="color.colorId">{{ color.colorName }}</option>
+    </select>
+  </div>
+
+  <div class="filter-actions">
+    <button class="btn btn-primary" type="button" (click)="applyFilters()">Apply filters</button>
+    <button class="btn btn-outline-secondary" type="button" (click)="clearFilters()">Clear filters</button>
+  </div>
 </div>

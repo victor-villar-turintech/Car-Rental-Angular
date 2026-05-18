@@ -1,17 +1,18 @@
-<div class="container-fluid pt-4" >
-    <div class="row">
-        <div class="col-3">
-            <div class="list-group">
-                <a routerLink="./" style="background-color: #0186a7; color: white;" class="list-group-item list-group-item-action ">Admin</a>
-                <a routerLink="cars" routerLinkActive="active" class="list-group-item list-group-item-action">Arabalar</a>
-                <a routerLink="colors" routerLinkActive="active" class="list-group-item list-group-item-action">Renkler</a>
-                <a routerLink="brands" routerLinkActive="active" class="list-group-item list-group-item-action"> Markalar</a>
-            </div>
-    
-         
-        </div>
-       <div class="col-md-9">
-           <router-outlet></router-outlet>
-       </div>
-      </div>
-</div>
+<section class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="admin-title">
+      <span>Admin</span>
+      <strong>Fleet management</strong>
+    </div>
+    <nav>
+      <a routerLink="/admin/cars" routerLinkActive="active">Cars</a>
+      <a routerLink="/admin/brands" routerLinkActive="active">Brands</a>
+      <a routerLink="/admin/colors" routerLinkActive="active">Colours</a>
+      <a routerLink="/cars">Public catalogue</a>
+    </nav>
+  </aside>
+
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>
+</section>

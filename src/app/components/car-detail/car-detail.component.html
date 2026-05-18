@@ -1,53 +1,41 @@
+<section class="detail-page" *ngIf="car">
+  <div class="container">
+    <a class="back-link" routerLink="/cars">← Back to cars</a>
 
+    <div class="detail-card">
+      <div class="detail-image">
+        <img
+          class="vehicle-photo detail-photo"
+          [src]="car.imagePath"
+          [alt]="car.colorName + ' ' + car.brandName + ' ' + car.carName"
+          (error)="handleVehicleImageError($event, car)"
+        />
+        <div class="vehicle-photo-caption detail-caption">
+          <strong>{{ car.colorName }}</strong>
+          <span>{{ car.brandName }} {{ car.carName }}</span>
+        </div>
+      </div>
+      <div class="detail-content">
+        <span class="eyebrow">{{ car.brandName }}</span>
+        <h1>{{ car.carName }}</h1>
+        <p class="lead-text">{{ car.description }}</p>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <div id="carouselExampleIndicators" class="carousel slide mt-5" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-          <button *ngFor="let image of carImages;let i = index" type="button" data-bs-target="#carouselExampleIndicators" attr.data-bs-slide-to="{{i}}" [class]="getButtonClass(image)" aria-current="true" aria-label="Slide 1"></button>
+        <div class="spec-grid">
+          <div><span>Daily price</span><strong>{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+          <div><span>Model year</span><strong>{{ car.modelYear }}</strong></div>
+          <div><span>Colour</span><strong>{{ car.colorName }}</strong></div>
+          <div><span>Pickup</span><strong>London</strong></div>
         </div>
-        <div class="carousel-inner">
-          <div *ngFor="let image of carImages" [class]="getCurrentImageClass(image)">
-            <img src="{{imageUrl}}{{image.imagePath}}" class="d-block w-100"  height="300"  alt="Image">
-          </div>
+
+        <div class="detail-actions">
+          <a class="btn btn-primary btn-lg" [routerLink]="['/car/rental', car.carId]">Rent this car</a>
+          <a class="btn btn-outline-primary btn-lg" routerLink="/cars">Browse more cars</a>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="next">
-          <span class="carousel-control-next-icon"  aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div> 
-    </div>
-    <div class="col-md-6">
-      <table *ngIf="dataLoaded==true" class="table mt-5">
-        <thead class="table-dark">
-            <tr>
-                <th>Brand</th>
-                <th>Color</th>
-                <th>Model</th>
-                <th>Daily Price</th>
-                <th>Description</th>
-            
-    
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let car of cars">
-                <td>{{car.brandName}}</td>
-                <td>{{car.colorName}}</td>
-                <td>{{car.modelYear}}</td>
-                <td>{{car.dailyPrice}}</td>
-                <td>{{car.description}}</td>
-                <button type="button" routerLink = "/car/rental/{{car.carId}}" class="btn btn-outline-dark ms-5">Kirala</button>
-        
-            </tr>
-        </tbody>
-    
-    </table>
+      </div>
     </div>
   </div>
+</section>
+
+<div class="container py-5" *ngIf="!car">
+  <div class="alert alert-info">Loading car details...</div>
 </div>

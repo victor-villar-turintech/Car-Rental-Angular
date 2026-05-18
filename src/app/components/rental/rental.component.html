@@ -1,52 +1,62 @@
-<div class="card mb-3" style="max-width: 1024px; margin-top: 20px;">
-    <div class="row g-0">
-      <div class="col-md-5">
-        <table *ngIf="car" class="table table-striped mt-2">
-            <tbody>
-              <tr>
-                <th scope="row">Brand</th>
-                <td>{{ car.brandName }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Model</th>
-                <td>{{ car.carName }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Color</th>
-                <td>{{ car.colorName }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Daily Price</th>
-                <td>
-                  {{
-                    car.dailyPrice | currency: "TRY":"symbol-narrow":"1.2-2"
-                  }}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Model Year</th>
-                <td>{{car.modelYear}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Description</th>
-                <td>{{ car.description }}</td>
-              </tr>
-            </tbody>
-          </table>
-      </div>
-      <div class="col-md-7" style="position: relative;">
-        <div class="card-body">
-            <form class="list-group-item active">
-                <label>Start date</label><label style="margin-left: 95px;">End date</label>
-                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group me-5" role="group" aria-label="First group"><input type="date" (change)="calculatePrice()" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}"></div>
-                    <div class="btn-group me-5" role="group" aria-label="First group"><input type="date" (change)="calculatePrice()" [(ngModel)]="endDate" [ngModelOptions]="{standalone: true}"></div>
-                </div>
-                <br><br>
-                <div><p *ngIf="endDate && startDate">Total price: {{rentPrice | currency:"TRY":"symbol-narrow":"1.2-2"}}</p></div>
-            </form>
+<section class="rental-page" *ngIf="car">
+  <div class="container">
+    <a class="back-link" [routerLink]="['/car/details', car.carId]">← Back to details</a>
+
+    <div class="rental-grid">
+      <div class="rental-car-card">
+        <div class="rental-image-wrap">
+          <img
+            class="vehicle-photo rental-photo"
+            [src]="car.imagePath"
+            [alt]="car.colorName + ' ' + car.brandName + ' ' + car.carName"
+            (error)="handleVehicleImageError($event, car)"
+          />
+          <div class="vehicle-photo-caption rental-caption">
+            <strong>{{ car.colorName }}</strong>
+            <span>{{ car.brandName }} {{ car.carName }}</span>
+          </div>
         </div>
-          <button (click)="addRental(rental)" type="button" class="btn btn-success" style="position:absolute; bottom:20px; right:20px;">Kirala</button>
+        <div>
+          <span>{{ car.brandName }}</span>
+          <h1>{{ car.carName }}</h1>
+          <p>{{ car.description }}</p>
+          <ul>
+            <li><strong>Colour:</strong> {{ car.colorName }}</li>
+            <li><strong>Model year:</strong> {{ car.modelYear }}</li>
+            <li><strong>Daily price:</strong> {{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="booking-card">
+        <span class="eyebrow">Booking</span>
+        <h2>Choose your rental dates</h2>
+
+        <div class="form-group">
+          <label for="startDate">Start date</label>
+          <input id="startDate" name="startDate" type="date" class="form-control" [(ngModel)]="startDate" (change)="calculatePrice()" />
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">End date</label>
+          <input id="endDate" name="endDate" type="date" class="form-control" [(ngModel)]="endDate" (change)="calculatePrice()" />
+        </div>
+
+        <div class="price-summary">
+          <span>Total price</span>
+          <strong>{{ rentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong>
+        </div>
+
+        <button class="btn btn-primary btn-lg btn-block" [disabled]="!rental || rentPrice <= 0" (click)="addRental(rental)">
+          Continue to payment
+        </button>
+
+        <p class="small-note">Demo mode: availability is always checked locally. No live backend is required.</p>
       </div>
     </div>
   </div>
+</section>
+
+<div class="container py-5" *ngIf="!car">
+  <div class="alert alert-info">Please select a car before starting a rental.</div>
+</div>

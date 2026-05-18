@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Brand } from 'src/app/models/brand';
 import { Color } from 'src/app/models/color';
 import { BrandService } from 'src/app/services/brand.service';
@@ -10,47 +11,54 @@ import { ColorService } from 'src/app/services/color.service';
   styleUrls: ['./car-filter.component.css']
 })
 export class CarFilterComponent implements OnInit {
+  brands: Brand[] = [];
+  colors: Color[] = [];
+  brandIdFilter: number | undefined;
+  colorIdFilter: number | undefined;
 
-  constructor(private brandService: BrandService,
-    private colorService: ColorService) { }
-
-  colors:Color[]=[];
-  brands:Brand[]=[];
-  brandIdFilter:number;
-  colorIdFilter:number;
+  constructor(
+    private brandService: BrandService,
+    private colorService: ColorService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.getBrands();
     this.getColors();
+    this.activatedRoute.params.subscribe((params) => {
+      this.brandIdFilter = params.brandId ? Number(params.brandId) : undefined;
+      this.colorIdFilter = params.colorId ? Number(params.colorId) : undefined;
+    });
   }
 
-  getColors(){
-    this.colorService.getColors().subscribe(response=>{
-      this.colors=response.data;
-    })
-  }
-  getBrands(){
-    this.brandService.getBrands().subscribe(response=>{
-      this.brands=response.data;
-    })
-  }
-  selectedColor(colorId:number){
-    if(this.colorIdFilter==colorId){
-      return true;
-    }
-    else{
-      return false;
+  applyFilters(): void {
+    if (this.brandIdFilter && this.colorIdFilter) {
+      this.router.navigate(['/cars/brand', this.brandIdFilter, 'color', this.colorIdFilter]);
+    } else if (this.brandIdFilter) {
+      this.router.navigate(['/cars/brand', this.brandIdFilter]);
+    } else if (this.colorIdFilter) {
+      this.router.navigate(['/cars/color', this.colorIdFilter]);
+    } else {
+      this.router.navigate(['/cars']);
     }
   }
 
-  selectedBrand(brandId:number){
-    if(this.brandIdFilter==brandId){
-      return true;
-    }
-    else{
-      return false;
-    }
+  clearFilters(): void {
+    this.brandIdFilter = undefined;
+    this.colorIdFilter = undefined;
+    this.router.navigate(['/cars']);
   }
 
- 
+  private getBrands(): void {
+    this.brandService.getBrands().subscribe((response) => {
+      this.brands = response.data;
+    });
+  }
+
+  private getColors(): void {
+    this.colorService.getColors().subscribe((response) => {
+      this.colors = response.data;
+    });
+  }
 }

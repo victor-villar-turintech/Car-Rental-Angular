@@ -1,295 +1,77 @@
-
-
-  <!-- slider stylesheet -->
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,600,700&display=swap" rel="stylesheet">
-
-
-  <div class="hero_area">
-    <div class=" slider_section position-relative">
-      <div class="slider_container">
-        <div class="img-box">
-          <img src="../../../../assets/img/hero-img.jpg" alt="">
-        </div>
-        <div class="detail_container">
-          <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <div class="detail-box">
-                  <h1>
-                    Number 1 <br> Car Rental <br> Service
-                    
-                  </h1>
-                  <a routerLink="/cars">
-                    Our Cars
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- car section -->
-
-  <div class=" container-flued car_section layout_padding2-top layout_padding-bottom ">
-    <div class="container">
-      <div class="heading_container">
-        <h2>
-          A Better Way to Find Your Favourite Cars
-        </h2>
-        <p>
-          With a brand-new car rental experience, our brand has grown quickly and continues to serve customers without compromising quality through an expanding network of service locations.
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <span class="eyebrow">London vehicle hire</span>
+        <h1>Browse and rent a car from a realistic demo fleet.</h1>
+        <p class="hero-copy">
+          Explore saloons, hatchbacks, SUVs, estates, electric vehicles and premium performance cars using a local mock database. No backend API is required for demo browsing.
         </p>
-      </div>
-     
-    
-    </div>
-  </div>
-  
-<div class="container">
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    <div class="col">
-      <div class="card h-100">
-        <img src="../../../../assets/img/c-1.png" class="card-img-top h-100  p-5" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Choose Your Car</h5>
-          <p class="card-text">Choose the right car for your needs with flexible seating, automatic transmission, and manual transmission options.</p>
-          <a href="#" class="btn btn-primary auth">Select</a>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" routerLink="/cars">Browse cars</a>
+          <a class="btn btn-light btn-lg" routerLink="/admin/cars">Open admin</a>
+        </div>
+        <div class="trust-row">
+          <div><strong>24</strong><span>vehicles</span></div>
+          <div><strong>12</strong><span>brands</span></div>
+          <div><strong>£49+</strong><span>per day</span></div>
         </div>
       </div>
-    </div>
-    <div class="col">
-      <div class="card h-100">
-        <img src="../../../../assets/img/c-2.png" class="card-img-top h-100 p-5" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Pick Up Your Car</h5>
-          <p class="card-text">Pick up and return your car at your selected location </p>
-          <a href="#" class="btn btn-primary auth">Select</a>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card h-100">
-        <img src="../../../../assets/img/c-3.png"  class="card-img-top h-100  p-5" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Contact Your Dealer</h5>
-          <p class="card-text">You can contact the relevant dealer for information about the vehicle</p>
-          <a href="#" class="btn btn-primary auth">Select</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  <!-- end car section -->
-
-  <!-- about section -->
-
-
-  <!-- end about section -->
-
-
-  <!-- best section -->
-
-  <div class="container-flued best_section mt-5">
-    <div class="container ">
-      <div class="book_now">
-        <div class="detail-box">
-          <h2>
-            Our Best Cars
-          </h2>
-          <p>
-            Enjoy a comfortable journey with new cars
-          </p>
-        </div>
-        <!-- <div class="btn-box">
-          <a href="">
-            Book Now
-          </a>
-        </div> -->
-      </div>
-    </div>
-  </div>
-
-  <!-- end best section -->
-
-  <!-- rent section -->
-
-  <div class="container-flued rent_section layout_padding">
-    <div class="container ">
-      <div class="rent_container " >
-        <div class="box card" *ngFor="let car of cars">
-          <div class="img-box">
-            <img src="{{imageUrl}}{{car.imagePath}}" alt="{{imageUrl}}{{car.imagePath}}" class="card-img-top" width="320" height="200">
-          </div>
-          <div class="price">
-            <a href="">
-             {{car.dailyPrice}} TL
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="btn-box">
-        <a routerLink="/cars">
-          Daha fazla 
-        </a>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- end rent section -->
-
-
-
-  <!-- us section -->
-
-  <div class="container-flued us_section">
-    <div class="container mt-5">
-      <div class="heading_container mb-5">
-        <h2 class="mb-5">
-            Why Choose Us
-        </h2>
-       <p>
-        Choose us for a unique experience, a warm welcome, and excellent service. We are ready to meet your needs with affordable, reliable, and practical solutions. We are passionate about growing as a leader in the regional car rental industry. Fast, professional, and friendly service is our top priority.</p>
-      </div>
-    </div>
-    <div  class=" us_container layout_padding2">
-      <div class="content_box">
-        <div class="box">
-          <div class="img-box">
-            <img src="../../../../assets/img/u-1.png" alt="">
-          </div>
-          <div class="detail-box">
-            <h5>
-              Low Rental Cost
-            </h5>
-          </div>
-        </div>
-        <div class="box">
-          <div class="img-box">
-            <img src="../../../../assets/img/u-2.png" alt="">
-          </div>
-          <div class="detail-box">
-            <h5>
-              Fast Car
-            </h5>
-          </div>
-        </div>
-        <div class="box">
-          <div class="img-box">
-            <img src="../../../../assets/img/u-3.png" alt="">
-          </div>
-          <div class="detail-box">
-            <h5>
-            Safe Car
-            </h5>
-          </div>
-        </div>
-        <div class="box">
-          <div class="img-box">
-            <img src="../../../../assets/img/u-4.png" alt="">
-          </div>
-          <div class="detail-box">
-            <h5>
-                Fast Support
-            </h5>
-          </div>
-        </div>
-      </div>
-  
-    </div>
-  </div>
-
-  <!-- end us section -->
-
-
-
-  <!-- contact section -->
-
-  <div class="container-flued contact_section layout_padding">
-    <div class="container">
-     
-      
-      <div class="contact_items">
-
-        <a href="">
-          <div class="img-box">
-            <img src="../../../../assets/img/location.png" alt="">
-          </div>
-          <h6>
-            Parseller Mah. Cihannur Sok. No:10 Umraniye/Istanbul
-          </h6>
-        </a>
-        <a href="">
-          <div class="img-box">
-            <img src="../../../../assets/img/call.png" alt="">
-          </div>
-          <h6>
-            (+90 05452066565)
-          </h6>
-        </a>
-        <a href="">
-          <div class="img-box">
-            <img src="../../../../assets/img/mail.png" alt="">
-          </div>
-          <h6>
-            kaya67380@gmail.com
-          </h6>
-        </a>
-
-      </div>
-      <div class="social_container">
-        <div class="social-box">
-          <div>
-            <a href="">
-              <img src="../../../../assets/img/fb.png" alt="">
-            </a>
-          </div>
-          <div>
-            <a href="">
-              <img src="../../../../assets/img/twitter.png" alt="">
-            </a>
-          </div>
-          <div>
-            <a href="https://www.linkedin.com/in/samet-kaya-736604170/">
-              <img src="../../../../assets/img/linkedin.png" alt="">
-            </a>
-          </div>
-          <div>
-            <a href="">
-              <img src="../../../../assets/img/insta.png" alt="">
-            </a>
+      <div class="col-lg-5 mt-4 mt-lg-0">
+        <div class="hero-card">
+          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80" alt="Rental car in London" />
+          <div class="hero-card-body">
+            <span>Featured</span>
+            <h3>Nissan Qashqai Tekna</h3>
+            <p>Compact SUV · Automatic · London pickup</p>
           </div>
         </div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- end contact section -->
-
-  <!-- map section -->
-
-  <div class="container-flued map_section">
-    <!-- map section -->
-    <div class="map_container">
-      <div class="map-responsive">
-       
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.743572888473!2d29.151815414953337!3d41.03086572598427!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cacec4e7242aa1%3A0xb9da8ab980e3c8e4!2sParseller%2C%20Cihannur%20Sk.%2C%2034773%20%C3%9Cmraniye%2F%C4%B0stanbul!5e0!3m2!1str!2str!4v1617399284787!5m2!1str!2str" width="600" height="300"frameborder="0" style="border:0; width: 100%; height:100%"  allowfullscreen="" loading="lazy"></iframe>
-      </div>
-    </div>
-    <!-- end map section -->
+<section class="container content-section">
+  <div class="section-heading">
+    <span>How it works</span>
+    <h2>A cleaner local rental flow</h2>
   </div>
 
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="feature-card">
+        <div class="feature-icon">1</div>
+        <h3>Choose your vehicle</h3>
+        <p>Filter by brand, colour or search text. The catalogue uses a local Angular mock database.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="feature-card">
+        <div class="feature-icon">2</div>
+        <h3>Select rental dates</h3>
+        <p>Review the daily GBP price and calculate a mock total before proceeding to payment.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="feature-card">
+        <div class="feature-icon">3</div>
+        <h3>Confirm demo payment</h3>
+        <p>Use the demo card flow to complete the journey without needing a live backend service.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- end map section -->
-<app-footer></app-footer>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-  </script>
-
-
-
+<section class="contact-band">
+  <div class="container">
+    <div>
+      <span>London office</span>
+      <h2>RentA-Car London</h2>
+      <p>10 King Street, Covent Garden, London WC2E 8HN, United Kingdom</p>
+    </div>
+    <div class="contact-details">
+      <strong>+44 20 7946 0123</strong>
+      <a href="mailto:bookings@rentacar-london.example">bookings@rentacar-london.example</a>
+    </div>
+  </div>
+</section>

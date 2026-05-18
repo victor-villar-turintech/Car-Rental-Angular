@@ -1,68 +1,73 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ListResponseModel } from '../models/listResponseModel';
 import { Car } from '../models/car';
 import { ResponseModel } from '../models/responseModel';
 import { SingleResponseModel } from '../models/singleResponseModel';
 import { DashboardCars } from '../models/dashboard-cars';
 import { CarStandart } from '../models/carStandart';
-
+import { MOCK_CARS } from '../data/mock-rental-data';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarService {
-  apiUrl="https://localhost:44388/api/";
-  constructor(private httpClient:HttpClient) { }
+  private cars: Car[] = [...MOCK_CARS];
 
-  getCars():Observable<ListResponseModel<Car>>{
-    let newPath= this.apiUrl+"cars/getcardetails"
-    return this.httpClient.get<ListResponseModel<Car>>(newPath)
+  getCars(): Observable<ListResponseModel<Car>> {
+    return this.list(this.cars);
   }
 
   getCarById(carId: number): Observable<SingleResponseModel<Car>> {
-    let newPath= this.apiUrl+"cars/getbyid?carId="+carId
-    return this.httpClient.get<SingleResponseModel<Car>>(
-      newPath
-    );
+    const car = this.cars.find((item) => item.carId === Number(carId));
+    return of({ success: !!car, message: car ? 'Car found.' : 'Car not found.', data: car });
   }
 
-  addCar(car:Car):Observable<ResponseModel>{
-    return this.httpClient.post<ResponseModel>(this.apiUrl + "cars/add", car)
-  }
-  
-  updateCar(car:CarStandart):Observable<ResponseModel>{
-    return this.httpClient.post<ResponseModel>(this.apiUrl + "cars/update", car)
+  addCar(car: Car): Observable<ResponseModel> {
+    const nextId = Math.max(...this.cars.map((item) => item.carId), 0) + 1;
+    this.cars = [...this.cars, { ...car, carId: car.carId || nextId }];
+    return this.ok('Car added.');
   }
 
-  deletCar(car:CarStandart):Observable<ResponseModel>{
-    return this.httpClient.post<ResponseModel>(this.apiUrl + "cars/delete", car)
+  updateCar(car: CarStandart): Observable<ResponseModel> {
+    this.cars = this.cars.map((item) => item.carId === car.carId ? { ...item, ...car } as Car : item);
+    return this.ok('Car updated.');
   }
 
-  
-  getCarsByBrand(brandId:number):Observable<ListResponseModel<Car>>{
-    let newPath= this.apiUrl+"cars/getbybrand?brandId="+brandId
-    return this.httpClient.get<ListResponseModel<Car>>(newPath)
+  deleteCar(car: CarStandart): Observable<ResponseModel> {
+    this.cars = this.cars.filter((item) => item.carId !== car.carId);
+    return this.ok('Car deleted.');
   }
-  getCarsByColor(colorId:number):Observable<ListResponseModel<Car>>{
-    let newPath= this.apiUrl+"cars/getbycolor?colorId="+colorId
-    return this.httpClient.get<ListResponseModel<Car>>(newPath)
+
+  deletCar(car: CarStandart): Observable<ResponseModel> {
+    return this.deleteCar(car);
   }
-  getCarsBySelect(brandId:number, colorId:number){
-    let newPath = this.apiUrl + "cars/getbyselected?brandId=" + brandId + "&colorId=" + colorId;
-    return this.httpClient
-      .get<ListResponseModel<Car>>(newPath);
+
+  getCarsByBrand(brandId: number): Observable<ListResponseModel<Car>> {
+    return this.list(this.cars.filter((car) => car.brandId === Number(brandId)));
   }
-  getCarDetail(carId:number){
-    let newPath = this.apiUrl + "cars/getcardetail?carId=" + carId;
-    return this.httpClient
-      .get<ListResponseModel<Car>>(newPath);
+
+  getCarsByColor(colorId: number): Observable<ListResponseModel<Car>> {
+    return this.list(this.cars.filter((car) => car.colorId === Number(colorId)));
   }
-  
-  getAllCarDetail(){
-    let newPath = this.apiUrl + "cars/getallcardetail"
-    return this.httpClient
-      .get<ListResponseModel<DashboardCars>>(newPath);
+
+  getCarsBySelect(brandId: number, colorId: number): Observable<ListResponseModel<Car>> {
+    return this.list(this.cars.filter((car) => car.brandId === Number(brandId) && car.colorId === Number(colorId)));
+  }
+
+  getCarDetail(carId: number): Observable<ListResponseModel<Car>> {
+    return this.list(this.cars.filter((car) => car.carId === Number(carId)));
+  }
+
+  getAllCarDetail(): Observable<ListResponseModel<DashboardCars>> {
+    return of({ success: true, message: 'Dashboard cars loaded.', data: this.cars as unknown as DashboardCars[] });
+  }
+
+  private list<T>(data: T[]): Observable<ListResponseModel<T>> {
+    return of({ success: true, message: 'Data loaded.', data });
+  }
+
+  private ok(message: string): Observable<ResponseModel> {
+    return of({ success: true, message });
   }
 }

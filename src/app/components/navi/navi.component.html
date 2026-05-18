@@ -1,60 +1,37 @@
+<nav class="navbar navbar-expand-lg navbar-light main-nav">
+  <div class="container">
+    <a class="navbar-brand brand-lockup" routerLink="/home">
+      <span class="brand-mark">RC</span>
+      <span>
+        <strong>RentA-Car London</strong>
+        <small>Mock rental fleet</small>
+      </span>
+    </a>
 
-<nav class="navbar navbar-expand-lg  ">
-    <div class="container">
-        <a class="navbar-brand" style="color: white;" href="#">
-          RentA-Car</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="menu-hammur" style=" color: #f22324;">
-          <i class="bi bi-list"></i>
-        </span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul  class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li  style="color: white;" class="nav-item">
-            <a  style="color: white;" class="nav-link " aria-current="page" href="#">Ana Sayfa</a>
-            </li>
-            <li  style="color: white;" class="nav-item">
-              <a  routerLink="/cars" style="color: white;" class="nav-link " aria-current="page" href="#">Cars</a>
-              </li>
-            <li class="nav-item">
-            <a  style="color: white;" class="nav-link" href="#">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a  style="color: white;" class="nav-link" href="#">Hizmetler</a>
-            </li>
-            
-            <li *ngIf="userRol=='admin'" class="nav-item">
-              <a  style="color: white;" routerLink="admin" class="nav-link" href="#">Admin Panel</a>
-            </li>
-           
-        </ul>
-        
-        <div *ngIf="!isAuthenticated()">
-          <button routerLink="/login" id="auth" type="button" class="btn auth "  aria-expanded="false">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#mainNavigation"
+      aria-controls="mainNavigation"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-            Login
-          </button>
-          <button routerLink="/register" id="auth" type="button" class="btn  auth"  aria-expanded="false">
+    <div class="collapse navbar-collapse" id="mainNavigation">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/cars" routerLinkActive="active">Browse cars</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/services" routerLinkActive="active">Services</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/admin/cars" routerLinkActive="active">Admin</a></li>
+      </ul>
 
-            Kaydol
-          </button>
-        </div>
-          
-          <div class="btn-group"  *ngIf="isAuthenticated()" >
-            <button id="auth" type="button" class="btn  dropdown-toggle auth" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-person-circle"></i> {{lastName+" "+firstName}}
-          
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end  dropdown-menu-lg-start">
-              <li><button routerLink="user" class="dropdown-item" type="button">Profil</button></li>
-              <li><button (click)="logout()" class="dropdown-item" type="button"> <i class="bi bi-box-arrow-right"></i> Logout</button></li>
-            </ul>
-          </div>
-            
-           
-           
-        
-        </div>
+      <div class="nav-actions">
+        <a class="btn btn-outline-primary btn-sm" routerLink="/login">Login</a>
+        <a class="btn btn-primary btn-sm" routerLink="/register">Register</a>
+      </div>
     </div>
-    
+  </div>
 </nav>
