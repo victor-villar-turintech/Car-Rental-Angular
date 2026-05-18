@@ -378,7 +378,7 @@ body {
   }
   
   .custom_nav-container .navbar-toggler .navbar-toggler-icon {
-    /* background-image: url('../../../../assets/İmg/menu.png'); */
+    /* background-image: url('../../../../assets/img/menu.png'); */
     background-size: 55px;
   }
   
@@ -868,7 +868,7 @@ body {
   }
   
   .us_section .us_container {
-    background-image: url('../../../../assets/İmg/us-bg.jpg');
+    background-image: url('../../../../assets/img/us-bg.jpg');
     background-size: cover;
   }
   
@@ -1047,20 +1047,20 @@ body {
   
   .client_section .owl-carousel .owl-nav .owl-prev {
     left: calc(50% - 45px);
-    background-image: url('../../../../assets/İmg/left-angle.png');
+    background-image: url('../../../../assets/img/left-angle.png');
   }
   
   .client_section .owl-carousel .owl-nav .owl-prev:hover {
-    background-image: url('../../../../assets/İmg/left-angle-grey.png');
+    background-image: url('../../../../assets/img/left-angle-grey.png');
   }
   
   .client_section .owl-carousel .owl-nav .owl-next {
     right: calc(50% - 45px);
-    background-image: url('../../../../assets/İmg/right-angle.png');
+    background-image: url('../../../../assets/img/right-angle.png');
   }
   
   .client_section .owl-carousel .owl-nav .owl-next:hover {
-    background-image: url("../../../../assets/İmg/right-angle-grey.png");
+    background-image: url("../../../../assets/img/right-angle-grey.png");
   }
   
   .contact_section {

@@ -40,13 +40,13 @@ export class UsereditComponent implements OnInit {
       this.passwordUpdateForm.addControl("userId",new FormControl(this.authService.getCurrentUserId()))
       let passwordModel:PasswordChangeModel = Object.assign({},this.passwordUpdateForm.value)
       this.authService.changePassword(passwordModel).subscribe(response => {
-        this.toastrService.success(response.message,"Başarılı")
+        this.toastrService.success(response.message,"Successful")
       },responseError => {
-        this.toastrService.error(responseError.error.message,"Hata")
+        this.toastrService.error(responseError.error.message,"Error")
 
       })
     }else{
-      this.toastrService.error("Tüm alanları doldurmanız gerekli","Hata")
+      this.toastrService.error("You must fill in all fields","Error")
     }
   }
 

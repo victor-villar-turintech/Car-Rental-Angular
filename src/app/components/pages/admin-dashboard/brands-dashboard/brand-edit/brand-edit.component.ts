@@ -54,7 +54,7 @@ export class BrandEditComponent implements OnInit {
         this.toastrService.success(responseError.message)
       })
     }else{
-      this.toastrService.error("Form eksik","Hata")
+      this.toastrService.error("Form is incomplete","Error")
     }    
   }
 
@@ -62,7 +62,7 @@ export class BrandEditComponent implements OnInit {
 
   
   deleteBrand() {
-    if (window.confirm('Marka Sildiğine emin misin?')) {
+    if (window.confirm('Are you sure you want to delete this brand?')) {
       let brandModule: Brand = {
         brandId: this.brand.brandId,
         ...this.brandEditForm.value,

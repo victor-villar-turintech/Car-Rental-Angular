@@ -43,19 +43,19 @@ export class ColorAddComponent implements OnInit {
       let colorModel = Object.assign({},this.colorAddForm.value);
       this.colorService.addColor(colorModel).subscribe(
         response => {
-        this.toastrService.success(response.message,"Başarılı")
+        this.toastrService.success(response.message,"Successful")
         this.router.navigate(['admin', 'colors']);
         },
         responseError => {
         if(responseError.error.ValidationErrors.length > 0) {
           for(let i=0;i<responseError.error.ValidationErrors.length;i++) {
-            this.toastrService.error(responseError.error.ValidationErrors[i].ErrorMessage,"Doğrulama Hatası")
+            this.toastrService.error(responseError.error.ValidationErrors[i].ErrorMessage,"Validation Error")
           }
         }
       })
     }
     else {
-      this.toastrService.error("Formunuz Eksik","Dikkat!")
+      this.toastrService.error("Formunuz Eksik","Warning!")
     }
   }
 

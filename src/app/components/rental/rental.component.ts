@@ -45,10 +45,10 @@ export class RentalComponent implements OnInit {
       this.rental = this.rental;
      
       this.router.navigate(['/creditcard/', JSON.stringify(this.rental)]);
-      this.toastrService.info("Kredi kartı ödeme sayfasına yönlendiriliyor","Yönlendiriliyor")
+      this.toastrService.info("Redirecting to credit card payment page","Redirecting")
     }else{
-      this.toastrService.error("Bu tarihler arasında arabayı kiralayamazsınız","Zaten kiralanmış")
-      console.log("Bu tarihler arasında arabayı kiralayamazsınız","Zaten kiralanmış")
+      this.toastrService.error("You cannot rent the car between these dates","Already rented")
+      console.log("You cannot rent the car between these dates","Already rented")
     }
   }
 
@@ -76,7 +76,7 @@ export class RentalComponent implements OnInit {
         this.setRentable()
       }else{
         this.rentPrice = 0
-        this.toastrService.info("Bu tarihler arasında arabayı kiralayamazsınız","!")
+        this.toastrService.info("You cannot rent the car between these dates","!")
       }
     }
     else if(this.startDate!){
@@ -87,7 +87,7 @@ export class RentalComponent implements OnInit {
     }
     else{
       this.rentPrice = 0
-      this.toastrService.info("Bu tarihler arasında arabayı kiralayamazsınız","!")
+      this.toastrService.info("You cannot rent the car between these dates","!")
       console.log("samet")
     }
   }

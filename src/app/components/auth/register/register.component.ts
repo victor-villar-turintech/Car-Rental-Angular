@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit {
     if(this.registerForm.valid){
       let registerModel =Object.assign({},this.registerForm.value)
         this.authService.register(registerModel).subscribe(response=>{
-        this.toasterService.success(response.message,"Başarılı")
+        this.toasterService.success(response.message,"Successful")
         this.dataLoaded=true
         
       }
@@ -43,13 +43,13 @@ export class RegisterComponent implements OnInit {
        
         if(responseError.error.ValidationErrors.length > 0) {
          
-          this.toasterService.error(responseError.error,"Hata!")
+          this.toasterService.error(responseError.error,"Error!")
         }
         
       })
     }
      else {
-      this.toasterService.error("Lütfen tüm alanları doldurunuz","Dikkat!")
+      this.toasterService.error("Please fill in all fields","Warning!")
     }
   }
 }

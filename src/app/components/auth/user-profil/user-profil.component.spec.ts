@@ -1,20 +1,37 @@
+import { ToastrService } from 'ngx-toastr';
+import { JwtModule } from '@auth0/angular-jwt';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserProfilComponent } from './user-profil.component';
+import { UserComponent } from './user-profil.component';
 
-describe('UserProfilComponent', () => {
-  let component: UserProfilComponent;
-  let fixture: ComponentFixture<UserProfilComponent>;
+describe('UserComponent', () => {
+  let component: UserComponent;
+  let fixture: ComponentFixture<UserComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserProfilComponent ]
+      declarations: [ UserComponent ],
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, FormsModule, JwtModule.forRoot({})],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{
+        provide: ToastrService,
+        useValue: {
+          success: () => {},
+          error: () => {},
+          info: () => {},
+          warning: () => {}
+        }
+      }]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserProfilComponent);
+    fixture = TestBed.createComponent(UserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

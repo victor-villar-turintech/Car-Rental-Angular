@@ -13,7 +13,7 @@
     routerLink="/cars" [ngClass]="getAllColorClass()"  aria-current="true"
     >
      
-    Tüm Renkler
+    All Colors
     </li>
     <li (click)="setCurrentColor(color)" *ngFor="let color of colors  |colorFilter:colorFilter" 
     routerLink="/cars/color/{{color.colorId}}"

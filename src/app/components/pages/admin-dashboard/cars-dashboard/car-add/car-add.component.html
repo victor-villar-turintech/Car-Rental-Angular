@@ -2,12 +2,12 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-          <h5 class="title">Araba Ekle</h5>
+          <h5 class="title">Add Car</h5>
       </div>
       <div class="card-body">
       <form [formGroup]="carAddForm">
         <div class="mb-3 row">
-            <label for="brandId" class="col-sm-2 col-form-label">Marka Seç:</label>
+            <label for="brandId" class="col-sm-2 col-form-label">Select Brand:</label>
             <div class="col-sm-10">
               <select class="form-control" formControlName="brandId">
                 <option *ngFor="let brand of brands" [ngValue]="brand.brandId">{{brand.brandName}} </option>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="mb-3 row">
-          <label for="colorId" class="col-sm-2 col-form-label">Renk Seç:</label>
+          <label for="colorId" class="col-sm-2 col-form-label">Select Color:</label>
           <div class="col-sm-10">
             <select selected="cars" class="form-control" formControlName="colorId">
               <option *ngFor="let color of colors" [ngValue]="color.colorId">{{color.colorName}}</option>
@@ -25,28 +25,28 @@
         </div>
 
         <div class="mb-3 row">
-          <label for="carName" class="col-sm-2 col-form-label">Araba İsmi:</label>
+          <label for="carName" class="col-sm-2 col-form-label">Car Name:</label>
           <div class="col-sm-10">
             <input type="text" id="carName" formControlName="carName" class="form-control"/>
           </div>
         </div>
 
         <div class="mb-3 row">
-          <label for="modelYear" class="col-sm-2 col-form-label">Model Yıl:</label>
+          <label for="modelYear" class="col-sm-2 col-form-label">Model Year:</label>
           <div class="col-sm-10">
             <input type="number" id="modelYear" formControlName="modelYear" class="form-control"/>
           </div>
         </div>
 
         <div class="mb-3 row">
-          <label for="dailyPrice" class="col-sm-2 col-form-label">Günlük Fiyat:</label>
+          <label for="dailyPrice" class="col-sm-2 col-form-label">Daily Price:</label>
           <div class="col-sm-10">
             <input type="number" id="dailyPrice" formControlName="dailyPrice" class="form-control" />
           </div>
         </div>
 
         <div class="mb-3 row">
-          <label for="description" class="col-sm-2 col-form-label">Açıklama:</label>
+          <label for="description" class="col-sm-2 col-form-label">Description:</label>
           <div class="col-sm-10">
             <textarea  type="" id="description" formControlName="description" class="form-control" ></textarea>
           </div>

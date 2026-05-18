@@ -1,3 +1,9 @@
+import { ToastrService } from 'ngx-toastr';
+import { JwtModule } from '@auth0/angular-jwt';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NaviComponent } from './navi.component';
@@ -8,7 +14,18 @@ describe('NavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NaviComponent ]
+      declarations: [ NaviComponent ],
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, FormsModule, JwtModule.forRoot({})],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{
+        provide: ToastrService,
+        useValue: {
+          success: () => {},
+          error: () => {},
+          info: () => {},
+          warning: () => {}
+        }
+      }]
     })
     .compileComponents();
   });

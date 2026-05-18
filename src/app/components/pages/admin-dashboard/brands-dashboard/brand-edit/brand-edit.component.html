@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header"><h5 class="title font-weight-bold">Marka</h5></div>
+    <div class="card-header"><h5 class="title font-weight-bold">Brand</h5></div>
   
     <div class="card-body">
   
@@ -7,7 +7,7 @@
  
         <div class="row">
             <div class="mb-3">
-                <label for="BrandName">Marka</label>
+                <label for="BrandName">Brand</label>
                 <div class="form-group">
                     <input type="text" id="brandName" class="form-control" formControlName="brandName" value="{{brand?.brandName}}" />                   
                 </div>
@@ -20,7 +20,7 @@
   
     <div class="card-footer">
       <button class="btn btn-fill btn-danger" [routerLink]="['/admin/brands']" (click)="deleteBrand()"> Sil</button>
-      <button class="btn btn-fill btn-primary" [routerLink]="['/admin/brands']" (click)="updateBrand()"> Güncelle</button>
+      <button class="btn btn-fill btn-primary" [routerLink]="['/admin/brands']" (click)="updateBrand()"> Update</button>
     </div>
  
   </div>

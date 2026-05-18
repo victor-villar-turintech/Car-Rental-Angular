@@ -49,13 +49,13 @@ export class ColorEditComponent implements OnInit {
       let colorModel = Object.assign({},this.colorEditForm.value)
       colorModel.colorId = Number(this.color.colorId)
       this.colorService.updateColor(colorModel).subscribe(response=>{
-        this.toastrService.success(response.message,"Başarılı")
+        this.toastrService.success(response.message,"Successful")
         this.router.navigate(['admin', 'colors']);
       },responseError=>{
-        this.toastrService.success(responseError.message,"Hata")
+        this.toastrService.success(responseError.message,"Error")
       })
     }else{
-      this.toastrService.error("Form eksik","Dikkat")
+      this.toastrService.error("Form is incomplete","Warning")
     }    
   }
 
@@ -63,7 +63,7 @@ export class ColorEditComponent implements OnInit {
 
   
   deleteColor() {
-    if (window.confirm('Rengi Sildiğine  emin misin?')) {
+    if (window.confirm('Are you sure you want to delete this color?')) {
       let colorModule: Color = {
         colorId: this.color.colorId,
         ...this.colorEditForm.value,

@@ -16,7 +16,7 @@ export class UserService {
   ) { }
 
   getbyid(userId:number):Observable<SingleResponseModel<User>>{
-    let newPath = this.apiUrl + "users/getbyıd?userId=" + userId
+    let newPath = this.apiUrl + "users/getbyid?userId=" + userId
     return this.httpClient.get<SingleResponseModel<User>>(newPath)
   }
 

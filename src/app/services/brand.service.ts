@@ -18,7 +18,7 @@ apiUrl="https://localhost:44388/api/";
   }
 
   getById(id:number):Observable<SingleResponseModel<Brand>> {
-    let newPath = this.apiUrl + "brands/getbyıd?brandId=" + id;
+    let newPath = this.apiUrl + "brands/getbyid?brandId=" + id;
     return this.httpClient.get<SingleResponseModel<Brand>>(newPath);
   }
 

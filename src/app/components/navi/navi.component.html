@@ -14,10 +14,10 @@
             <a  style="color: white;" class="nav-link " aria-current="page" href="#">Ana Sayfa</a>
             </li>
             <li  style="color: white;" class="nav-item">
-              <a  routerLink="/cars" style="color: white;" class="nav-link " aria-current="page" href="#">Araçlar</a>
+              <a  routerLink="/cars" style="color: white;" class="nav-link " aria-current="page" href="#">Cars</a>
               </li>
             <li class="nav-item">
-            <a  style="color: white;" class="nav-link" href="#">Hakkımızda</a>
+            <a  style="color: white;" class="nav-link" href="#">About Us</a>
             </li>
             <li class="nav-item">
               <a  style="color: white;" class="nav-link" href="#">Hizmetler</a>
@@ -32,7 +32,7 @@
         <div *ngIf="!isAuthenticated()">
           <button routerLink="/login" id="auth" type="button" class="btn auth "  aria-expanded="false">
 
-            Giriş
+            Login
           </button>
           <button routerLink="/register" id="auth" type="button" class="btn  auth"  aria-expanded="false">
 
@@ -47,7 +47,7 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end  dropdown-menu-lg-start">
               <li><button routerLink="user" class="dropdown-item" type="button">Profil</button></li>
-              <li><button (click)="logout()" class="dropdown-item" type="button"> <i class="bi bi-box-arrow-right"></i> Çıkış</button></li>
+              <li><button (click)="logout()" class="dropdown-item" type="button"> <i class="bi bi-box-arrow-right"></i> Logout</button></li>
             </ul>
           </div>
             

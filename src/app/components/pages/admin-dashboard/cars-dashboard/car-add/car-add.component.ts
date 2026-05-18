@@ -63,20 +63,20 @@ export class CarAddComponent implements OnInit {
       let carModel = Object.assign({},this.carAddForm.value);
       this.carService.addCar(carModel).subscribe(
         response => {
-        this.toastrService.success(response.message,"Başarılı")
+        this.toastrService.success(response.message,"Successful")
         this.router.navigate(['admin', 'cars']);
         },
        
         responseError => {
         if(responseError.error.ValidationErrors.length > 0) {
           for(let i=0;i<responseError.error.ValidationErrors.length;i++) {
-            this.toastrService.error(responseError.error.ValidationErrors[i].ErrorMessage,"Araç Eklenemedi")
+            this.toastrService.error(responseError.error.ValidationErrors[i].ErrorMessage,"Car could not be added")
           }
         }
       })
     }
     else {
-      this.toastrService.error("Formunuz Eksik","Dikkat!")
+      this.toastrService.error("Formunuz Eksik","Warning!")
     }
   }
 

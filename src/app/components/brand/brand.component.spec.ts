@@ -1,3 +1,8 @@
+import { ToastrService } from 'ngx-toastr';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BrandComponent } from './brand.component';
@@ -8,7 +13,18 @@ describe('BrandComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BrandComponent ]
+      declarations: [ BrandComponent ],
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, FormsModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{
+        provide: ToastrService,
+        useValue: {
+          success: () => {},
+          error: () => {},
+          info: () => {},
+          warning: () => {}
+        }
+      }]
     })
     .compileComponents();
   });

@@ -70,7 +70,7 @@ export class NaviComponent implements OnInit {
   
   logout(){
     this.authService.logout()
-    this.toasterService.success("Çıkış Yapıldı","Başarılı")
+    this.toasterService.success("Logged out","Successful")
   }
  
 }
