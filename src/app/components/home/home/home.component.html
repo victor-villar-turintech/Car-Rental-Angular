@@ -12,9 +12,9 @@
           <a class="btn btn-light btn-lg" routerLink="/admin/cars">Open admin</a>
         </div>
         <div class="trust-row">
-          <div><strong>24</strong><span>vehicles</span></div>
-          <div><strong>12</strong><span>brands</span></div>
-          <div><strong>£49+</strong><span>per day</span></div>
+          <div><strong>{{ vehicleCount }}</strong><span>vehicles</span></div>
+          <div><strong>{{ brandCount }}</strong><span>brands</span></div>
+          <div><strong>£{{ minDailyPrice }}+</strong><span>per day</span></div>
         </div>
       </div>
       <div class="col-lg-5 mt-4 mt-lg-0">

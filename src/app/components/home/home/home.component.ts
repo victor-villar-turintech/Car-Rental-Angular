@@ -1,3 +1,4 @@
+import { MOCK_CARS } from 'src/app/data/mock-rental-data';
 import { Component, OnInit } from '@angular/core';
 import { Car } from 'src/app/models/car';
 import { CarService } from 'src/app/services/car.service';
@@ -8,7 +9,12 @@ import { CarService } from 'src/app/services/car.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  cars: Car[] = [];
+  
+  vehicleCount = MOCK_CARS.length;
+  brandCount = new Set(MOCK_CARS.map((car) => car.brandId)).size;
+  minDailyPrice = Math.min(...MOCK_CARS.map((car) => car.dailyPrice));
+
+cars: Car[] = [];
   dataLoaded = false;
 
   constructor(private carService: CarService) {}

@@ -127,21 +127,15 @@ const imageModelFamilyMap: { [key: string]: string } = {
   'Megane E-Tech': 'Megane E-Tech'
 };
 
-function generatedVehicleImageUrl(brand: string, model: string, colour: string, year: number, seed: number): string {
-  // v11: use real public vehicle photographs via LoremFlickr.
-  // This avoids the watermark problem from vehicle-render APIs and avoids the broken source.unsplash redirects.
-  // The query is built from the car description so the returned photo is biased toward the same colour, brand and model family.
-  // Exact trim/paint matching still requires a licensed image dataset or manually curated local assets.
-  const imageBrand = imageBrandMap[brand] || brand;
-  const imageModel = imageModelFamilyMap[model] || model;
-  const terms = `${colour},${imageBrand},${imageModel},car,vehicle`;
-  const slug = terms
-    .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, ',')
-    .replace(/^,+|,+$/g, '');
-
-  return `https://loremflickr.com/900/560/${slug}/all?lock=${seed}`;
+function generatedVehicleImageUrl(
+  brand: string,
+  model: string,
+  colour: string,
+  year: number,
+  seed: number
+): string {
+  const imageNumber = ('000' + seed).slice(-3);
+  return `assets/cars/car-${imageNumber}.png`;
 }
 
 const car = (
