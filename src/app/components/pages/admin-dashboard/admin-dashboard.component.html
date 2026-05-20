@@ -1,20 +1,24 @@
 <section class="admin-shell">
   <aside class="admin-sidebar">
     <div class="admin-brand">
-      <span>Admin</span>
+      <span class="admin-kicker">Admin</span>
       <strong>Fleet management</strong>
+      <small>Protected control centre</small>
     </div>
 
-    <nav class="admin-nav">
-      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
-      <a routerLink="/admin/cars" routerLinkActive="active">Cars</a>
-      <a routerLink="/admin/brands" routerLinkActive="active">Brands</a>
-      <a routerLink="/admin/colors" routerLinkActive="active">Colours</a>
+    <nav class="admin-nav" aria-label="Admin navigation">
+      <a routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+      <a routerLink="/admin/cars" routerLinkActive="active">Cars inventory</a>
+      <a routerLink="/admin/brands" routerLinkActive="active">Brands inventory</a>
+      <a routerLink="/admin/colors" routerLinkActive="active">Colours inventory</a>
       <a routerLink="/admin/bookings" routerLinkActive="active">Bookings</a>
-      <a routerLink="/booking-lookup">Booking lookup</a>
-      <a routerLink="/cars">Public catalogue</a>
-      <button class="admin-logout" type="button" (click)="logout()">Logout admin</button>
     </nav>
+
+    <div class="admin-sidebar-footer">
+      <a class="admin-secondary-link" routerLink="/booking-lookup">Booking lookup</a>
+      <a class="admin-secondary-link" routerLink="/cars">Public catalogue</a>
+      <button class="admin-logout" type="button" (click)="logout()">Logout admin</button>
+    </div>
   </aside>
 
   <main class="admin-content">
