@@ -1,69 +1,138 @@
 <section class="hero-section">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-7">
-        <span class="eyebrow">London vehicle hire</span>
-        <h1>Browse and rent a car from a realistic demo fleet.</h1>
-        <p class="hero-copy">
-          Explore saloons, hatchbacks, SUVs, estates, electric vehicles and premium performance cars using a local mock database. No backend API is required for demo browsing.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary btn-lg" routerLink="/cars">Browse cars</a>
-        </div>
-        <div class="trust-row">
-          <div><strong>{{ vehicleCount }}</strong><span>vehicles</span></div>
-          <div><strong>{{ brandCount }}</strong><span>brands</span></div>
-          <div><strong>£{{ minDailyPrice }}+</strong><span>per day</span></div>
-        </div>
+  <div class="container hero-grid">
+    <div class="hero-copy-block">
+      <span class="eyebrow">London vehicle hire</span>
+      <h1>Browse and rent a car from a realistic demo fleet.</h1>
+      <p class="hero-copy">
+        Explore saloons, hatchbacks, SUVs, estates, electric vehicles and premium performance cars using a polished local Angular rental workflow.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" routerLink="/cars">Browse cars</a>
       </div>
-      <div class="col-lg-5 mt-4 mt-lg-0">
-        <div class="hero-card" *ngIf="featuredCar as car">
-          <a [routerLink]="['/cars', car.carId]" aria-label="View featured vehicle details">
-            <img [src]="car.imagePath" [alt]="car.brandName + ' ' + car.carName" />
-          </a>
-          <div class="hero-card-body">
-            <span>Featured</span>
-            <a class="featured-title-link" [routerLink]="['/cars', car.carId]">
-              <h3>{{ car.brandName }} {{ car.carName }}</h3>
-            </a>
-            <p>{{ getFeaturedCarSummary(car) }}</p>
-            <div class="featured-actions">
-              <a class="btn btn-primary" [routerLink]="['/cars', car.carId]">View details</a>
-              <a class="btn btn-outline-primary" [routerLink]="['/car/rental', car.carId]">Book this car</a>
-            </div>
+      <div class="trust-row" aria-label="Fleet summary">
+        <div><strong>{{ vehicleCount }}</strong><span>vehicles</span></div>
+        <div><strong>{{ brandCount }}</strong><span>brands</span></div>
+        <div><strong>£{{ minDailyPrice }}+</strong><span>per day</span></div>
+      </div>
+    </div>
+
+    <div class="spotlight-card" *ngIf="featuredCar as car">
+      <a class="spotlight-image-link" [routerLink]="['/cars', car.carId]" aria-label="View featured vehicle details">
+        <img [src]="getImagePath(car)" [alt]="car.brandName + ' ' + car.carName" />
+        <span class="spotlight-badge">Featured vehicle</span>
+      </a>
+
+      <div class="spotlight-body">
+        <div class="spotlight-kicker">Available now</div>
+        <a class="spotlight-title" [routerLink]="['/cars', car.carId]">
+          {{ car.brandName }} {{ car.carName }}
+        </a>
+        <p class="spotlight-summary">{{ getFeaturedCarSummary(car) }}</p>
+
+        <div class="spotlight-specs" aria-label="Featured vehicle specifications">
+          <span>{{ getCategory(car) }}</span>
+          <span>{{ getTransmission(car) }}</span>
+          <span>{{ car.colorName || 'Colour TBC' }}</span>
+          <span>{{ getPickupLabel(car) }}</span>
+        </div>
+
+        <div class="spotlight-footer">
+          <div class="price-pill">
+            <span>From</span>
+            <strong>£{{ car.dailyPrice }}</strong>
+            <span>/day</span>
+          </div>
+          <div class="spotlight-actions">
+            <a class="btn btn-primary" [routerLink]="['/cars', car.carId]">View vehicle</a>
+            <a class="btn btn-outline-primary" [routerLink]="['/car/rental', car.carId]">Reserve now</a>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <a class="admin-corner-link" routerLink="/admin/login" aria-label="Admin login">Admin</a>
 </section>
 
-<section class="container content-section">
+<section class="container content-section" *ngIf="popularCars.length > 0">
+  <div class="section-heading split-heading">
+    <div>
+      <span>Popular choices</span>
+      <h2>Featured fleet picks</h2>
+    </div>
+    <a routerLink="/cars">View full catalogue</a>
+  </div>
+
+  <div class="popular-grid">
+    <a class="popular-card" *ngFor="let car of popularCars" [routerLink]="['/cars', car.carId]">
+      <img [src]="getImagePath(car)" [alt]="car.brandName + ' ' + car.carName" />
+      <div class="popular-card-body">
+        <span>{{ getCategory(car) }}</span>
+        <h3>{{ car.brandName }} {{ car.carName }}</h3>
+        <p>{{ getTransmission(car) }} · {{ car.colorName || 'Colour TBC' }}</p>
+        <strong>£{{ car.dailyPrice }}/day</strong>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="trust-section">
+  <div class="container">
+    <div class="section-heading text-center">
+      <span>Why this demo works</span>
+      <h2>Built like a complete rental journey</h2>
+    </div>
+
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">✓</div>
+        <h3>Local mock fleet</h3>
+        <p>Browse, filter and reserve vehicles from a local Angular catalogue without a backend API.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">£</div>
+        <h3>Transparent pricing</h3>
+        <p>Rental days, extras, airport pickup and mock checkout totals are calculated before payment.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">A</div>
+        <h3>London airport pickup</h3>
+        <p>Includes major London airports and terminals for more realistic pickup selection.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">🔒</div>
+        <h3>Protected Admin</h3>
+        <p>Manage fleet, bookings, extras and payments through a guarded Admin dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container content-section how-section">
   <div class="section-heading">
     <span>How it works</span>
     <h2>A cleaner local rental flow</h2>
   </div>
-  <div class="row">
-    <div class="col-md-4 mb-4">
-      <div class="feature-card">
-        <div class="feature-icon">1</div>
-        <h3>Choose your vehicle</h3>
-        <p>Filter by brand, colour or search text. The catalogue uses a local Angular mock database.</p>
-      </div>
+  <div class="flow-grid">
+    <div class="feature-card">
+      <div class="feature-icon">1</div>
+      <h3>Choose your vehicle</h3>
+      <p>Search, filter and compare catalogue vehicles by brand, colour, price and rental category.</p>
     </div>
-    <div class="col-md-4 mb-4">
-      <div class="feature-card">
-        <div class="feature-icon">2</div>
-        <h3>Select rental dates</h3>
-        <p>Review the daily GBP price and calculate a mock total before proceeding to payment.</p>
-      </div>
+    <div class="feature-card">
+      <div class="feature-icon">2</div>
+      <h3>Select dates and extras</h3>
+      <p>Pick rental dates, choose London pickup locations and add insurance or service extras.</p>
     </div>
-    <div class="col-md-4 mb-4">
-      <div class="feature-card">
-        <div class="feature-icon">3</div>
-        <h3>Confirm demo payment</h3>
-        <p>Use the demo card flow to complete the journey without needing a live backend service.</p>
-      </div>
+    <div class="feature-card">
+      <div class="feature-icon">3</div>
+      <h3>Complete mock payment</h3>
+      <p>Use Card, PayPal or Apple Pay demo checkout and generate a local payment reference.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">4</div>
+      <h3>Manage the booking</h3>
+      <p>Lookup bookings, view receipts, cancel eligible bookings and simulate refunds locally.</p>
     </div>
   </div>
 </section>
@@ -81,12 +150,3 @@
     </div>
   </div>
 </section>
-
-<a
-  class="admin-corner-link"
-  routerLink="/admin/login"
-  aria-label="Admin login"
-  style="position: fixed; right: 12px; bottom: 10px; z-index: 1000; font-size: 11px; color: rgba(0,0,0,.45); text-decoration: none; background: rgba(255,255,255,.75); border: 1px solid rgba(0,0,0,.08); border-radius: 999px; padding: 4px 8px;"
->
-  Admin
-</a>
