@@ -19,6 +19,11 @@ export interface Rental {
   rentalDays?: number;
   vehicleSubtotal?: number;
   extrasTotal?: number;
+  grossTotal?: number;
+  discountCode?: string;
+  discountAmount?: number;
+  rewardPointsRedeemed?: number;
+  rewardDiscountAmount?: number;
   totalRentPrice?: number | undefined;
   selectedExtras?: BookingExtraSelection[];
   customerId?: number;

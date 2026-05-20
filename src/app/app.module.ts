@@ -59,6 +59,12 @@ import { ValidationSummaryComponent } from './components/shared/validation-summa
 import { StatusBadgeComponent } from './components/shared/status-badge/status-badge.component';
 import { PriceBreakdownComponent } from './components/shared/price-breakdown/price-breakdown.component';
 import { BackToTopComponent } from './components/shared/back-to-top/back-to-top.component';
+import { CustomerActivityComponent } from './components/account/customer-activity/customer-activity.component';
+import { CustomerRewardsComponent } from './components/account/customer-rewards/customer-rewards.component';
+import { AdminDiscountsDashboardComponent } from './components/pages/admin-dashboard/discounts-dashboard/discounts-dashboard.component';
+import { AdminRewardsDashboardComponent } from './components/pages/admin-dashboard/rewards-dashboard/rewards-dashboard.component';
+import { AdminCustomerActivityDashboardComponent } from './components/pages/admin-dashboard/customer-activity-dashboard/customer-activity-dashboard.component';
+import { AdminCustomersDashboardComponent } from './components/pages/admin-dashboard/customers-dashboard/customers-dashboard.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -114,6 +120,12 @@ export function tokenGetter() {
     StatusBadgeComponent,
     PriceBreakdownComponent,
     BackToTopComponent,
+    CustomerActivityComponent,
+    CustomerRewardsComponent,
+    AdminDiscountsDashboardComponent,
+    AdminRewardsDashboardComponent,
+    AdminCustomerActivityDashboardComponent,
+    AdminCustomersDashboardComponent,
   ],
   imports: [
     BrowserModule,

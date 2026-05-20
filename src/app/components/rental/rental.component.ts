@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BookingExtraSelection } from 'src/app/models/booking-extra';
@@ -17,6 +18,7 @@ import { RentalService } from 'src/app/services/rental.service';
 export class RentalComponent implements OnInit {
   car: Car;
   currentCustomer: Customer | undefined;
+  rentalForm: FormGroup;
   pickupDate = '';
   returnDate = '';
   rentalDays = 0;
@@ -26,9 +28,6 @@ export class RentalComponent implements OnInit {
   rental: Rental;
   rentable = true;
   availabilityMessage = 'Select valid pickup and return dates to check availability.';
-  customerName = 'Demo User';
-  customerEmail = 'demo.user@example.com';
-  customerPhone = '07123 456789';
   pickupLocation = 'Central London branch';
   pickupLocationId = 'central-london';
   airportTerminal = '';
@@ -37,11 +36,7 @@ export class RentalComponent implements OnInit {
   bookingConfirmed = false;
   confirmedBooking: Rental;
   today = new Date().toISOString().slice(0, 10);
-  durationPreset = '1';
-  customRentalDays: number | undefined;
   copiedReference = false;
-  collapsedExtraCategories: { [category: string]: boolean } = {};
-
   durationOptions = [
     { label: '1 day', value: '1' },
     { label: '2 days', value: '2' },
@@ -53,6 +48,7 @@ export class RentalComponent implements OnInit {
   ];
 
   constructor(
+    private fb: FormBuilder,
     private rentalService: RentalService,
     private carService: CarService,
     private bookingExtraService: BookingExtraService,
@@ -62,26 +58,39 @@ export class RentalComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private toastrService: ToastrService
-  ) {}
+  ) {
+    this.rentalForm = this.fb.group({
+      pickupLocationId: ['central-london', [Validators.required]],
+      pickupDate: ['', [Validators.required]],
+      durationPreset: ['1', [Validators.required]],
+      customRentalDays: [1, [Validators.min(1)]],
+      returnDate: ['', [Validators.required]],
+      customerName: ['Demo User', [Validators.required, Validators.minLength(2)]],
+      customerEmail: ['demo.user@example.com', [Validators.required, Validators.email]],
+      customerPhone: ['07123 456789', [Validators.pattern(/^[0-9 +()-]{7,20}$/)]],
+    });
+  }
 
   ngOnInit(): void {
     this.loadLoggedInCustomer();
     this.loadBookingExtras();
     this.loadPickupLocations();
-
     this.activatedRoute.params.subscribe((params) => {
       if (params.carId) {
         this.getCarDetail(params.carId);
       }
     });
-
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.pickupDate = params.pickupDate || this.pickupDate;
-      this.returnDate = params.returnDate || this.returnDate;
-      this.syncDurationFromDates();
-      this.calculatePrice();
+      if (params.pickupDate || params.returnDate) {
+        this.rentalForm.patchValue({ pickupDate: params.pickupDate || this.rentalForm.value.pickupDate, returnDate: params.returnDate || this.rentalForm.value.returnDate });
+        this.syncDurationFromDates();
+        this.calculatePrice();
+      }
     });
   }
+
+  get f() { return this.rentalForm.controls; }
+  get selectedExtras(): BookingExtraSelection[] { return this.bookingExtras.filter((extra) => extra.selected); }
 
   getCarDetail(carId: number): void {
     this.carService.getCarById(carId).subscribe((response) => {
@@ -93,13 +102,8 @@ export class RentalComponent implements OnInit {
 
   loadLoggedInCustomer(): void {
     this.currentCustomer = this.customerAuthService.getCurrentCustomer();
-    if (!this.currentCustomer) {
-      return;
-    }
-
-    this.customerName = `${this.currentCustomer.firstName} ${this.currentCustomer.lastName}`.trim();
-    this.customerEmail = this.currentCustomer.email;
-    this.customerPhone = this.currentCustomer.phone || this.customerPhone;
+    if (!this.currentCustomer) return;
+    this.rentalForm.patchValue({ customerName: `${this.currentCustomer.firstName} ${this.currentCustomer.lastName}`.trim(), customerEmail: this.currentCustomer.email, customerPhone: this.currentCustomer.phone || this.rentalForm.value.customerPhone });
   }
 
   loadBookingExtras(): void {
@@ -117,27 +121,22 @@ export class RentalComponent implements OnInit {
   }
 
   onPickupDateChange(): void {
-    if (!this.pickupDate) {
-      this.returnDate = '';
+    if (!this.rentalForm.value.pickupDate) {
+      this.rentalForm.patchValue({ returnDate: '' });
       this.calculatePrice();
       return;
     }
-
-    if (!this.returnDate || new Date(this.returnDate) < new Date(this.pickupDate)) {
-      this.returnDate = this.pickupDate;
-      this.durationPreset = '1';
-      this.customRentalDays = undefined;
+    if (!this.rentalForm.value.returnDate || new Date(this.rentalForm.value.returnDate) < new Date(this.rentalForm.value.pickupDate)) {
+      this.rentalForm.patchValue({ returnDate: this.rentalForm.value.pickupDate, durationPreset: '1', customRentalDays: 1 });
     }
-
     this.applyDurationToReturnDate(false);
     this.calculatePrice();
   }
 
   onReturnDateChange(): void {
-    if (this.pickupDate && this.returnDate && new Date(this.returnDate) < new Date(this.pickupDate)) {
-      this.returnDate = this.pickupDate;
+    if (this.rentalForm.value.pickupDate && this.rentalForm.value.returnDate && new Date(this.rentalForm.value.returnDate) < new Date(this.rentalForm.value.pickupDate)) {
+      this.rentalForm.patchValue({ returnDate: this.rentalForm.value.pickupDate });
     }
-
     this.syncDurationFromDates();
     this.calculatePrice();
   }
@@ -148,19 +147,14 @@ export class RentalComponent implements OnInit {
   }
 
   onCustomRentalDaysChange(): void {
-    if (this.durationPreset !== 'custom') {
-      return;
-    }
-
+    if (this.rentalForm.value.durationPreset !== 'custom') return;
     this.applyDurationToReturnDate(true);
     this.calculatePrice();
   }
 
   onExtraToggle(extra: BookingExtraSelection): void {
     extra.selected = !extra.selected;
-    if (!extra.quantity || extra.quantity < 1) {
-      extra.quantity = 1;
-    }
+    if (!extra.quantity || extra.quantity < 1) extra.quantity = 1;
     this.calculatePrice();
   }
 
@@ -170,27 +164,19 @@ export class RentalComponent implements OnInit {
   }
 
   confirmBooking(): void {
+    this.rentalForm.markAllAsTouched();
     this.calculatePrice();
-
-    if (!this.rental) {
-      this.toastrService.error('Select valid pickup and return dates before confirming.', 'Invalid booking');
+    if (this.rentalForm.invalid || !this.rental) {
+      this.toastrService.error('Complete the required booking fields before confirming.', 'Invalid booking');
       return;
     }
-
-    if (!this.customerName || !this.customerEmail) {
-      this.toastrService.error('Customer name and email are required.', 'Missing customer details');
-      return;
-    }
-
     this.rentalService.isRentable(this.rental).subscribe((response) => {
       this.rentable = response.success;
       this.availabilityMessage = response.message;
-
       if (!this.rentable) {
         this.toastrService.error(response.message, 'Unavailable');
         return;
       }
-
       this.rentalService.addRental(this.rental).subscribe((saveResponse) => {
         this.confirmedBooking = this.rental;
         this.bookingConfirmed = true;
@@ -201,40 +187,29 @@ export class RentalComponent implements OnInit {
   }
 
   calculatePrice(): void {
+    this.syncFormFields();
     if (!this.car || !this.pickupDate || !this.returnDate) {
-      this.vehicleSubtotal = 0;
-      this.extrasTotal = 0;
-      this.rentPrice = 0;
-      this.rentalDays = 0;
+      this.vehicleSubtotal = this.extrasTotal = this.rentPrice = this.rentalDays = 0;
       this.rental = undefined;
       this.rentable = true;
       this.availabilityMessage = 'Select valid pickup and return dates to check availability.';
       return;
     }
-
     const days = this.pricingService.calculateRentalDays(this.pickupDate, this.returnDate);
-
     if (days <= 0) {
-      this.vehicleSubtotal = 0;
-      this.extrasTotal = 0;
-      this.rentPrice = 0;
-      this.rentalDays = 0;
+      this.vehicleSubtotal = this.extrasTotal = this.rentPrice = this.rentalDays = 0;
       this.rental = undefined;
       this.rentable = false;
       this.availabilityMessage = 'Return date must be the same day or after pickup date.';
       return;
     }
-
     this.rentalDays = days;
-    this.bookingExtras = this.bookingExtras.map((extra) => ({
-      ...extra,
-      totalPrice: extra.selected ? this.pricingService.calculateExtraTotal(extra, days) : 0,
-    }));
-    const selectedExtras = this.bookingExtras.filter((extra) => extra.selected);
+    this.bookingExtras = this.bookingExtras.map((extra) => ({ ...extra, totalPrice: extra.selected ? this.pricingService.calculateExtraTotal(extra, days) : 0 }));
+    const selectedExtras = this.selectedExtras;
     this.vehicleSubtotal = this.pricingService.calculateVehicleSubtotal(this.car.dailyPrice, days);
     this.extrasTotal = this.pricingService.calculateExtrasSubtotal(selectedExtras, days);
     this.rentPrice = this.vehicleSubtotal + this.extrasTotal;
-
+    const formValue = this.rentalForm.value;
     this.rental = {
       carId: this.car.carId,
       carName: this.car.carName,
@@ -252,15 +227,14 @@ export class RentalComponent implements OnInit {
       totalRentPrice: this.rentPrice,
       selectedExtras,
       customerId: this.currentCustomer?.customerId,
-      customerName: this.customerName,
-      customerEmail: this.customerEmail,
-      customerPhone: this.customerPhone,
+      customerName: formValue.customerName,
+      customerEmail: formValue.customerEmail,
+      customerPhone: formValue.customerPhone,
       pickupLocation: this.pickupLocation,
       pickupLocationId: this.pickupLocationId,
       airportTerminal: this.airportTerminal,
       status: 'Pending',
     };
-
     this.rentalService.isRentable(this.rental).subscribe((response) => {
       this.rentable = response.success;
       this.availabilityMessage = response.message;
@@ -269,10 +243,7 @@ export class RentalComponent implements OnInit {
 
   copyBookingReference(): void {
     const reference = this.confirmedBooking?.bookingReference;
-    if (!reference) {
-      return;
-    }
-
+    if (!reference) return;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(reference).then(() => {
         this.copiedReference = true;
@@ -280,88 +251,21 @@ export class RentalComponent implements OnInit {
       });
       return;
     }
-
     this.copiedReference = true;
   }
 
   goToCars(): void { this.router.navigate(['/cars']); }
   goToBookingLookup(): void { this.router.navigate(['/booking-lookup']); }
-  goToPayment(): void {
-    const reference = this.confirmedBooking?.bookingReference;
-    if (reference) {
-      this.router.navigate(['/payment', reference]);
-    }
-  }
+  goToPayment(): void { const reference = this.confirmedBooking?.bookingReference; if (reference) this.router.navigate(['/payment', reference]); }
   goToRegister(): void { this.router.navigate(['/register'], { queryParams: { returnUrl: this.router.url } }); }
-
-  get selectedExtras(): BookingExtraSelection[] { return this.bookingExtras.filter((extra) => extra.selected); }
-
-  get selectedExtrasCount(): number { return this.selectedExtras.length; }
-
-  get groupedBookingExtras(): { category: string; extras: BookingExtraSelection[] }[] {
-    const groups: { [category: string]: BookingExtraSelection[] } = {};
-    this.bookingExtras.forEach((extra) => {
-      const category = extra.category || 'Other';
-      groups[category] = groups[category] || [];
-      groups[category].push(extra);
-    });
-
-    const preferredOrder = ['Insurance', 'Pickup', 'Driver', 'Equipment', 'Support', 'Fuel', 'Other'];
-    const rank = (category: string) => {
-      const index = preferredOrder.indexOf(category);
-      return index === -1 ? preferredOrder.length : index;
-    };
-
-    return Object.keys(groups)
-      .sort((left, right) => rank(left) - rank(right))
-      .map((category) => ({ category, extras: groups[category] }));
-  }
-
-  toggleExtraCategory(category: string): void {
-    this.collapsedExtraCategories[category] = !this.collapsedExtraCategories[category];
-  }
-
-  isExtraCategoryCollapsed(category: string): boolean {
-    return !!this.collapsedExtraCategories[category];
-  }
-
-  getExtraCategoryLabel(category: string): string {
-    const labels: { [category: string]: string } = {
-      Insurance: 'Insurance cover',
-      Pickup: 'Airport and pickup',
-      Driver: 'Driver options',
-      Equipment: 'Equipment',
-      Support: 'Support',
-      Fuel: 'Fuel options',
-      Other: 'Other services',
-    };
-    return labels[category] || category;
-  }
-
-  getExtraCategoryHint(category: string): string {
-    const hints: { [category: string]: string } = {
-      Insurance: 'Reduce excess and protect the rental.',
-      Pickup: 'London branch and airport terminal services.',
-      Driver: 'Add permitted drivers to the booking.',
-      Equipment: 'Navigation and passenger equipment.',
-      Support: 'Roadside and journey assistance.',
-      Fuel: 'Fuel options for easier return.',
-      Other: 'Additional demo services.',
-    };
-    return hints[category] || 'Optional booking add-ons.';
-  }
-
-  scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
 
   getVehicleCategory(car: Car): string {
     const text = `${car.carName} ${car.description}`.toLowerCase();
-    if (text.includes('electric') || text.includes('ev')) { return 'Electric'; }
-    if (text.includes('suv') || text.includes('crossover') || text.includes('qashqai') || text.includes('sportage')) { return 'SUV'; }
-    if (text.includes('estate') || text.includes('touring')) { return 'Estate'; }
-    if (text.includes('hatch') || text.includes('golf') || text.includes('focus')) { return 'Hatchback'; }
-    if (text.includes('premium') || text.includes('executive') || text.includes('mercedes') || text.includes('bmw') || text.includes('audi')) { return 'Premium'; }
+    if (text.includes('electric') || text.includes('ev')) return 'Electric';
+    if (text.includes('suv') || text.includes('crossover') || text.includes('qashqai') || text.includes('sportage')) return 'SUV';
+    if (text.includes('estate') || text.includes('touring')) return 'Estate';
+    if (text.includes('hatch') || text.includes('golf') || text.includes('focus')) return 'Hatchback';
+    if (text.includes('premium') || text.includes('executive') || text.includes('mercedes') || text.includes('bmw') || text.includes('audi')) return 'Premium';
     return 'Saloon';
   }
 
@@ -385,14 +289,21 @@ export class RentalComponent implements OnInit {
     target.src = this.buildFallbackImage(car);
   }
 
-  private syncPickupLocation(): void {
-    const selected = this.pickupLocations.find((location) => location.id === this.pickupLocationId) || this.pickupLocations[0];
-    if (!selected) { return; }
+  private syncFormFields(): void {
+    const formValue = this.rentalForm.value;
+    this.pickupDate = formValue.pickupDate || '';
+    this.returnDate = formValue.returnDate || '';
+    this.pickupLocationId = formValue.pickupLocationId || 'central-london';
+  }
 
+  private syncPickupLocation(): void {
+    this.syncFormFields();
+    const selected = this.pickupLocations.find((location) => location.id === this.pickupLocationId) || this.pickupLocations[0];
+    if (!selected) return;
     this.pickupLocationId = selected.id;
     this.pickupLocation = selected.label;
+    this.rentalForm.patchValue({ pickupLocationId: selected.id }, { emitEvent: false });
     this.airportTerminal = selected.type === 'Airport' ? selected.label : '';
-
     const airportExtra = this.bookingExtras.find((extra) => extra.category === 'Pickup');
     if (airportExtra) {
       airportExtra.selected = selected.type === 'Airport';
@@ -402,28 +313,26 @@ export class RentalComponent implements OnInit {
   }
 
   private applyDurationToReturnDate(forceUpdate: boolean): void {
-    if (!this.pickupDate) { return; }
+    const pickupDate = this.rentalForm.value.pickupDate;
+    if (!pickupDate) return;
     const days = this.getSelectedDurationDays();
-    if (!days || days < 1) { return; }
-    if (!forceUpdate && this.returnDate && new Date(this.returnDate) >= new Date(this.pickupDate)) { return; }
-    this.returnDate = this.addDays(this.pickupDate, days - 1);
+    if (!days || days < 1) return;
+    if (!forceUpdate && this.rentalForm.value.returnDate && new Date(this.rentalForm.value.returnDate) >= new Date(pickupDate)) return;
+    this.rentalForm.patchValue({ returnDate: this.addDays(pickupDate, days - 1) });
   }
 
   private syncDurationFromDates(): void {
-    if (!this.pickupDate || !this.returnDate) { return; }
-    const days = this.daysBetweenInclusive(this.pickupDate, this.returnDate);
-    if (days < 1) { return; }
+    const pickupDate = this.rentalForm.value.pickupDate;
+    const returnDate = this.rentalForm.value.returnDate;
+    if (!pickupDate || !returnDate) return;
+    const days = this.pricingService.calculateRentalDays(pickupDate, returnDate);
+    if (days < 1) return;
     const presetValues = this.durationOptions.filter((option) => option.value !== 'custom').map((option) => option.value);
-    this.durationPreset = presetValues.includes(String(days)) ? String(days) : 'custom';
-    this.customRentalDays = this.durationPreset === 'custom' ? days : undefined;
+    this.rentalForm.patchValue({ durationPreset: presetValues.includes(String(days)) ? String(days) : 'custom', customRentalDays: presetValues.includes(String(days)) ? 1 : days }, { emitEvent: false });
   }
 
   private getSelectedDurationDays(): number {
-    return this.durationPreset === 'custom' ? Math.max(1, Number(this.customRentalDays || 1)) : Number(this.durationPreset || 1);
-  }
-
-  private daysBetweenInclusive(startDate: string, endDate: string): number {
-    return this.pricingService.calculateRentalDays(startDate, endDate);
+    return this.rentalForm.value.durationPreset === 'custom' ? Math.max(1, Number(this.rentalForm.value.customRentalDays || 1)) : Number(this.rentalForm.value.durationPreset || 1);
   }
 
   private addDays(dateValue: string, daysToAdd: number): string {
@@ -434,7 +343,7 @@ export class RentalComponent implements OnInit {
 
   private buildFallbackImage(car: Car): string {
     const label = `${car.colorName || ''} ${car.brandName || ''} ${car.carName || 'Vehicle'}`.trim();
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720"><rect width="1200" height="720" fill="#e2e8f0"/><rect x="170" y="330" width="860" height="150" rx="55" fill="#0f172a" opacity="0.9"/><circle cx="360" cy="500" r="62" fill="#f8fafc"/><circle cx="840" cy="500" r="62" fill="#f8fafc"/><text x="600" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="54" font-weight="800" fill="#0f172a">Image unavailable</text><text x="600" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#334155">${label}</text></svg>`;
+    const svg = `Image unavailable${label}`;
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
   }
 }

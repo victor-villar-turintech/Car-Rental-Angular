@@ -1,26 +1,33 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminAuthService } from 'src/app/services/admin-auth.service';
 
-@Component({
-  selector: 'app-admin-login',
-  templateUrl: './admin-login.component.html',
-  styleUrls: ['./admin-login.component.css'],
-})
+@Component({ selector: 'app-admin-login', templateUrl: './admin-login.component.html', styleUrls: ['./admin-login.component.css'] })
 export class AdminLoginComponent {
-  username = 'admin';
-  password = '';
+  adminLoginForm: FormGroup;
 
-  constructor(public adminAuthService: AdminAuthService, private router: Router, private toastrService: ToastrService) {}
+  constructor(public adminAuthService: AdminAuthService, private fb: FormBuilder, private router: Router, private toastrService: ToastrService) {
+    this.adminLoginForm = this.fb.group({
+      username: [this.adminAuthService.demoUsername, [Validators.required]],
+      password: ['', [Validators.required]],
+    });
+  }
+
+  get f() { return this.adminLoginForm.controls; }
 
   login(): void {
-    this.adminAuthService.login(this.username, this.password).subscribe((response) => {
+    if (this.adminLoginForm.invalid) {
+      this.adminLoginForm.markAllAsTouched();
+      return;
+    }
+    const value = this.adminLoginForm.value;
+    this.adminAuthService.login(value.username, value.password).subscribe((response) => {
       if (!response.success) {
         this.toastrService.error(response.message, 'Admin login failed');
         return;
       }
-
       this.toastrService.success(response.message, 'Admin');
       this.router.navigate(['/admin/dashboard']);
     });

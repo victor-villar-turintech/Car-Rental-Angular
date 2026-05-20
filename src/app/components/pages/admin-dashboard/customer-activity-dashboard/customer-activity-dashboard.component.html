@@ -1,0 +1,5 @@
+<section class="admin-page">
+  <div class="admin-page-header"><div><span class="eyebrow">Customer intelligence</span><h1>Customer activity</h1><p>Customer-facing events captured in localStorage for CRM-style auditing.</p></div></div>
+  <input class="form-control search-box" placeholder="Filter by email, activity, booking or text" [(ngModel)]="searchText">
+  <div class="activity-list"><article *ngFor="let item of filteredActivity" class="activity-card"><div><strong>{{ item.activityType }}</strong><p>{{ item.message }}</p><small>{{ item.customerEmail }} · {{ item.createdAt | date:'medium' }}</small></div><code *ngIf="item.entityReference">{{ item.entityReference }}</code></article><div class="empty-state" *ngIf="filteredActivity.length === 0">No customer activity yet.</div></div>
+</section>

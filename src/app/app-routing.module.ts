@@ -34,6 +34,12 @@ import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
 import { PaymentCheckoutComponent } from './components/payment/payment-checkout/payment-checkout.component';
 import { BookingConfirmationComponent } from './components/booking-confirmation/booking-confirmation.component';
+import { CustomerActivityComponent } from './components/account/customer-activity/customer-activity.component';
+import { CustomerRewardsComponent } from './components/account/customer-rewards/customer-rewards.component';
+import { AdminDiscountsDashboardComponent } from './components/pages/admin-dashboard/discounts-dashboard/discounts-dashboard.component';
+import { AdminRewardsDashboardComponent } from './components/pages/admin-dashboard/rewards-dashboard/rewards-dashboard.component';
+import { AdminCustomerActivityDashboardComponent } from './components/pages/admin-dashboard/customer-activity-dashboard/customer-activity-dashboard.component';
+import { AdminCustomersDashboardComponent } from './components/pages/admin-dashboard/customers-dashboard/customers-dashboard.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
@@ -56,6 +62,8 @@ const routes: Routes = [
   { path: 'register', component: LocalRegisterComponent },
   { path: 'account', component: CustomerAccountComponent, canActivate: [CustomerAuthGuard] },
   { path: 'account/bookings', component: CustomerBookingsComponent, canActivate: [CustomerAuthGuard] },
+  { path: 'account/rewards', component: CustomerRewardsComponent, canActivate: [CustomerAuthGuard] },
+  { path: 'account/activity', component: CustomerActivityComponent, canActivate: [CustomerAuthGuard] },
   { path: 'admin/login', component: AdminLoginComponent },
   { path: 'user', component: UserComponent, children: [{ path: 'edituser', component: UsereditComponent }] },
   {
@@ -79,6 +87,10 @@ const routes: Routes = [
       { path: 'payments', component: AdminPaymentsComponent },
       { path: 'activity', component: AdminActivityDashboardComponent },
       { path: 'settings', component: AdminSettingsDashboardComponent },
+      { path: 'customers', component: AdminCustomersDashboardComponent },
+      { path: 'customer-activity', component: AdminCustomerActivityDashboardComponent },
+      { path: 'rewards', component: AdminRewardsDashboardComponent },
+      { path: 'discounts', component: AdminDiscountsDashboardComponent },
     ],
   },
   { path: '**', redirectTo: 'home' },

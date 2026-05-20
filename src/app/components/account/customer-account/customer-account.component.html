@@ -3,10 +3,12 @@
     <div>
       <span>Customer account</span>
       <h1>My account</h1>
-      <p>Manage your local demo customer profile and view bookings linked to your email.</p>
+      <p>Manage your local demo customer profile, rewards, activity and bookings.</p>
     </div>
     <div class="account-actions">
       <a class="btn btn-outline-primary" routerLink="/account/bookings">My bookings</a>
+      <a class="btn btn-outline-primary" routerLink="/account/rewards">Rewards</a>
+      <a class="btn btn-outline-primary" routerLink="/account/activity">Activity</a>
       <button class="btn btn-outline-danger" type="button" (click)="logout()">Sign out</button>
     </div>
   </div>
@@ -15,22 +17,11 @@
     <article class="account-card">
       <h2>Profile</h2>
       <div class="two-cols">
-        <div>
-          <label for="firstName">First name</label>
-          <input id="firstName" class="form-control" type="text" [(ngModel)]="firstName" />
-        </div>
-        <div>
-          <label for="lastName">Last name</label>
-          <input id="lastName" class="form-control" type="text" [(ngModel)]="lastName" />
-        </div>
+        <div><label for="firstName">First name</label><input id="firstName" class="form-control" type="text" [(ngModel)]="firstName" /></div>
+        <div><label for="lastName">Last name</label><input id="lastName" class="form-control" type="text" [(ngModel)]="lastName" /></div>
       </div>
-
-      <label>Email</label>
-      <input class="form-control" type="email" [value]="customer.email" disabled />
-
-      <label for="phone">Phone</label>
-      <input id="phone" class="form-control" type="text" [(ngModel)]="phone" />
-
+      <label>Email</label><input class="form-control" type="email" [value]="customer.email" disabled />
+      <label for="phone">Phone</label><input id="phone" class="form-control" type="text" [(ngModel)]="phone" />
       <button class="btn btn-primary" type="button" (click)="save()">Save profile</button>
     </article>
 
@@ -39,6 +30,7 @@
       <div><span>Customer ID</span><strong>{{ customer.customerId }}</strong></div>
       <div><span>Email</span><strong>{{ customer.email }}</strong></div>
       <div><span>Created</span><strong>{{ customer.createdAt | date:'mediumDate' }}</strong></div>
+      <div><span>Status</span><strong>{{ customer.isDisabled ? 'Disabled' : 'Active' }}</strong></div>
     </aside>
   </div>
 </section>

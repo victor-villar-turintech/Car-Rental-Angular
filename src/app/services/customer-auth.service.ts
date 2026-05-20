@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Customer, CustomerSession } from '../models/customer';
+import { ListResponseModel } from '../models/listResponseModel';
 import { ResponseModel } from '../models/responseModel';
+import { CustomerActivityService } from './customer-activity.service';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerAuthService {
   private readonly customersKey = 'rent-a-car-demo-customers';
   private readonly sessionKey = 'rent-a-car-demo-customer-session';
   private customers: Customer[] = this.loadCustomers();
+
+  constructor(private customerActivityService: CustomerActivityService) {}
 
   register(customer: Omit<Customer, 'customerId' | 'createdAt'>): Observable<ResponseModel> {
     const email = this.normalise(customer.email);
@@ -20,6 +24,7 @@ export class CustomerAuthService {
     const savedCustomer: Customer = {
       ...customer,
       email,
+      isDisabled: false,
       customerId: Math.max(...this.customers.map((item) => item.customerId || 0), 0) + 1,
       createdAt: now,
       updatedAt: now,
@@ -28,6 +33,7 @@ export class CustomerAuthService {
     this.customers = [...this.customers, savedCustomer];
     this.saveCustomers();
     this.setSession(savedCustomer);
+    this.customerActivityService.record(email, 'Registered', 'Customer registered a local demo account.', { customerId: savedCustomer.customerId });
     return of({ success: true, message: 'Account created and signed in locally.' });
   }
 
@@ -37,21 +43,58 @@ export class CustomerAuthService {
     if (!customer || customer.password !== password) {
       return of({ success: false, message: 'Invalid email or password.' });
     }
+    if (customer.isDisabled) {
+      return of({ success: false, message: 'This demo customer account is disabled.' });
+    }
 
     this.setSession(customer);
+    this.customerActivityService.record(customer.email, 'LoggedIn', 'Customer logged in.', { customerId: customer.customerId });
     return of({ success: true, message: 'Signed in locally.' });
   }
 
   logout(): void {
+    const session = this.getCurrentSession();
+    if (session) {
+      this.customerActivityService.record(session.email, 'LoggedOut', 'Customer logged out.', { customerId: session.customerId });
+    }
     localStorage.removeItem(this.sessionKey);
+  }
+
+  getCustomers(): Observable<ListResponseModel<Customer>> {
+    return of({ success: true, message: 'Customers loaded.', data: this.customers });
+  }
+
+  generateResetLink(email: string): Observable<ListResponseModel<Customer>> {
+    const normalised = this.normalise(email);
+    let updated: Customer | undefined;
+    const token = this.createResetToken(normalised);
+    this.customers = this.customers.map((customer) => {
+      if (this.normalise(customer.email) !== normalised) { return customer; }
+      updated = { ...customer, resetToken: token, resetTokenCreatedAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+      return updated;
+    });
+    this.saveCustomers();
+    if (updated) {
+      this.customerActivityService.record(normalised, 'PasswordResetRequested', `Admin generated a mock reset password link for ${normalised}.`, { customerId: updated.customerId, entityReference: token });
+    }
+    return of({ success: !!updated, message: updated ? 'Mock reset link generated.' : 'Customer not found.', data: updated ? [updated] : [] });
+  }
+
+  setCustomerDisabled(email: string, disabled: boolean): Observable<ResponseModel> {
+    const normalised = this.normalise(email);
+    let updated = false;
+    this.customers = this.customers.map((customer) => {
+      if (this.normalise(customer.email) !== normalised) { return customer; }
+      updated = true;
+      return { ...customer, isDisabled: disabled, updatedAt: new Date().toISOString() };
+    });
+    this.saveCustomers();
+    return of({ success: updated, message: updated ? `Customer ${disabled ? 'disabled' : 'enabled'}.` : 'Customer not found.' });
   }
 
   getCurrentSession(): CustomerSession | undefined {
     const raw = localStorage.getItem(this.sessionKey);
-    if (!raw) {
-      return undefined;
-    }
-
+    if (!raw) { return undefined; }
     try {
       return JSON.parse(raw) as CustomerSession;
     } catch {
@@ -62,10 +105,8 @@ export class CustomerAuthService {
 
   getCurrentCustomer(): Customer | undefined {
     const session = this.getCurrentSession();
-    if (!session) {
-      return undefined;
-    }
-    return this.customers.find((customer) => customer.customerId === session.customerId);
+    if (!session) { return undefined; }
+    return this.customers.find((customer) => customer.customerId === session.customerId && !customer.isDisabled);
   }
 
   isLoggedIn(): boolean {
@@ -88,6 +129,7 @@ export class CustomerAuthService {
     const updated = this.getCurrentCustomer();
     if (updated) {
       this.setSession(updated);
+      this.customerActivityService.record(updated.email, 'ProfileUpdated', 'Customer updated profile details.', { customerId: updated.customerId });
     }
 
     return of({ success: true, message: 'Account details updated locally.' });
@@ -104,12 +146,19 @@ export class CustomerAuthService {
     localStorage.setItem(this.sessionKey, JSON.stringify(session));
   }
 
+  private createResetToken(email: string): string {
+    const source = `${email}|${Date.now()}`;
+    let hash = 2166136261;
+    for (let index = 0; index < source.length; index++) {
+      hash ^= source.charCodeAt(index);
+      hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+    }
+    return `RST-${Math.abs(hash >>> 0).toString(36).toUpperCase().padStart(8, '0')}`;
+  }
+
   private loadCustomers(): Customer[] {
     const raw = localStorage.getItem(this.customersKey);
-    if (!raw) {
-      return [];
-    }
-
+    if (!raw) { return []; }
     try {
       const parsed = JSON.parse(raw);
       return Array.isArray(parsed) ? parsed : [];

@@ -1,53 +1,52 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerAuthService } from 'src/app/services/customer-auth.service';
 
-@Component({
-  selector: 'app-local-register',
-  templateUrl: './local-register.component.html',
-  styleUrls: ['./local-register.component.css'],
-})
+@Component({ selector: 'app-local-register', templateUrl: './local-register.component.html', styleUrls: ['./local-register.component.css'] })
 export class LocalRegisterComponent {
-  firstName = '';
-  lastName = '';
-  email = '';
-  phone = '';
-  password = '';
-  confirmPassword = '';
+  registerForm: FormGroup;
+  returnUrl = '/account';
 
-  constructor(private authService: CustomerAuthService, private router: Router, private toastrService: ToastrService) {}
+  constructor(private fb: FormBuilder, private authService: CustomerAuthService, private router: Router, private route: ActivatedRoute, private toastrService: ToastrService) {
+    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/account';
+    this.registerForm = this.fb.group({
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.pattern(/^[0-9 +()-]{7,20}$/)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
+    }, { validators: this.passwordsMatch });
+  }
+
+  get f() { return this.registerForm.controls; }
 
   register(): void {
-    if (!this.firstName || !this.lastName || !this.email || !this.password) {
-      this.toastrService.error('First name, last name, email and password are required.', 'Missing details');
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      this.toastrService.error('Please correct the highlighted fields.', 'Create account');
       return;
     }
-
-    if (this.password.length < 6) {
-      this.toastrService.error('Use at least 6 characters for this demo password.', 'Password too short');
-      return;
-    }
-
-    if (this.password !== this.confirmPassword) {
-      this.toastrService.error('Password confirmation does not match.', 'Check password');
-      return;
-    }
-
-    this.authService.register({
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      phone: this.phone,
-      password: this.password,
-    }).subscribe((response) => {
+    const value = this.registerForm.value;
+    this.authService.register({ firstName: value.firstName, lastName: value.lastName, email: value.email, phone: value.phone, password: value.password }).subscribe((response) => {
       if (!response.success) {
         this.toastrService.error(response.message, 'Registration failed');
         return;
       }
-
       this.toastrService.success(response.message, 'Account created');
-      this.router.navigate(['/account']);
+      this.router.navigateByUrl(this.returnUrl);
     });
+  }
+
+  private passwordsMatch(group: AbstractControl): { [key: string]: boolean } | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    if (!password || !confirmPassword || password === confirmPassword) {
+      return null;
+    }
+    group.get('confirmPassword')?.setErrors({ mismatch: true });
+    return { mismatch: true };
   }
 }

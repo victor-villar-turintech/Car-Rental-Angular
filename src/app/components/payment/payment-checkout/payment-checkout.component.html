@@ -1,76 +1,16 @@
-<section class="payment-page container" *ngIf="booking; else missingBooking">
+<section class="payment-page" *ngIf="booking; else missingBooking">
   <a class="back-link" [routerLink]="['/car/rental', booking.carId]">← Back to booking</a>
-
   <div class="payment-grid">
-    <article class="payment-card">
-      <span>Mock checkout</span>
-      <h1>Complete payment</h1>
-      <p>No real payment provider is used. This stores a local demo payment record only.</p>
-
-      <div class="method-tabs">
-        <button type="button" [ngClass]="method === 'Card' ? 'active' : ''" (click)="selectMethod('Card')">Credit / debit card</button>
-        <button type="button" [ngClass]="method === 'PayPal' ? 'active' : ''" (click)="selectMethod('PayPal')">PayPal</button>
-        <button type="button" [ngClass]="method === 'ApplePay' ? 'active' : ''" (click)="selectMethod('ApplePay')">Apple Pay</button>
-      </div>
-
-      <section *ngIf="method === 'Card'" class="card-form">
-        <label for="cardholderName">Cardholder name</label>
-        <input id="cardholderName" class="form-control" type="text" [(ngModel)]="cardholderName" />
-
-        <label for="cardNumber">Card number</label>
-        <input id="cardNumber" class="form-control" type="text" maxlength="19" placeholder="4242 4242 4242 4242" [(ngModel)]="cardNumber" />
-
-        <div class="card-row">
-          <div>
-            <label for="expiryMonth">Expiry month</label>
-            <input id="expiryMonth" class="form-control" type="number" min="1" max="12" placeholder="12" [(ngModel)]="expiryMonth" />
-          </div>
-          <div>
-            <label for="expiryYear">Expiry year</label>
-            <input id="expiryYear" class="form-control" type="number" min="2026" placeholder="2028" [(ngModel)]="expiryYear" />
-          </div>
-          <div>
-            <label for="cvc">CVC</label>
-            <input id="cvc" class="form-control" type="text" maxlength="4" placeholder="123" [(ngModel)]="cvc" />
-          </div>
-        </div>
-
-        <label for="billingPostcode">Billing postcode</label>
-        <input id="billingPostcode" class="form-control" type="text" placeholder="SW1A 1AA" [(ngModel)]="billingPostcode" />
-      </section>
-
-      <section *ngIf="method === 'PayPal'" class="wallet-panel">
-        <h2>PayPal demo</h2>
-        <p>Click confirm to simulate a successful PayPal payment for this local booking.</p>
-      </section>
-
-      <section *ngIf="method === 'ApplePay'" class="wallet-panel">
-        <h2>Apple Pay demo</h2>
-        <p>Click confirm to simulate a successful Apple Pay payment for this local booking.</p>
-      </section>
-
-      <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
-      <button class="btn btn-success btn-block" type="button" [disabled]="processing" (click)="pay()">
-        {{ processing ? 'Processing...' : ('Pay ' + (booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0')) }}
-      </button>
-    </article>
-
-    <aside class="summary-card">
-      <span>Booking summary</span>
-      <h2>{{ booking.brandName }} {{ booking.carName }}</h2>
-      <div><small>Reference</small><strong>{{ booking.bookingReference }}</strong></div>
-      <div><small>Customer</small><strong>{{ booking.customerName }}</strong></div>
-      <div><small>Dates</small><strong>{{ booking.rentDate | date:'mediumDate' }} → {{ booking.returnDate | date:'mediumDate' }}</strong></div>
-      <div><small>Pickup</small><strong>{{ booking.pickupLocation }}</strong></div>
-      <div><small>Vehicle</small><strong>{{ booking.vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-      <div><small>Extras</small><strong>{{ booking.extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-      <div class="total"><small>Total due</small><strong>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-    </aside>
+    <form class="payment-card" [formGroup]="paymentForm" (ngSubmit)="pay()" novalidate>
+      <span class="eyebrow">Mock checkout</span><h1>Complete payment</h1><p>No real payment provider is used. This stores a local demo payment record only.</p>
+      <div class="method-tabs"><button type="button" [class.active]="method === 'Card'" (click)="selectMethod('Card')">Credit / debit card</button><button type="button" [class.active]="method === 'PayPal'" (click)="selectMethod('PayPal')">PayPal</button><button type="button" [class.active]="method === 'ApplePay'" (click)="selectMethod('ApplePay')">Apple Pay</button></div>
+      <div class="discount-panel"><h2>Discounts and rewards</h2><label for="discountCode">Discount code</label><div class="inline-control"><input id="discountCode" class="form-control" formControlName="discountCode" placeholder="WELCOME10"><button class="btn btn-outline-primary" type="button" (click)="applyDiscountCode()">Apply</button></div><small *ngIf="appliedDiscount">{{ appliedDiscount.description }} — saving {{ discountAmount | currency:'GBP':'symbol':'1.0-0' }}</small><label for="rewardPointsToRedeem">Reward points</label><div class="inline-control"><input id="rewardPointsToRedeem" class="form-control" type="number" min="0" step="500" formControlName="rewardPointsToRedeem" [placeholder]="rewardPointsBalance + ' available'"><button class="btn btn-outline-primary" type="button" (click)="redeemRewards()">Redeem</button></div><small>{{ rewardPointsBalance }} points available. 500 points = £10 discount.</small></div>
+      <app-validation-summary [form]="paymentForm" [customErrors]="errorMessage ? [errorMessage] : []"></app-validation-summary>
+      <div *ngIf="method === 'Card'" class="card-fields"><label for="cardholderName">Cardholder name</label><input id="cardholderName" class="form-control" formControlName="cardholderName" autocomplete="cc-name"><app-form-error [control]="f.cardholderName" label="Cardholder name"></app-form-error><label for="cardNumber">Card number</label><input id="cardNumber" class="form-control" formControlName="cardNumber" inputmode="numeric" maxlength="16" placeholder="4242424242424242" autocomplete="cc-number"><app-form-error [control]="f.cardNumber" label="Card number"></app-form-error><div class="form-grid"><div><label for="expiryMonth">Expiry month</label><input id="expiryMonth" class="form-control" formControlName="expiryMonth" inputmode="numeric" placeholder="12"><app-form-error [control]="f.expiryMonth" label="Expiry month"></app-form-error></div><div><label for="expiryYear">Expiry year</label><input id="expiryYear" class="form-control" formControlName="expiryYear" inputmode="numeric" placeholder="2028"><app-form-error [control]="f.expiryYear" label="Expiry year"></app-form-error></div><div><label for="cvc">CVC</label><input id="cvc" class="form-control" formControlName="cvc" inputmode="numeric" maxlength="4" placeholder="123"><app-form-error [control]="f.cvc" label="CVC"></app-form-error></div></div><label for="billingPostcode">Billing postcode</label><input id="billingPostcode" class="form-control" formControlName="billingPostcode"><app-form-error [control]="f.billingPostcode" label="Billing postcode"></app-form-error></div>
+      <div class="wallet-panel" *ngIf="method === 'PayPal'"><h2>PayPal demo</h2><p>Click confirm to simulate a successful PayPal payment for this local booking.</p></div><div class="wallet-panel" *ngIf="method === 'ApplePay'"><h2>Apple Pay demo</h2><p>Click confirm to simulate a successful Apple Pay payment for this local booking.</p></div>
+      <button class="btn btn-primary w-100 mt-3" type="submit" [disabled]="processing">{{ processing ? 'Processing...' : ('Pay ' + (finalTotal | currency:'GBP':'symbol':'1.0-0')) }}</button>
+    </form>
+    <aside class="summary-card"><span class="eyebrow">Booking summary</span><h2>{{ booking.brandName }} {{ booking.carName }}</h2><dl><div><dt>Reference</dt><dd>{{ booking.bookingReference }}</dd></div><div><dt>Customer</dt><dd>{{ booking.customerName }}</dd></div><div><dt>Dates</dt><dd>{{ booking.rentDate | date:'mediumDate' }} → {{ booking.returnDate | date:'mediumDate' }}</dd></div><div><dt>Pickup</dt><dd>{{ booking.pickupLocation }}</dd></div></dl><app-price-breakdown [dailyPrice]="booking.dailyPrice" [rentalDays]="booking.rentalDays" [vehicleSubtotal]="booking.vehicleSubtotal" [extrasSubtotal]="booking.extrasTotal" [total]="grossTotal" [extras]="booking.selectedExtras || []"></app-price-breakdown><div class="discount-summary" *ngIf="discountAmount || rewardDiscountAmount"><div *ngIf="discountAmount"><span>Discount</span><strong>-{{ discountAmount | currency:'GBP':'symbol':'1.0-0' }}</strong></div><div *ngIf="rewardDiscountAmount"><span>Rewards</span><strong>-{{ rewardDiscountAmount | currency:'GBP':'symbol':'1.0-0' }}</strong></div><div class="final-total"><span>Final total</span><strong>{{ finalTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div></div></aside>
   </div>
 </section>
-
-<ng-template #missingBooking>
-  <section class="payment-page container">
-    <div class="payment-card"><h1>Booking not found</h1><p>{{ errorMessage || 'Unable to load this booking.' }}</p><a class="btn btn-primary" routerLink="/booking-lookup">Booking lookup</a></div>
-  </section>
-</ng-template>
+<ng-template #missingBooking><section class="payment-page"><div class="missing-card"><h1>Booking not found</h1><p>{{ errorMessage || 'Unable to load this booking.' }}</p><a class="btn btn-primary" routerLink="/booking-lookup">Booking lookup</a></div></section></ng-template>

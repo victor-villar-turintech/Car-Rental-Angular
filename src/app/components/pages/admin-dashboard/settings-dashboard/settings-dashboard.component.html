@@ -1,0 +1,24 @@
+<section class="admin-page settings-page">
+  <div class="page-heading">
+    <span class="eyebrow">Demo controls</span>
+    <h1>Admin settings</h1>
+    <p>Reset localStorage-backed demo data without changing the source code or needing a backend.</p>
+  </div>
+
+  <div class="quick-actions">
+    <button class="btn btn-primary" type="button" (click)="restoreDemoExtras()">Restore demo extras</button>
+    <button class="btn btn-outline-warning" type="button" (click)="resetBookingsAndPayments()">Reset bookings + payments</button>
+    <button class="btn btn-outline-danger" type="button" (click)="resetEverything()">Reset everything</button>
+  </div>
+
+  <div class="settings-grid">
+    <article class="setting-card" *ngFor="let target of targets">
+      <div>
+        <strong>{{ target.label }}</strong>
+        <p>{{ target.description }}</p>
+        <small>{{ target.key }}</small>
+      </div>
+      <button class="btn btn-sm btn-outline-danger" type="button" (click)="resetTarget(target)">Reset</button>
+    </article>
+  </div>
+</section>

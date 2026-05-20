@@ -6,6 +6,10 @@ export interface Payment {
   bookingReference: string;
   method: PaymentMethod;
   amount: number;
+  grossAmount?: number;
+  discountCode?: string;
+  discountAmount?: number;
+  rewardDiscountAmount?: number;
   currency: 'GBP';
   status: PaymentStatus;
   transactionReference: string;

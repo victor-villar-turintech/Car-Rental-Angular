@@ -1,21 +1,26 @@
 <section class="admin-login-page">
-  <div class="admin-login-card">
-    <span>Demo admin</span>
+  <form class="admin-login-card" [formGroup]="adminLoginForm" (ngSubmit)="login()" novalidate>
+    <span class="eyebrow">Demo admin</span>
     <h1>Admin sign in</h1>
     <p>Admin pages are protected with a local demo guard. Credentials are intentionally visible for this front-end demo.</p>
 
-    <div class="credential-box">
-      <div><small>Username</small><strong>{{ adminAuthService.demoUsername }}</strong></div>
-      <div><small>Password</small><strong>{{ adminAuthService.demoPassword }}</strong></div>
+    <div class="demo-credentials">
+      <strong>Demo credentials</strong>
+      <span>Username: <code>{{ adminAuthService.demoUsername }}</code></span>
+      <span>Password: <code>{{ adminAuthService.demoPassword }}</code></span>
     </div>
 
-    <label for="adminUsername">Username</label>
-    <input id="adminUsername" class="form-control" type="text" [(ngModel)]="username" />
+    <app-validation-summary [form]="adminLoginForm"></app-validation-summary>
 
-    <label for="adminPassword">Password</label>
-    <input id="adminPassword" class="form-control" type="password" [(ngModel)]="password" (keyup.enter)="login()" />
+    <label for="username">Username</label>
+    <input id="username" class="form-control" formControlName="username" autocomplete="username">
+    <app-form-error [control]="f.username" label="Username"></app-form-error>
 
-    <button class="btn btn-primary btn-block" type="button" (click)="login()">Open admin dashboard</button>
+    <label for="password">Password</label>
+    <input id="password" class="form-control" type="password" formControlName="password" autocomplete="current-password">
+    <app-form-error [control]="f.password" label="Password"></app-form-error>
+
+    <button class="btn btn-primary w-100 mt-3" type="submit">Open admin dashboard</button>
     <a class="back-link" routerLink="/home">← Back to public site</a>
-  </div>
+  </form>
 </section>

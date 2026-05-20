@@ -1,19 +1,25 @@
-<section class="admin-shell">
+<div class="admin-shell">
   <aside class="admin-sidebar">
     <div class="admin-brand">
       <span class="admin-kicker">Admin</span>
       <strong>Fleet management</strong>
-      <small>Protected control centre</small>
+      <small>Protected local demo console</small>
     </div>
 
     <nav class="admin-nav" aria-label="Admin navigation">
-      <a routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
-      <a routerLink="/admin/cars" routerLinkActive="active">Cars inventory</a>
-      <a routerLink="/admin/brands" routerLinkActive="active">Brands inventory</a>
-      <a routerLink="/admin/colors" routerLinkActive="active">Colours inventory</a>
-      <a routerLink="/admin/bookings" routerLinkActive="active">Bookings</a>
-      <a routerLink="/admin/extras" routerLinkActive="active">Extras</a>
-      <a routerLink="/admin/payments" routerLinkActive="active">Payments</a>
+      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard <span>›</span></a>
+      <a routerLink="/admin/cars" routerLinkActive="active">Cars inventory <span>›</span></a>
+      <a routerLink="/admin/brands" routerLinkActive="active">Brands inventory <span>›</span></a>
+      <a routerLink="/admin/colors" routerLinkActive="active">Colours inventory <span>›</span></a>
+      <a routerLink="/admin/bookings" routerLinkActive="active">Bookings <span>›</span></a>
+      <a routerLink="/admin/customers" routerLinkActive="active">Customers <span>›</span></a>
+      <a routerLink="/admin/customer-activity" routerLinkActive="active">Customer activity <span>›</span></a>
+      <a routerLink="/admin/rewards" routerLinkActive="active">Rewards <span>›</span></a>
+      <a routerLink="/admin/discounts" routerLinkActive="active">Discount codes <span>›</span></a>
+      <a routerLink="/admin/extras" routerLinkActive="active">Extras <span>›</span></a>
+      <a routerLink="/admin/payments" routerLinkActive="active">Payments <span>›</span></a>
+      <a routerLink="/admin/activity" routerLinkActive="active">Admin activity <span>›</span></a>
+      <a routerLink="/admin/settings" routerLinkActive="active">Demo settings <span>›</span></a>
     </nav>
 
     <div class="admin-sidebar-footer">
@@ -26,4 +32,4 @@
   <main class="admin-content">
     <router-outlet></router-outlet>
   </main>
-</section>
+</div>

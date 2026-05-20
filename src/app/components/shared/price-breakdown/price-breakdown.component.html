@@ -1,0 +1,8 @@
+<div class="shared-price-breakdown" [class.compact]="compact">
+  <div><span>Daily rate</span><strong>{{ dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+  <div><span>Rental days</span><strong>{{ rentalDays || 0 }}</strong></div>
+  <div><span>Vehicle subtotal</span><strong>{{ vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+  <div *ngIf="extras?.length"><span>Selected services</span><strong>{{ extras.length }}</strong></div>
+  <div><span>Extras subtotal</span><strong>{{ extrasSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+  <div class="total"><span>Total</span><strong>{{ total | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+</div>
