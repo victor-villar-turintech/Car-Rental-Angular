@@ -7,18 +7,54 @@ npm install
 npm start
 ```
 
-Open `http://localhost:4200` and replace the screenshot files in this folder with live captures from your browser.
+Open `http://localhost:4200` and refresh the screenshots referenced by the README.
 
 Recommended files:
 
-- `home.png` — `/home`
-- `catalogue.png` — `/cars`
-- `car-detail.png` — `/cars/1`
-- `booking-extras.png` — `/car/rental/1`
-- `payment.png` — `/payment/<bookingReference>` after creating a booking
-- `receipt.png` — `/booking-confirmation/<bookingReference>` after completing payment
-- `account.png` — `/account` after registering/logging in
-- `admin-dashboard.png` — `/admin/dashboard` after logging in with `admin` / `admin123`
-- `admin-cars.png` — `/admin/cars`
+```text
+docs/screenshots/home.png
+docs/screenshots/catalogue.png
+docs/screenshots/car-detail.png
+docs/screenshots/booking-extras.png
+docs/screenshots/payment.png
+docs/screenshots/receipt.png
+docs/screenshots/account.png
+docs/screenshots/customer-bookings.png
+docs/screenshots/admin-dashboard.png
+docs/screenshots/admin-cars.png
+docs/screenshots/admin-extras.png
+docs/screenshots/admin-payments.png
+```
 
-On macOS, use `Cmd + Shift + 5` to capture a selected browser window or area.
+Suggested routes:
+
+```text
+/home
+/cars
+/cars/1
+/car/rental/1
+/payment/<booking-reference>
+/booking-confirmation/<booking-reference>
+/account
+/account/bookings
+/admin/dashboard
+/admin/cars
+/admin/extras
+/admin/payments
+```
+
+Admin demo credentials:
+
+```text
+Username: admin
+Password: admin123
+```
+
+After replacing screenshots, run:
+
+```bash
+git status
+npm run build
+git add README.md docs/screenshots
+git commit -m "Update README screenshots"
+```

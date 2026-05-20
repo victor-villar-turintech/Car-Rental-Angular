@@ -1,0 +1,79 @@
+<section class="admin-extras-page">
+  <div class="admin-page-header">
+    <div>
+      <span>Booking services</span>
+      <h1>Extras management</h1>
+      <p>Add, edit, disable or remove optional booking services used on the rental checkout page.</p>
+    </div>
+    <button class="btn btn-outline-primary" type="button" (click)="resetDemoExtras()">Restore demo extras</button>
+  </div>
+
+  <div class="extras-admin-grid">
+    <form class="admin-form-card" (ngSubmit)="saveExtra()">
+      <span>{{ editingExtraId ? 'Edit extra' : 'New extra' }}</span>
+      <h2>{{ editingExtraId ? 'Update service' : 'Create service' }}</h2>
+
+      <label for="extraName">Name</label>
+      <input id="extraName" class="form-control" name="extraName" type="text" [(ngModel)]="form.name" placeholder="e.g. Premium roadside assistance" />
+
+      <label for="extraDescription">Description</label>
+      <textarea id="extraDescription" class="form-control" name="extraDescription" rows="3" [(ngModel)]="form.description"></textarea>
+
+      <div class="form-row-grid">
+        <div>
+          <label for="extraCategory">Category</label>
+          <select id="extraCategory" class="form-control" name="extraCategory" [(ngModel)]="form.category">
+            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
+        </div>
+        <div>
+          <label for="extraPricing">Pricing</label>
+          <select id="extraPricing" class="form-control" name="extraPricing" [(ngModel)]="form.pricingType">
+            <option value="fixed">Fixed</option>
+            <option value="perDay">Per day</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="extraPrice">Price</label>
+      <input id="extraPrice" class="form-control" name="extraPrice" type="number" min="0" [(ngModel)]="form.price" />
+
+      <label class="toggle-row">
+        <input type="checkbox" name="extraEnabled" [(ngModel)]="form.enabled" />
+        <span>Enabled in booking page</span>
+      </label>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">{{ editingExtraId ? 'Save changes' : 'Add extra' }}</button>
+        <button class="btn btn-outline-secondary" type="button" (click)="cancelEdit()">Clear</button>
+      </div>
+    </form>
+
+    <div class="extras-table-card">
+      <table class="table table-hover mb-0" *ngIf="extras.length > 0">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let extra of extras">
+            <td><strong>{{ extra.name }}</strong><small>{{ extra.description }}</small></td>
+            <td>{{ extra.category }}</td>
+            <td>{{ extra.price | currency:'GBP':'symbol':'1.0-0' }}{{ extra.pricingType === 'perDay' ? '/day' : '' }}</td>
+            <td><span class="status-pill" [ngClass]="extra.enabled === false ? 'disabled' : 'enabled'">{{ getStatusLabel(extra) }}</span></td>
+            <td class="text-right action-buttons">
+              <button class="btn btn-sm btn-outline-primary" type="button" (click)="editExtra(extra)">Edit</button>
+              <button class="btn btn-sm btn-outline-secondary" type="button" (click)="toggleExtra(extra)">{{ extra.enabled === false ? 'Enable' : 'Disable' }}</button>
+              <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteExtra(extra)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

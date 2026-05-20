@@ -1,4 +1,5 @@
 export type BookingExtraPricingType = 'perDay' | 'fixed';
+export type BookingExtraCategory = 'Insurance' | 'Driver' | 'Equipment' | 'Pickup' | 'Support' | 'Fuel' | 'Other';
 
 export interface BookingExtra {
   extraId: number;
@@ -6,7 +7,10 @@ export interface BookingExtra {
   description: string;
   price: number;
   pricingType: BookingExtraPricingType;
-  category: 'Insurance' | 'Driver' | 'Equipment' | 'Pickup' | 'Support' | 'Fuel';
+  category: BookingExtraCategory;
+  enabled?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
   selected?: boolean;
 }
 

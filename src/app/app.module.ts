@@ -36,6 +36,8 @@ import { BrandEditComponent } from './components/pages/admin-dashboard/brands-da
 import { CarsDashboardComponent } from './components/pages/admin-dashboard/cars-dashboard/cars-dashboard.component';
 import { CarEditComponent } from './components/pages/admin-dashboard/cars-dashboard/car-edit/car-edit.component';
 import { AdminBookingsComponent } from './components/pages/admin-dashboard/bookings-dashboard/bookings-dashboard.component';
+import { AdminExtrasComponent } from './components/pages/admin-dashboard/extras-dashboard/extras-dashboard.component';
+import { AdminPaymentsComponent } from './components/pages/admin-dashboard/payments-dashboard/payments-dashboard.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { HomeComponent } from './components/home/home/home.component';
 import { UserComponent } from './components/auth/user-profil/user-profil.component';
@@ -47,62 +49,23 @@ import { CustomerBookingsComponent } from './components/account/customer-booking
 import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
 import { PaymentCheckoutComponent } from './components/payment/payment-checkout/payment-checkout.component';
 import { BookingConfirmationComponent } from './components/booking-confirmation/booking-confirmation.component';
+import { BackToTopComponent } from './components/shared/back-to-top/back-to-top.component';
 
-export function tokenGetter() {
-  return localStorage.getItem('token');
-}
+export function tokenGetter() { return localStorage.getItem('token'); }
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NaviComponent,
-    CustomerComponent,
-    RentalComponent,
-    BookingLookupComponent,
-    ColorComponent,
-    CarComponent,
-    BrandComponent,
-    CarDetailComponent,
-    ColorFilterPipe,
-    BrandFilterPipe,
-    CarFilterPipe,
-    CarFilterComponent,
-    CreditCardComponent,
-    CarAddComponent,
-    CarEditComponent,
-    BrandAddComponent,
-    ColorAddComponent,
-    FooterComponent,
-    LoginComponent,
-    RegisterComponent,
-    AdminDashboardComponent,
-    AdminMetricsDashboardComponent,
-    ColorsDashboardComponent,
-    ColorEditComponent,
-    BrandsDashboardComponent,
-    BrandEditComponent,
-    CarsDashboardComponent,
-    AdminBookingsComponent,
-    HomeComponent,
-    UserComponent,
-    UsereditComponent,
-    LocalLoginComponent,
-    LocalRegisterComponent,
-    CustomerAccountComponent,
-    CustomerBookingsComponent,
-    AdminLoginComponent,
-    PaymentCheckoutComponent,
-    BookingConfirmationComponent,
+    AppComponent, NaviComponent, CustomerComponent, RentalComponent, BookingLookupComponent, ColorComponent, CarComponent,
+    BrandComponent, CarDetailComponent, ColorFilterPipe, BrandFilterPipe, CarFilterPipe, CarFilterComponent, CreditCardComponent,
+    CarAddComponent, CarEditComponent, BrandAddComponent, ColorAddComponent, FooterComponent, LoginComponent, RegisterComponent,
+    AdminDashboardComponent, AdminMetricsDashboardComponent, ColorsDashboardComponent, ColorEditComponent, BrandsDashboardComponent,
+    BrandEditComponent, CarsDashboardComponent, AdminBookingsComponent, AdminExtrasComponent, AdminPaymentsComponent, HomeComponent,
+    UserComponent, UsereditComponent, LocalLoginComponent, LocalRegisterComponent, CustomerAccountComponent, CustomerBookingsComponent,
+    AdminLoginComponent, PaymentCheckoutComponent, BookingConfirmationComponent, BackToTopComponent,
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    ToastrModule.forRoot({ positionClass: 'toast-bottom-right' }),
+    BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
+    NgMultiSelectDropDownModule.forRoot(), ToastrModule.forRoot({ positionClass: 'toast-bottom-right' }),
     JwtModule.forRoot({ config: { tokenGetter } }),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],

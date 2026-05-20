@@ -1,28 +1,31 @@
 # RentA-Car London — Angular Local Rental Demo
 
-RentA-Car London is a local-only Angular rental platform demo for browsing vehicles, creating bookings, selecting extras, simulating payments and managing the fleet through a protected Admin area.
+RentA-Car London is a local-only Angular rental platform demo for browsing vehicles, creating bookings, selecting extras, simulating payments, managing customer accounts and administering fleet, bookings, extras and payments through a protected Admin area.
 
 The application uses Angular services and `localStorage` as a mock persistence layer. No backend API is required for the demo flow.
 
 ## Current application status
 
-This README reflects the application after the merged Admin navigation fix in PR #7, which restored the protected Admin shell navigation for Dashboard, Cars inventory, Brands inventory, Colours inventory and Bookings.
+This README reflects the application after the latest Admin Extras, Payments, Refunds, Back-to-Top and cleanup update. The site now includes a public vehicle catalogue, dynamic landing page vehicle, customer account flow, booking extras, London airport pickup terminals, mock checkout, booking receipts, protected Admin authentication, Admin inventory management, Admin extras management and Admin payment management.
 
 ## Screenshots
 
-> The included Admin dashboard screenshot comes from the latest running UI. The other screenshot files are documentation placeholders so the README has a complete structure; replace them with live browser captures from your local app before final publication.
+> Replace the screenshot files under `docs/screenshots/` with fresh browser captures whenever the UI changes. See `docs/screenshots/CAPTURE_GUIDE.md` for the recommended capture list.
 
 | Area | Screenshot |
 |---|---|
 | Landing page | ![Landing page](docs/screenshots/home.png) |
 | Cars catalogue | ![Cars catalogue](docs/screenshots/catalogue.png) |
 | Car detail page | ![Car detail page](docs/screenshots/car-detail.png) |
-| Booking extras | ![Booking extras](docs/screenshots/booking-extras.png) |
+| Booking extras and layout | ![Booking extras](docs/screenshots/booking-extras.png) |
 | Payment checkout | ![Payment checkout](docs/screenshots/payment.png) |
 | Booking receipt | ![Booking receipt](docs/screenshots/receipt.png) |
 | Customer account | ![Customer account](docs/screenshots/account.png) |
+| Customer bookings | ![Customer bookings](docs/screenshots/customer-bookings.png) |
 | Admin dashboard | ![Admin dashboard](docs/screenshots/admin-dashboard.png) |
 | Admin cars inventory | ![Admin cars inventory](docs/screenshots/admin-cars.png) |
+| Admin extras | ![Admin extras](docs/screenshots/admin-extras.png) |
+| Admin payments | ![Admin payments](docs/screenshots/admin-payments.png) |
 
 ## Functionality
 
@@ -33,17 +36,25 @@ This README reflects the application after the merged Admin navigation fix in PR
 - Featured vehicle booking CTA links to the rental flow.
 - Discreet Admin link in the bottom-right corner of the landing page.
 - Cars catalogue with search, brand filter, colour filter, price range filtering and sorting.
+- Back-to-top control on the public catalogue for long result pages.
 - Vehicle cards with image fallback handling for missing or invalid image paths.
 - Car detail page at `/cars/:carId` with large image, vehicle metadata, price, date selection and booking CTA.
 
 ### Booking workflow
 
 - Rental flow at `/car/rental/:carId`.
+- Improved two-column booking layout on desktop:
+  - vehicle summary remains visible on the left;
+  - booking form and optional services scroll in the right panel.
+- Responsive single-column layout on mobile.
+- Booking progress indicator.
 - Pickup and return date selection.
 - Selecting a pickup date automatically adjusts the return date when required.
 - Rental duration selector with preset and custom day count options.
 - Date-based rental price calculation.
 - Availability conflict detection for overlapping bookings.
+- Sticky booking total summary.
+- Grouped and collapsible optional services.
 - London pickup locations including major London airports and terminals:
   - Heathrow Terminal 2
   - Heathrow Terminal 3
@@ -64,10 +75,12 @@ This README reflects the application after the merged Admin navigation fix in PR
   - Roadside assistance plus
   - Airport pickup / terminal meet-and-greet
   - Fuel pre-purchase
+- Admin-manageable extras catalogue.
 - Price breakdown for vehicle subtotal, extras subtotal and grand total.
 - Unique booking references generated using booking and vehicle data.
 - Copy booking reference support.
 - Booking lookup by reference and customer email.
+- Back-to-top control on long booking/receipt views.
 
 ### Customer account flow
 
@@ -80,6 +93,9 @@ This README reflects the application after the merged Admin navigation fix in PR
 - Customer account profile page at `/account`.
 - Customer bookings page at `/account/bookings`.
 - Account pages protected with a customer route guard.
+- Customer booking cancellation for eligible bookings.
+- Paid booking cancellation marks the associated mock payment as refunded.
+- Back-to-top control on long customer booking views.
 
 ### Mock payment flow
 
@@ -91,9 +107,10 @@ This README reflects the application after the merged Admin navigation fix in PR
 - Payment records stored in `localStorage`.
 - Payment reference generation using `PAY-*` style references.
 - Payment status and method linked back to bookings.
+- Payment statuses include paid, failed and refunded states.
 - Booking receipt page at `/booking-confirmation/:bookingReference`.
 - Receipt page includes booking details, selected services, payment method, payment reference and total paid.
-- Browser print/save-to-PDF support for receipts.
+- Print-friendly receipt styling for browser print/save-to-PDF.
 
 ### Protected Admin area
 
@@ -109,6 +126,8 @@ This README reflects the application after the merged Admin navigation fix in PR
   - Brands inventory
   - Colours inventory
   - Bookings
+  - Extras
+  - Payments
   - Booking lookup
   - Public catalogue
 - Dashboard metrics based on local booking data:
@@ -146,6 +165,18 @@ This README reflects the application after the merged Admin navigation fix in PR
   - payment method
   - payment reference
   - booking status workflow
+  - cancellation/refund handling for paid bookings
+- Extras management at `/admin/extras`:
+  - add extra
+  - edit extra
+  - disable extra
+  - delete extra
+  - reset demo extras
+  - fixed and per-day pricing support
+- Payments dashboard at `/admin/payments`:
+  - view mock payment records
+  - view booking reference, method, amount, status and transaction reference
+  - mark payments as paid, failed or refunded
 
 ## Demo credentials
 
@@ -170,7 +201,7 @@ Then log in via:
 /login
 ```
 
-All customer and booking data is stored locally in the browser.
+All customer, booking, extras and payment data is stored locally in the browser.
 
 ## Main routes
 
@@ -193,6 +224,8 @@ All customer and booking data is stored locally in the browser.
 | `/admin/brands` | Admin brands inventory |
 | `/admin/colors` | Admin colours inventory |
 | `/admin/bookings` | Admin booking management |
+| `/admin/extras` | Admin extras management |
+| `/admin/payments` | Admin payments dashboard |
 
 ## Tech stack
 
@@ -255,12 +288,22 @@ npm run ng -- generate service services/example
 
 ## Local data reset
 
-Because the demo uses `localStorage`, browser state can affect test bookings and accounts. To reset the app data during manual testing:
+Because the demo uses `localStorage`, browser state can affect test bookings, accounts, extras and payments. To reset the app data during manual testing:
 
 1. Open browser DevTools.
 2. Go to Application / Storage.
 3. Clear Local Storage for `http://localhost:4200`.
 4. Refresh the app.
+
+## Cleanup old documentation assets
+
+The repository includes a cleanup helper for stale README screenshot assets and macOS zip metadata:
+
+```bash
+bash scripts/cleanup-old-readme-assets.sh
+```
+
+Run it after applying patch zips or replacing screenshots if old `__MACOSX` metadata or obsolete screenshot files appear in the working tree.
 
 ## Documentation screenshot refresh
 
@@ -274,8 +317,11 @@ docs/screenshots/booking-extras.png
 docs/screenshots/payment.png
 docs/screenshots/receipt.png
 docs/screenshots/account.png
+docs/screenshots/customer-bookings.png
 docs/screenshots/admin-dashboard.png
 docs/screenshots/admin-cars.png
+docs/screenshots/admin-extras.png
+docs/screenshots/admin-payments.png
 ```
 
 Suggested capture flow:
@@ -290,4 +336,4 @@ Suggested capture flow:
 
 ## Notes
 
-This project is intentionally local-only. Credentials, bookings, payments and Admin sessions are demo data stored in the browser and should not be treated as production authentication or payment logic.
+This project is intentionally local-only. Credentials, bookings, payments, extras, Admin sessions and customer sessions are demo data stored in the browser and should not be treated as production authentication or payment logic.
