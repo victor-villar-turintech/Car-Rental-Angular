@@ -500,3 +500,14 @@
     text-align: left;
   }
 }
+
+/* featured-card-final-polish-v2 */
+.spotlight-card { transform: none !important; border-radius: 2.1rem; background: linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,250,252,.98)); }
+.spotlight-card:hover { transform: translateY(-4px) !important; }
+.spotlight-body { padding: 1.5rem 1.65rem 1.65rem; }
+.spotlight-kicker { display: block !important; margin: 0 0 .35rem !important; color: #2563eb; letter-spacing: .16em; }
+.spotlight-title { display: block !important; margin: 0 0 .45rem !important; color: #0f172a !important; text-decoration: none !important; max-width: 100%; }
+.spotlight-summary { margin-top: .45rem; }
+.spotlight-footer { align-items: center; }
+.spotlight-actions .btn { border-radius: .85rem; font-weight: 850; }
+@media (max-width: 991.98px) { .hero-grid { grid-template-columns: 1fr !important; gap: 2rem; } .spotlight-card { max-width: 42rem; } }

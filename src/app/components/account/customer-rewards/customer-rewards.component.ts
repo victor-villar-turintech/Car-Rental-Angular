@@ -15,6 +15,6 @@ export class CustomerRewardsComponent implements OnInit {
     const customer = this.authService.getCurrentCustomer();
     if (!customer) { this.router.navigate(['/login']); return; }
     this.account = this.rewardService.getAccount(customer.email);
-    this.rewardService.getTransactions(customer.email).subscribe((response) => this.transactions = response.data);
+    this.rewardService.getTransactions().subscribe((response: any) => this.transactions = (response.data || []).filter((item: any) => item.customerEmail === customer.email));
   }
 }

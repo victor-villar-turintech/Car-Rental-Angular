@@ -65,6 +65,11 @@ import { AdminDiscountsDashboardComponent } from './components/pages/admin-dashb
 import { AdminRewardsDashboardComponent } from './components/pages/admin-dashboard/rewards-dashboard/rewards-dashboard.component';
 import { AdminCustomerActivityDashboardComponent } from './components/pages/admin-dashboard/customer-activity-dashboard/customer-activity-dashboard.component';
 import { AdminCustomersDashboardComponent } from './components/pages/admin-dashboard/customers-dashboard/customers-dashboard.component';
+import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
+import { AdminRewardSettingsComponent } from './components/pages/admin-dashboard/reward-settings/reward-settings.component';
+import { AdminDiscountAnalyticsComponent } from './components/pages/admin-dashboard/discount-analytics/discount-analytics.component';
+import { VehicleComparisonComponent } from './components/vehicle-comparison/vehicle-comparison.component';
+import { EmptyStateComponent } from './components/shared/empty-state/empty-state.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -72,6 +77,10 @@ export function tokenGetter() {
 
 @NgModule({
   declarations: [
+    ConfirmDialogComponent,
+    AdminRewardSettingsComponent,
+    AdminDiscountAnalyticsComponent,
+    VehicleComparisonComponent,
     AppComponent,
     NaviComponent,
     FooterComponent,
@@ -120,6 +129,7 @@ export function tokenGetter() {
     StatusBadgeComponent,
     PriceBreakdownComponent,
     BackToTopComponent,
+    EmptyStateComponent,
     CustomerActivityComponent,
     CustomerRewardsComponent,
     AdminDiscountsDashboardComponent,

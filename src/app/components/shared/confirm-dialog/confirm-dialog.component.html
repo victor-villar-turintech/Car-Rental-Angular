@@ -1,0 +1,11 @@
+<div class="confirm-backdrop" *ngIf="visible" role="presentation" (click)="cancel()">
+  <section class="confirm-card" role="dialog" aria-modal="true" [attr.aria-label]="title" (click)="$event.stopPropagation()">
+    <div class="confirm-icon" [class.danger]="danger">{{ danger ? '!' : '?' }}</div>
+    <h2>{{ title }}</h2>
+    <p>{{ message }}</p>
+    <div class="confirm-actions">
+      <button type="button" class="btn btn-outline-secondary" (click)="cancel()">{{ cancelLabel }}</button>
+      <button type="button" class="btn" [class.btn-danger]="danger" [class.btn-primary]="!danger" (click)="confirm()">{{ confirmLabel }}</button>
+    </div>
+  </section>
+</div>

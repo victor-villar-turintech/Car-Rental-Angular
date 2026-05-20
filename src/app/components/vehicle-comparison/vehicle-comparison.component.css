@@ -1,0 +1,232 @@
+.compare-page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 3rem 2rem 4rem;
+}
+
+.compare-header,
+.section-title-row,
+.filter-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.eyebrow,
+.brand {
+  color: #0d6efd;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.compare-header h1 {
+  margin: .35rem 0 .5rem;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  line-height: .9;
+  letter-spacing: -.06em;
+}
+
+.compare-header p,
+.filter-card p,
+.match-body p,
+.comparison-body p,
+.comparison-dashboard p {
+  color: #58708f;
+}
+
+.filter-card,
+.matching-card,
+.comparison-dashboard {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid #dbe5f2;
+  border-radius: 24px;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, .08);
+}
+
+.filter-actions,
+.comparison-actions {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.filter-grid label span {
+  display: block;
+  margin-bottom: .35rem;
+  font-weight: 800;
+  color: #26364d;
+}
+
+.matching-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.match-card {
+  border: 1px solid #dbe5f2;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.match-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, .12);
+}
+
+.match-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  background: #eef3f8;
+}
+
+.match-body {
+  padding: .9rem;
+}
+
+.match-body h3 {
+  margin: .2rem 0 .3rem;
+  font-size: 1rem;
+}
+
+.match-body .btn {
+  width: 100%;
+  margin-top: .6rem;
+}
+
+.selected-counter {
+  padding: .55rem .8rem;
+  border: 1px solid #dbe5f2;
+  border-radius: 999px;
+  color: #0d6efd;
+  font-weight: 900;
+  background: #eef6ff;
+}
+
+.comparison-scroll {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: .75rem;
+}
+
+.comparison-card {
+  position: relative;
+  min-width: 240px;
+  border: 1px solid #dbe5f2;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.comparison-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background: #eef3f8;
+}
+
+.remove-button {
+  position: absolute;
+  top: .6rem;
+  right: .6rem;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.comparison-body {
+  padding: 1rem;
+}
+
+.comparison-body h3 {
+  margin: .2rem 0 .4rem;
+  font-size: 1.2rem;
+}
+
+.price {
+  display: inline-flex;
+  margin: .5rem 0 1rem;
+  padding: .35rem .6rem;
+  border-radius: 999px;
+  background: #eef6ff;
+  color: #0d6efd;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .55rem;
+}
+
+.metric-grid div {
+  padding: .75rem;
+  border: 1px solid #dbe5f2;
+  border-radius: 12px;
+  background: #f8fbff;
+}
+
+.metric-grid span {
+  display: block;
+  color: #6d7f99;
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.metric-grid strong {
+  display: block;
+  margin-top: .25rem;
+  font-size: .92rem;
+}
+
+@media (max-width: 1200px) {
+  .matching-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .filter-grid { grid-template-columns: repeat(3, minmax(160px, 1fr)); }
+}
+
+@media (max-width: 900px) {
+  .compare-header,
+  .section-title-row,
+  .filter-title-row {
+    flex-direction: column;
+  }
+  .filter-actions,
+  .comparison-actions {
+    justify-content: flex-start;
+  }
+  .matching-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .filter-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+  .compare-page { padding: 2rem 1rem; }
+  .matching-grid,
+  .filter-grid { grid-template-columns: 1fr; }
+  .comparison-scroll { grid-template-columns: repeat(5, 82vw); }
+}

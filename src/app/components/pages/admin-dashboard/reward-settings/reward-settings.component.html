@@ -1,0 +1,46 @@
+<section class="admin-section">
+  <div class="section-header">
+    <div>
+      <span class="eyebrow">Admin rewards</span>
+      <h1>Reward settings</h1>
+      <p>Configure the local demo loyalty rules used by customer rewards and payment redemption.</p>
+    </div>
+    <button type="button" class="btn btn-outline-danger" (click)="showResetConfirm = true">Reset defaults</button>
+  </div>
+
+  <div class="settings-grid" *ngIf="settings">
+    <label>Points earned per £1 paid
+      <input class="form-control" type="number" min="0" [(ngModel)]="settings.pointsPerPound" />
+    </label>
+    <label>First paid booking bonus
+      <input class="form-control" type="number" min="0" [(ngModel)]="settings.firstPaidBookingBonus" />
+    </label>
+    <label>Points required for £10 discount
+      <input class="form-control" type="number" min="1" [(ngModel)]="settings.pointsPerTenPoundsDiscount" />
+    </label>
+    <label>Minimum redeemable points
+      <input class="form-control" type="number" min="0" [(ngModel)]="settings.minimumRedeemablePoints" />
+    </label>
+    <label>Maximum redemption percentage
+      <input class="form-control" type="number" min="0" max="100" [(ngModel)]="settings.maximumRedemptionPercent" />
+    </label>
+  </div>
+
+  <div class="preview-card" *ngIf="settings">
+    <strong>Demo rule preview</strong>
+    <span>{{ settings.pointsPerTenPoundsDiscount }} points = £10 discount</span>
+    <span>Customers can redeem up to {{ settings.maximumRedemptionPercent }}% of the booking total.</span>
+  </div>
+
+  <button type="button" class="btn btn-primary" (click)="save()">Save reward settings</button>
+</section>
+
+<app-confirm-dialog
+  [visible]="showResetConfirm"
+  title="Reset reward settings?"
+  message="This will restore the default local demo loyalty rules."
+  confirmLabel="Reset settings"
+  [danger]="true"
+  (confirmed)="reset()"
+  (cancelled)="showResetConfirm = false">
+</app-confirm-dialog>

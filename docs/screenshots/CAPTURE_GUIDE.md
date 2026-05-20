@@ -24,3 +24,13 @@ Capture these pages after each major UI update and replace the matching files in
 - `admin-payments.png` — `/admin/payments`
 
 Recommended browser width: 1440px or wider for desktop screenshots.
+
+
+## Additional CRM and comparison screenshots
+
+Capture the following after this patch:
+
+- `docs/screenshots/compare.png` from `/compare`
+- `docs/screenshots/account-favourites.png` from `/account/favourites`
+- `docs/screenshots/admin-reward-settings.png` from `/admin/reward-settings`
+- `docs/screenshots/admin-discount-analytics.png` from `/admin/discount-analytics`

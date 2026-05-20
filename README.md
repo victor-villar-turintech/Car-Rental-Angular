@@ -145,3 +145,49 @@ docs/screenshots/CAPTURE_GUIDE.md
 ```
 
 for the current screenshot list and capture instructions.
+
+
+## Latest Angular CRM, Rewards and Comparison updates
+
+The app now includes additional Angular-focused functionality on top of the rental workflow:
+
+- Reward redemption validation on checkout, including maximum redeemable point guidance.
+- Customer favourites and recently viewed vehicles, surfaced from the customer account area.
+- Shared UI state components for loading, empty and error states.
+- Reusable confirmation dialog component for safer destructive actions.
+- Admin reward settings page for local demo loyalty configuration.
+- Admin discount analytics page showing usage, discount value and revenue after discounts.
+- Vehicle comparison page at `/compare` with a dashboard-style comparison of price, engine size, horsepower, estimated range, seats, luggage capacity, drivetrain, economy and CO₂ band.
+
+### New routes
+
+| Route | Purpose |
+|---|---|
+| `/compare` | Compare up to five vehicles using pricing and specification metrics. |
+| `/account/favourites` | View favourite and recently viewed vehicles. |
+| `/admin/reward-settings` | Maintain local demo loyalty earning/redemption rules. |
+| `/admin/discount-analytics` | Review discount code usage and promotional impact. |
+
+### Notes on vehicle metrics
+
+The comparison dashboard uses explicit vehicle fields when present and otherwise derives sensible demo values from the local catalogue. A future data-quality pass can enrich the mock car database with full specification fields such as `engineSize`, `horsepower`, `rangeMiles`, `seats`, `luggageCapacityLitres`, `bootCapacityLitres`, `drivetrain`, `fuelEconomyMpg` and `co2Band`.
+
+
+### Latest local comparison/navigation polish
+
+The Angular demo now includes a professionalised top navigation, a refined featured vehicle card, direct `Compare` actions from the vehicle catalogue, and a richer `/compare` dashboard. The comparison page supports browsing/filtering vehicles by size, vehicle type, number of seats, transmission, fuel type, and maximum daily price before comparing up to five vehicles side by side.
+
+Comparison metrics currently use explicit vehicle fields when present and demo fallbacks otherwise, covering engine size, horsepower, estimated range, seat count, luggage capacity, boot capacity, drivetrain, fuel economy, fuel type, and CO₂ band. A later data-enrichment pass can move these values into the car database and expose them in Admin Cars add/edit.
+
+
+The comparison flow starts empty, supports explicit Add to compare and Reset comparison controls, allows up to five selected vehicles, and horizontally scrolls on smaller screens.
+
+
+### Comparison dashboard polish
+
+The `/compare` workflow starts empty by default, lets users filter the catalogue, add explicit vehicles to compare, reset the comparison, and review up to five vehicles side by side with horizontal scrolling on smaller screens.
+
+
+### Admin vehicle specification visibility
+
+The protected Admin Cars inventory now exposes richer vehicle specification information alongside the fleet records, including engine size, horsepower, fuel type, drivetrain, range, seats, luggage capacity, boot capacity, fuel economy and emissions band. These values are displayed for demo comparison/admin visibility and are derived from explicit vehicle fields where present, with sensible local demo fallbacks for the mock catalogue.

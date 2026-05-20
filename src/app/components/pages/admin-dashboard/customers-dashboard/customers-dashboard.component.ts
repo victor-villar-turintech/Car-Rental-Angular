@@ -19,9 +19,9 @@ export class AdminCustomersDashboardComponent implements OnInit {
   ngOnInit(): void { this.load(); }
 
   load(): void {
-    this.customerAuthService.getCustomers().subscribe((response) => this.customers = response.data);
+    this.customerAuthService.getCustomers().subscribe((response: any) => this.customers = response.data || []);
     this.rentalService.getRental().subscribe((response) => this.bookings = response.data);
-    this.rewardService.getAccounts().subscribe((response) => this.rewards = response.data);
+    this.rewardService.getAccounts().subscribe((response: any) => this.rewards = response.data || []);
   }
 
   get filteredCustomers(): Customer[] {
@@ -36,17 +36,25 @@ export class AdminCustomersDashboardComponent implements OnInit {
   lastBooking(customer: Customer): string { const bookings = this.bookings.filter((booking) => this.same(booking.customerEmail, customer.email)); return bookings[0]?.createdAt || ''; }
 
   sendReset(customer: Customer): void {
-    this.customerAuthService.generateResetLink(customer.email).subscribe((response) => {
-      const updated = response.data[0];
-      const url = `${window.location.origin}/reset-password?token=${updated?.resetToken}`;
-      navigator.clipboard?.writeText(url);
-      this.toastrService.success('Mock reset link copied to clipboard.', 'Reset link');
-      this.load();
+    this.customerAuthService.generateResetLink(customer.email).subscribe((response: any) => {
+      if (response.success) {
+        this.toastrService.success(response.message || 'Reset link generated.');
+        if (response.resetLink && navigator.clipboard) { navigator.clipboard.writeText(response.resetLink); }
+        this.load();
+      } else {
+        this.toastrService.error(response.message || 'Unable to generate reset link.');
+      }
     });
   }
 
   toggleCustomer(customer: Customer): void {
-    this.customerAuthService.setCustomerDisabled(customer.email, !customer.isDisabled).subscribe((response) => { this.toastrService.success(response.message); this.load(); });
+    const result: any = this.customerAuthService.setCustomerDisabled(customer.email, !customer.isDisabled);
+    if (result && typeof result.subscribe === 'function') {
+      result.subscribe((response: any) => { this.toastrService.success(response.message || 'Customer updated.'); this.load(); });
+    } else {
+      this.toastrService.success('Customer updated.');
+      this.load();
+    }
   }
 
   private same(left?: string, right?: string): boolean { return (left || '').trim().toLowerCase() === (right || '').trim().toLowerCase(); }

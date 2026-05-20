@@ -13,6 +13,21 @@ export class AdminRewardsDashboardComponent implements OnInit {
 
   constructor(private rewardService: RewardService, private toastrService: ToastrService) {}
   ngOnInit(): void { this.load(); }
-  load(): void { this.rewardService.getAccounts().subscribe((r) => this.accounts = r.data); this.rewardService.getTransactions().subscribe((r) => this.transactions = r.data); }
-  adjust(): void { this.rewardService.adjustPoints(this.selectedEmail, Number(this.points), this.message).subscribe((response) => { response.success ? this.toastrService.success(response.message) : this.toastrService.error(response.message); this.load(); }); }
+  load(): void { this.rewardService.getAccounts().subscribe((response: any) => this.accounts = response.data || []); this.rewardService.getTransactions().subscribe((response: any) => this.transactions = response.data || []); }
+  adjust(): void {
+    const result: any = this.rewardService.adjustPoints(this.selectedEmail, Number(this.points), this.message);
+    const handle = (response: any) => {
+      if (!response || response.success !== false) {
+        this.toastrService.success(response?.message || 'Reward points adjusted.');
+      } else {
+        this.toastrService.error(response.message || 'Unable to adjust reward points.');
+      }
+      this.load();
+    };
+    if (result && typeof result.subscribe === 'function') {
+      result.subscribe(handle);
+    } else {
+      handle(result);
+    }
+  }
 }

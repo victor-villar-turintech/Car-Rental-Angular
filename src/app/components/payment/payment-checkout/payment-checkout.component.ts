@@ -97,4 +97,18 @@ export class PaymentCheckoutComponent implements OnInit {
     if (expiry < new Date(now.getFullYear(), now.getMonth(), 1)) { group.get('expiryYear')?.setErrors({ expired: true }); return { expired: true }; }
     return null;
   }
+
+  maxRedeemableRewardPoints(): number {
+    const balance = Number((this as any).rewardAccount?.pointsBalance || (this as any).availableRewardPoints || 0);
+    const grossTotal = Number((this as any).grossTotal || (this as any).booking?.totalRentPrice || (this as any).booking?.finalAmount || (this as any).totalAmount || 0);
+    const pointValue = 0.02;
+    const maxByTotal = grossTotal > 0 ? Math.floor(grossTotal / pointValue) : balance;
+    return Math.max(0, Math.min(balance, maxByTotal));
+  }
+
+  clampRewardPointsValue(value: number): number {
+    const numeric = Math.max(0, Math.floor(Number(value || 0)));
+    return Math.min(numeric, this.maxRedeemableRewardPoints());
+  }
+
 }
