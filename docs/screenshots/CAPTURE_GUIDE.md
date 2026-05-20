@@ -30,6 +30,7 @@ Suggested routes:
 
 ```text
 /home
+/home scroll to Popular choices / trust section
 /cars
 /cars/1
 /car/rental/1
@@ -49,6 +50,8 @@ Admin demo credentials:
 Username: admin
 Password: admin123
 ```
+
+Capture the polished featured vehicle hero, popular vehicle cards, trust/benefits section and revised How It Works section after applying the homepage polish patch.
 
 After replacing screenshots, run:
 

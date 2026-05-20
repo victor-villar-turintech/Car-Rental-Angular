@@ -6,7 +6,7 @@ The application uses Angular services and `localStorage` as a mock persistence l
 
 ## Current application status
 
-This README reflects the application after the latest Admin Extras, Payments, Refunds, Back-to-Top and cleanup update. The site now includes a public vehicle catalogue, dynamic landing page vehicle, customer account flow, booking extras, London airport pickup terminals, mock checkout, booking receipts, protected Admin authentication, Admin inventory management, Admin extras management and Admin payment management.
+This README reflects the application after the latest Homepage Professional Polish, Admin Extras, Payments, Refunds, Back-to-Top and cleanup update. The site now includes a polished public landing page, professional featured vehicle spotlight, popular fleet picks, trust/benefit cards, public vehicle catalogue, dynamic landing page vehicle, customer account flow, booking extras, London airport pickup terminals, mock checkout, booking receipts, protected Admin authentication, Admin inventory management, Admin extras management and Admin payment management.
 
 ## Screenshots
 
@@ -29,11 +29,16 @@ This README reflects the application after the latest Admin Extras, Payments, Re
 
 ## Functionality
 
-### Public catalogue
+### Public catalogue and landing page
 
-- Home page with dynamic featured vehicle selected from the local catalogue.
+- Professional landing page with a polished hero section.
+- Dynamic featured vehicle spotlight selected from the local catalogue.
 - Featured vehicle image/title links to the vehicle detail page.
 - Featured vehicle booking CTA links to the rental flow.
+- Featured vehicle card includes price, category, transmission, colour and pickup chips.
+- Popular vehicle picks section generated from the local catalogue.
+- Trust/benefits section highlighting local mock fleet, transparent pricing, London airport pickup and protected Admin.
+- Polished How It Works flow covering vehicle selection, dates/extras, mock payment and booking management.
 - Discreet Admin link in the bottom-right corner of the landing page.
 - Cars catalogue with search, brand filter, colour filter, price range filtering and sorting.
 - Back-to-top control on the public catalogue for long result pages.
@@ -207,7 +212,7 @@ All customer, booking, extras and payment data is stored locally in the browser.
 
 | Route | Purpose |
 |---|---|
-| `/home` | Landing page |
+| `/home` | Polished landing page with dynamic featured vehicle and popular fleet picks |
 | `/cars` | Public car catalogue |
 | `/cars/:carId` | Car detail page |
 | `/car/rental/:carId` | Booking flow |
@@ -330,8 +335,9 @@ Suggested capture flow:
 1. Run npm start.
 2. Open the app at http://localhost:4200.
 3. Capture the pages listed above.
-4. Save/replace the PNG files under docs/screenshots/.
-5. Commit README.md and docs/screenshots/* together.
+4. For the landing page, capture both the hero/featured-vehicle section and the popular-vehicles/trust section.
+5. Save/replace the PNG files under docs/screenshots/.
+6. Commit README.md and docs/screenshots/* together.
 ```
 
 ## Notes
