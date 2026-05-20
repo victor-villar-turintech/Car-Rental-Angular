@@ -3,25 +3,22 @@ import { ActivatedRoute } from '@angular/router';
 import { Car } from 'src/app/models/car';
 import { CarService } from 'src/app/services/car.service';
 
-@Component({
-  selector: 'app-car',
-  templateUrl: './car.component.html',
-  styleUrls: ['./car.component.css']
-})
+@Component({ selector: 'app-car', templateUrl: './car.component.html', styleUrls: ['./car.component.css'] })
 export class CarComponent implements OnInit {
   cars: Car[] = [];
   dataLoaded = false;
   carFilter = '';
+  selectedBrand = '';
+  selectedColour = '';
+  minPrice: number;
+  maxPrice: number;
+  sortBy = 'priceAsc';
 
-  constructor(
-    private carService: CarService,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  constructor(private carService: CarService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
       this.dataLoaded = false;
-
       if (params.brandId && params.colorId) {
         this.getCarsBySelect(params.brandId, params.colorId);
       } else if (params.colorId) {
@@ -34,24 +31,43 @@ export class CarComponent implements OnInit {
     });
   }
 
+  get brands(): string[] {
+    return this.uniqueSorted(this.cars.map((car) => car.brandName));
+  }
+
+  get colours(): string[] {
+    return this.uniqueSorted(this.cars.map((car) => car.colorName));
+  }
+
   get filteredCars(): Car[] {
     const query = this.normalise(this.carFilter);
-    if (!query) {
-      return this.cars;
-    }
+    const minPrice = Number(this.minPrice || 0);
+    const maxPrice = Number(this.maxPrice || 0);
 
-    return this.cars.filter((car) => {
+    const filtered = this.cars.filter((car) => {
       const searchable = [
         car.brandName,
         car.carName,
         car.colorName,
         car.description,
         car.modelYear?.toString(),
-        car.dailyPrice?.toString()
-      ].map((value) => this.normalise(value || '')).join(' ');
+        car.dailyPrice?.toString(),
+        this.getVehicleCategory(car),
+        this.getTransmissionLabel(car),
+      ]
+        .map((value) => this.normalise(value || ''))
+        .join(' ');
 
-      return searchable.includes(query);
+      const matchesQuery = !query || searchable.includes(query);
+      const matchesBrand = !this.selectedBrand || car.brandName === this.selectedBrand;
+      const matchesColour = !this.selectedColour || car.colorName === this.selectedColour;
+      const matchesMinPrice = !minPrice || car.dailyPrice >= minPrice;
+      const matchesMaxPrice = !maxPrice || car.dailyPrice <= maxPrice;
+
+      return matchesQuery && matchesBrand && matchesColour && matchesMinPrice && matchesMaxPrice;
     });
+
+    return filtered.sort((a, b) => this.sortCars(a, b));
   }
 
   getCars(): void {
@@ -84,29 +100,69 @@ export class CarComponent implements OnInit {
 
   clearSearch(): void {
     this.carFilter = '';
+    this.selectedBrand = '';
+    this.selectedColour = '';
+    this.minPrice = undefined;
+    this.maxPrice = undefined;
+    this.sortBy = 'priceAsc';
+  }
+
+  getVehicleCategory(car: Car): string {
+    const text = `${car.carName} ${car.description}`.toLowerCase();
+
+    if (text.includes('electric') || text.includes('ev')) {
+      return 'Electric';
+    }
+    if (text.includes('suv') || text.includes('crossover') || text.includes('qashqai') || text.includes('sportage')) {
+      return 'SUV';
+    }
+    if (text.includes('estate') || text.includes('touring')) {
+      return 'Estate';
+    }
+    if (text.includes('hatch') || text.includes('golf') || text.includes('focus')) {
+      return 'Hatchback';
+    }
+    if (text.includes('premium') || text.includes('executive') || text.includes('mercedes') || text.includes('bmw') || text.includes('audi')) {
+      return 'Premium';
+    }
+    return 'Saloon';
+  }
+
+  getTransmissionLabel(car: Car): string {
+    const text = `${car.carName} ${car.description}`.toLowerCase();
+    return text.includes('manual') ? 'Manual' : 'Automatic';
+  }
+
+  private sortCars(a: Car, b: Car): number {
+    switch (this.sortBy) {
+      case 'priceDesc':
+        return b.dailyPrice - a.dailyPrice;
+      case 'brandAsc':
+        return a.brandName.localeCompare(b.brandName) || a.carName.localeCompare(b.carName);
+      case 'yearDesc':
+        return b.modelYear - a.modelYear;
+      case 'yearAsc':
+        return a.modelYear - b.modelYear;
+      case 'priceAsc':
+      default:
+        return a.dailyPrice - b.dailyPrice;
+    }
+  }
+
+  private uniqueSorted(values: string[]): string[] {
+    return Array.from(new Set(values.filter(Boolean))).sort((a, b) => a.localeCompare(b));
   }
 
   private normalise(value: string): string {
     return value.toLowerCase().trim();
   }
 
-
   getVehicleColourHex(colourName: string): string {
     const colours: { [key: string]: string } = {
-      Black: '#111827',
-      White: '#f8fafc',
-      Grey: '#64748b',
-      Blue: '#2563eb',
-      Red: '#dc2626',
-      Silver: '#cbd5e1',
-      Green: '#15803d',
-      Orange: '#f97316',
-      Yellow: '#facc15',
-      Navy: '#1e3a8a',
-      Bronze: '#a16207',
-      Burgundy: '#7f1d1d'
+      Black: '#111827', White: '#f8fafc', Grey: '#64748b', Blue: '#2563eb', Red: '#dc2626',
+      Silver: '#cbd5e1', Green: '#15803d', Orange: '#f97316', Yellow: '#facc15', Navy: '#1e3a8a',
+      Bronze: '#a16207', Burgundy: '#7f1d1d'
     };
-
     return colours[colourName] || '#2563eb';
   }
 
@@ -116,7 +172,6 @@ export class CarComponent implements OnInit {
 
   handleVehicleImageError(event: Event, car: Car): void {
     const target = event.target as HTMLImageElement;
-
     if (target.dataset.fallbackApplied === 'true') {
       target.alt = `${car.colorName} ${car.brandName} ${car.carName} image unavailable`;
       target.style.display = 'none';
@@ -129,5 +184,4 @@ export class CarComponent implements OnInit {
     );
     target.src = `https://image.pollinations.ai/prompt/${prompt}?width=900&height=520&seed=${car.carId + 1000}&nologo=true&private=true&enhance=true`;
   }
-
 }

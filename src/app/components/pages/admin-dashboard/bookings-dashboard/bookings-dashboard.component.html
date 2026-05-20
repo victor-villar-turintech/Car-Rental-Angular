@@ -1,0 +1,70 @@
+<section class="bookings-dashboard">
+  <div class="admin-page-header">
+    <div>
+      <span>Local bookings</span>
+      <h1>Bookings</h1>
+      <p>Confirmed demo bookings saved in browser localStorage.</p>
+    </div>
+
+    <div class="summary-cards">
+      <div><span>Total bookings</span><strong>{{ bookings.length }}</strong></div>
+      <div><span>Revenue</span><strong>{{ totalRevenue() | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    </div>
+  </div>
+
+  <div class="bookings-toolbar">
+    <label for="statusFilter">Status</label>
+    <select id="statusFilter" class="form-control" [(ngModel)]="statusFilter">
+      <option value="">All bookings</option>
+      <option value="Pending">Pending</option>
+      <option value="Confirmed">Confirmed</option>
+      <option value="Completed">Completed</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  </div>
+
+  <div class="table-card" *ngIf="filteredBookings.length > 0">
+    <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Customer</th>
+          <th>Vehicle</th>
+          <th>Dates</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of filteredBookings">
+          <td>#{{ booking.rentalId }}</td>
+          <td>
+            <strong>{{ booking.customerName || 'Demo customer' }}</strong>
+            <small>{{ booking.customerEmail }}</small>
+          </td>
+          <td>
+            <strong>{{ booking.brandName }} {{ booking.carName }}</strong>
+            <small>{{ booking.colorName }} · {{ booking.modelYear }}</small>
+          </td>
+          <td>
+            <strong>{{ booking.rentDate | date:'mediumDate' }}</strong>
+            <small>to {{ booking.returnDate | date:'mediumDate' }} · {{ booking.rentalDays }} day{{ booking.rentalDays === 1 ? '' : 's' }}</small>
+          </td>
+          <td>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</td>
+          <td><span class="status-pill" [ngClass]="booking.status">{{ booking.status }}</span></td>
+          <td class="text-right action-buttons">
+            <button class="btn btn-sm btn-outline-success" type="button" (click)="updateStatus(booking, 'Completed')">Complete</button>
+            <button class="btn btn-sm btn-outline-danger" type="button" (click)="updateStatus(booking, 'Cancelled')">Cancel</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="empty-bookings" *ngIf="filteredBookings.length === 0">
+    <h2>No bookings yet</h2>
+    <p>Create a booking from a vehicle detail page, then return here to review it.</p>
+    <a class="btn btn-primary" routerLink="/cars">Browse cars</a>
+  </div>
+</section>

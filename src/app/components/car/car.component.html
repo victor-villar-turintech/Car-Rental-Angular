@@ -3,19 +3,14 @@
     <div>
       <span>Vehicle catalogue</span>
       <h1>Browse available cars</h1>
-      <p>Search a 60-car London demo fleet by brand, model, colour, year, price band or description.</p>
+      <p>Search and filter the London demo fleet by brand, colour, price, year, vehicle type and description.</p>
     </div>
+
     <div class="catalogue-search">
       <label for="carSearch">Search fleet</label>
       <div class="search-row">
-        <input
-          id="carSearch"
-          class="form-control form-control-lg"
-          type="text"
-          placeholder="Try Tesla, SUV, hybrid, blue, 2024 or automatic"
-          [(ngModel)]="carFilter"
-        />
-        <button class="btn btn-outline-light" type="button" (click)="clearSearch()" [disabled]="!carFilter">Clear</button>
+        <input id="carSearch" class="form-control" type="text" [(ngModel)]="carFilter" placeholder="Search brand, model, colour, category..." />
+        <button class="btn btn-light" type="button" (click)="clearSearch()">Clear</button>
       </div>
     </div>
   </div>
@@ -23,64 +18,92 @@
 
 <section class="container catalogue-layout">
   <aside class="filter-column">
-    <app-car-filter></app-car-filter>
+    <div class="filter-card">
+      <h3>Filters</h3>
+
+      <label for="brandFilter">Brand</label>
+      <select id="brandFilter" class="form-control" [(ngModel)]="selectedBrand">
+        <option value="">All brands</option>
+        <option *ngFor="let brand of brands" [value]="brand">{{ brand }}</option>
+      </select>
+
+      <label for="colourFilter">Colour</label>
+      <select id="colourFilter" class="form-control" [(ngModel)]="selectedColour">
+        <option value="">All colours</option>
+        <option *ngFor="let colour of colours" [value]="colour">{{ colour }}</option>
+      </select>
+
+      <div class="price-filter-grid">
+        <div>
+          <label for="minPrice">Min price</label>
+          <input id="minPrice" class="form-control" type="number" min="0" [(ngModel)]="minPrice" placeholder="£ min" />
+        </div>
+        <div>
+          <label for="maxPrice">Max price</label>
+          <input id="maxPrice" class="form-control" type="number" min="0" [(ngModel)]="maxPrice" placeholder="£ max" />
+        </div>
+      </div>
+
+      <label for="sortBy">Sort</label>
+      <select id="sortBy" class="form-control" [(ngModel)]="sortBy">
+        <option value="priceAsc">Price: low to high</option>
+        <option value="priceDesc">Price: high to low</option>
+        <option value="brandAsc">Brand A-Z</option>
+        <option value="yearDesc">Newest first</option>
+        <option value="yearAsc">Oldest first</option>
+      </select>
+
+      <button class="btn btn-outline-primary btn-block mt-3" type="button" (click)="clearSearch()">Reset filters</button>
+    </div>
   </aside>
 
-  <div class="cars-column">
+  <div>
     <div class="catalogue-toolbar">
       <div>
         <h2>Available fleet</h2>
-        <p *ngIf="dataLoaded">
-          Showing {{ filteredCars.length }} of {{ cars.length }} vehicles
-          <span *ngIf="carFilter">for “{{ carFilter }}”</span>
-        </p>
+        <p *ngIf="dataLoaded">Showing {{ filteredCars.length }} of {{ cars.length }} vehicles</p>
       </div>
-      <a class="btn btn-outline-primary" routerLink="/cars" (click)="clearSearch()">Reset filters</a>
+      <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()">Reset filters</button>
     </div>
 
-    <div *ngIf="!dataLoaded" class="alert alert-info">Loading cars...</div>
+    <div *ngIf="!dataLoaded" class="empty-state">Loading cars...</div>
 
-    <div *ngIf="dataLoaded" class="row">
-      <div *ngFor="let car of filteredCars" class="col-md-6 col-xl-4 mb-4">
-        <article class="vehicle-card h-100">
-          <div class="vehicle-image">
-            <img
-              class="vehicle-photo"
-              [src]="car.imagePath"
-              [alt]="car.colorName + ' ' + car.brandName + ' ' + car.carName"
-              loading="lazy"
-              (error)="handleVehicleImageError($event, car)"
-            />
-            <div class="vehicle-photo-caption">
-              <strong>{{ car.colorName }}</strong>
-              <span>{{ car.brandName }} {{ car.carName }}</span>
-            </div>
-            <span class="price-badge">{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}/day</span>
+    <div *ngIf="dataLoaded && filteredCars.length > 0" class="vehicle-grid">
+      <article class="vehicle-card" *ngFor="let car of filteredCars">
+        <div class="vehicle-image">
+          <img class="vehicle-photo" [src]="car.imagePath" [alt]="car.colorName + ' ' + car.brandName + ' ' + car.carName" (error)="handleVehicleImageError($event, car)" />
+          <div class="vehicle-photo-caption">
+            <strong [style.background]="getVehicleColourHex(car.colorName)" [style.color]="getVehicleLabelColour(car.colorName)">{{ car.colorName }}</strong>
+            <span>{{ getVehicleCategory(car) }}</span>
+            <span>{{ getTransmissionLabel(car) }}</span>
           </div>
-          <div class="vehicle-body">
-            <div class="vehicle-heading">
-              <span>{{ car.brandName }}</span>
-              <h3>{{ car.carName }}</h3>
-            </div>
-            <p>{{ car.description }}</p>
-            <div class="vehicle-meta">
-              <span>{{ car.colorName }}</span>
-              <span>{{ car.modelYear }}</span>
-              <span>London pickup</span>
-            </div>
+          <span class="price-badge">{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}/day</span>
+        </div>
+
+        <div class="vehicle-body">
+          <div class="vehicle-heading">
+            <span>{{ car.brandName }}</span>
+            <h3>{{ car.carName }}</h3>
           </div>
-          <div class="vehicle-actions">
-            <a class="btn btn-outline-primary" [routerLink]="['/car/details', car.carId]">Details</a>
-            <a class="btn btn-primary" [routerLink]="['/car/rental', car.carId]">Rent</a>
+          <p>{{ car.description }}</p>
+          <div class="vehicle-meta">
+            <span>{{ car.modelYear }}</span>
+            <span>{{ car.colorName }}</span>
+            <span>London pickup</span>
           </div>
-        </article>
-      </div>
+        </div>
+
+        <div class="vehicle-actions">
+          <a class="btn btn-outline-primary" [routerLink]="['/cars', car.carId]">Details</a>
+          <a class="btn btn-primary" [routerLink]="['/car/rental', car.carId]">Rent</a>
+        </div>
+      </article>
     </div>
 
     <div *ngIf="dataLoaded && filteredCars.length === 0" class="empty-state">
-      <h3>No cars match your search</h3>
-      <p>Clear the search term or adjust the brand and colour filters.</p>
-      <button class="btn btn-primary" type="button" (click)="clearSearch()">Clear search</button>
+      <h3>No cars match your filters</h3>
+      <p>Clear the search term or adjust brand, colour and price filters.</p>
+      <button class="btn btn-primary" type="button" (click)="clearSearch()">Clear filters</button>
     </div>
   </div>
 </section>

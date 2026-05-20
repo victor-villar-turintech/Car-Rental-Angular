@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import  {HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import {FormsModule,ReactiveFormsModule} from '@angular/forms'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
-
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NaviComponent } from './components/navi/navi.component';
@@ -20,12 +18,9 @@ import { BrandFilterPipe } from './pipes/brand-filter.pipe';
 import { CarFilterPipe } from './pipes/car-filter.pipe';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CarFilterComponent } from './components/car-filter/car-filter.component';
-
-
 import { ToastrModule } from 'ngx-toastr';
 import { CreditCardComponent } from './components/creditcard/creditcard.component';
 import { CarAddComponent } from './components/pages/admin-dashboard/cars-dashboard/car-add/car-add.component';
-
 import { BrandAddComponent } from './components/pages/admin-dashboard/brands-dashboard/brand-add/brand-add.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './components/auth/login/login.component';
@@ -38,17 +33,15 @@ import { BrandsDashboardComponent } from './components/pages/admin-dashboard/bra
 import { BrandEditComponent } from './components/pages/admin-dashboard/brands-dashboard/brand-edit/brand-edit.component';
 import { CarsDashboardComponent } from './components/pages/admin-dashboard/cars-dashboard/cars-dashboard.component';
 import { CarEditComponent } from './components/pages/admin-dashboard/cars-dashboard/car-edit/car-edit.component';
+import { AdminBookingsComponent } from './components/pages/admin-dashboard/bookings-dashboard/bookings-dashboard.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { HomeComponent } from './components/home/home/home.component';
 import { UserComponent } from './components/auth/user-profil/user-profil.component';
 import { UsereditComponent } from './components/auth/user-profil/useredit/useredit.component';
 
-
-
 export function tokenGetter() {
-  return localStorage.getItem("token");
+  return localStorage.getItem('token');
 }
-
 
 @NgModule({
   declarations: [
@@ -78,39 +71,23 @@ export function tokenGetter() {
     BrandsDashboardComponent,
     BrandEditComponent,
     CarsDashboardComponent,
+    AdminBookingsComponent,
     HomeComponent,
     UserComponent,
     UsereditComponent,
-   
-   
-    
-  
-  
   ],
   imports: [
-    
     BrowserModule,
     AppRoutingModule,
-
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    
     NgMultiSelectDropDownModule.forRoot(),
-    ToastrModule.forRoot({
-      positionClass:"toast-bottom-right"
-    }),
-    JwtModule.forRoot({
-      config:{
-        tokenGetter: tokenGetter,
-      }
-    }),
-
+    ToastrModule.forRoot({ positionClass: 'toast-bottom-right' }),
+    JwtModule.forRoot({ config: { tokenGetter } }),
   ],
-  providers: [
-    {provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}
-  ],
-  bootstrap: [AppComponent]
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
