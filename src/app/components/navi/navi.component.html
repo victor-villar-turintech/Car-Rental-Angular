@@ -1,38 +1,32 @@
-<nav class="navbar navbar-expand-lg navbar-light main-nav">
+<nav class="navbar navbar-expand-lg navbar-light bg-white app-navbar">
   <div class="container">
-    <a class="navbar-brand brand-lockup" routerLink="/home">
-      <span class="brand-mark">RC</span>
-      <span>
-        <strong>RentA-Car London</strong>
-        <small>Mock rental fleet</small>
-      </span>
-    </a>
-
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#mainNavigation"
-      aria-controls="mainNavigation"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <a class="navbar-brand" routerLink="/home">RentA-Car</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="mainNavigation">
-      <ul class="navbar-nav mx-auto">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item"><a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/cars" routerLinkActive="active">Browse cars</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/services" routerLinkActive="active">Services</a></li>
-        <li class="nav-item"><a class="nav-link" href="/services#rental-location">Location</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/admin/cars" routerLinkActive="active">Admin</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/cars" routerLinkActive="active">Cars</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/booking-lookup" routerLinkActive="active">Booking lookup</a></li>
       </ul>
 
-      <div class="nav-actions">
-        <a class="btn btn-outline-primary btn-sm" routerLink="/login">Login</a>
-        <a class="btn btn-primary btn-sm" routerLink="/register">Register</a>
-      </div>
+      <ul class="navbar-nav ml-auto account-nav" *ngIf="currentCustomer; else guestLinks">
+        <li class="nav-item">
+          <a class="nav-link account-link" routerLink="/account">My Account - {{ currentCustomer.firstName }}</a>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-outline-secondary btn-sm" type="button" (click)="logout()">Logout</button>
+        </li>
+      </ul>
+
+      <ng-template #guestLinks>
+        <ul class="navbar-nav ml-auto account-nav">
+          <li class="nav-item"><a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a></li>
+          <li class="nav-item"><a class="btn btn-primary btn-sm" routerLink="/register">Register</a></li>
+        </ul>
+      </ng-template>
     </div>
   </div>
 </nav>

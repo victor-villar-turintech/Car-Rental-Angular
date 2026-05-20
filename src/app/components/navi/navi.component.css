@@ -1,54 +1,6 @@
-.main-nav {
-  background: rgba(255, 255, 255, 0.98);
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-.brand-lockup {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  color: #0f172a !important;
-}
-.brand-lockup small {
-  display: block;
-  color: #64748b;
-  font-size: .72rem;
-  line-height: 1;
-}
-.brand-mark {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #0d6efd;
-  color: white;
-  font-weight: 800;
-  letter-spacing: -.04em;
-}
-.nav-link {
-  color: #334155 !important;
-  font-weight: 600;
-  margin: 0 .25rem;
-  border-radius: 999px;
-  padding: .55rem .9rem !important;
-}
-.nav-link:hover,
-.nav-link.active {
-  color: #0d6efd !important;
-  background: #eef5ff;
-}
-.nav-actions {
-  display: flex;
-  gap: .5rem;
-  align-items: center;
-}
-@media (max-width: 991.98px) {
-  .nav-actions {
-    margin-top: 1rem;
-  }
-}
+.app-navbar { border-bottom: 1px solid #e2e8f0; box-shadow: 0 8px 24px rgba(15, 23, 42, .04); }
+.navbar-brand { font-weight: 900; color: #0f172a; }
+.nav-link { font-weight: 700; color: #475569; }
+.nav-link.active, .nav-link:hover { color: #2563eb; }
+.account-nav { align-items: center; gap: .5rem; }
+.account-link { background: #eff6ff; border-radius: 999px; padding-left: 1rem !important; padding-right: 1rem !important; color: #1d4ed8; }

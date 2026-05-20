@@ -26,6 +26,10 @@ import { LocalRegisterComponent } from './components/auth/local-register/local-r
 import { CustomerAccountComponent } from './components/account/customer-account/customer-account.component';
 import { CustomerBookingsComponent } from './components/account/customer-bookings/customer-bookings.component';
 import { CustomerAuthGuard } from './guards/customer-auth.guard';
+import { AdminAuthGuard } from './guards/admin-auth.guard';
+import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
+import { PaymentCheckoutComponent } from './components/payment/payment-checkout/payment-checkout.component';
+import { BookingConfirmationComponent } from './components/booking-confirmation/booking-confirmation.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
@@ -41,15 +45,19 @@ const routes: Routes = [
   { path: 'cars/car-detail/:carId', component: CarDetailComponent },
   { path: 'car/rental/:carId', component: RentalComponent },
   { path: 'booking-lookup', component: BookingLookupComponent },
+  { path: 'payment/:bookingReference', component: PaymentCheckoutComponent },
+  { path: 'booking-confirmation/:bookingReference', component: BookingConfirmationComponent },
   { path: 'creditcard/:rental', component: CreditCardComponent },
   { path: 'login', component: LocalLoginComponent },
   { path: 'register', component: LocalRegisterComponent },
   { path: 'account', component: CustomerAccountComponent, canActivate: [CustomerAuthGuard] },
   { path: 'account/bookings', component: CustomerBookingsComponent, canActivate: [CustomerAuthGuard] },
+  { path: 'admin/login', component: AdminLoginComponent },
   { path: 'user', component: UserComponent, children: [{ path: 'edituser', component: UsereditComponent }] },
   {
     path: 'admin',
     component: AdminDashboardComponent,
+    canActivate: [AdminAuthGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', component: AdminMetricsDashboardComponent },

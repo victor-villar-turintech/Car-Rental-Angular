@@ -44,6 +44,7 @@
           <th>Services</th>
           <th>Total</th>
           <th>Status</th>
+          <th>Payment</th>
           <th class="text-right">Actions</th>
         </tr>
       </thead>
@@ -72,6 +73,11 @@
             <small>Vehicle {{ booking.vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</small>
           </td>
           <td><span class="status-pill" [ngClass]="booking.status">{{ booking.status }}</span></td>
+          <td>
+            <strong>{{ booking.paymentStatus || 'Pending' }}</strong>
+            <small>{{ booking.paymentMethod || 'No payment method' }}</small>
+            <small *ngIf="booking.paymentReference">{{ booking.paymentReference }}</small>
+          </td>
           <td class="text-right action-buttons">
             <ng-container *ngFor="let action of getAvailableActions(booking)">
               <button
