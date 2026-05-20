@@ -1,0 +1,16 @@
+<section class="auth-page container">
+  <div class="auth-card">
+    <span>Customer account</span>
+    <h1>Sign in</h1>
+    <p>Use a local demo account to pre-fill bookings and view your rental history.</p>
+
+    <label for="email">Email</label>
+    <input id="email" class="form-control" type="email" [(ngModel)]="email" autocomplete="email" />
+
+    <label for="password">Password</label>
+    <input id="password" class="form-control" type="password" [(ngModel)]="password" autocomplete="current-password" />
+
+    <button class="btn btn-primary btn-block" type="button" (click)="login()">Sign in</button>
+    <p class="auth-link">No account yet? <a routerLink="/register">Create one</a></p>
+  </div>
+</section>

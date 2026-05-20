@@ -30,3 +30,7 @@
 .result-card.empty h2 { color: #0f172a; font-weight: 950; }
 @media (max-width: 991.98px) { .lookup-grid { grid-template-columns: 1fr; } }
 @media (max-width: 575.98px) { .result-grid { grid-template-columns: 1fr; } .lookup-hero h1 { font-size: 2.1rem; } }
+
+.extras-summary { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 1rem; margin: 1rem 0; }
+.extras-summary h3 { color: #0f172a; font-weight: 900; font-size: 1.05rem; }
+.extras-summary div { display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid #e2e8f0; padding: .5rem 0; }

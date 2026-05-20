@@ -1,0 +1,12 @@
+.admin-login-page { min-height: 80vh; display: grid; place-items: center; padding: 3rem 1rem; background: #f8fafc; }
+.admin-login-card { width: min(100%, 460px); background: #fff; border-radius: 24px; padding: 2rem; box-shadow: 0 24px 60px rgba(15, 23, 42, .12); }
+.admin-login-card span { text-transform: uppercase; font-size: .75rem; font-weight: 800; color: #2563eb; letter-spacing: .08em; }
+.admin-login-card h1 { margin: .35rem 0 .75rem; font-weight: 800; color: #0f172a; }
+.admin-login-card p { color: #64748b; }
+.admin-login-card label { display: block; margin-top: 1rem; font-weight: 700; color: #334155; }
+.credential-box { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: 1rem 0; }
+.credential-box div { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; padding: .85rem; }
+.credential-box small { display: block; color: #64748b; }
+.credential-box strong { color: #1d4ed8; }
+.btn-block { width: 100%; margin-top: 1.25rem; }
+.back-link { display: inline-block; margin-top: 1rem; color: #475569; }

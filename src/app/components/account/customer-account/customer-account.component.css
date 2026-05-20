@@ -1,0 +1,19 @@
+.account-page { padding: 46px 0 72px; }
+.account-header { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem; }
+.account-header span { color: #2563eb; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; }
+h1, h2 { color: #0f172a; font-weight: 900; }
+p { color: #64748b; }
+.account-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+.account-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.25rem; align-items: start; }
+.account-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 26px; padding: 1.5rem; box-shadow: 0 24px 70px rgba(15,23,42,.08); }
+.two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+label { margin-top: .8rem; font-weight: 800; color: #334155; }
+.form-control { border-radius: 12px; min-height: 46px; }
+.btn { border-radius: 14px; font-weight: 800; }
+.account-card .btn { margin-top: 1rem; }
+.summary-card { display: grid; gap: .75rem; }
+.summary-card div { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: .85rem; }
+.summary-card span { display: block; color: #64748b; font-weight: 800; font-size: .8rem; }
+.summary-card strong { color: #0f172a; overflow-wrap: anywhere; }
+@media (max-width: 991.98px) { .account-header, .account-grid { display: block; } .account-actions { margin-top: 1rem; } .summary-card { margin-top: 1rem; } }
+@media (max-width: 575.98px) { .two-cols { grid-template-columns: 1fr; } }

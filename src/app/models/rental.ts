@@ -1,3 +1,6 @@
+import { BookingExtraSelection } from './booking-extra';
+import { PaymentMethod, PaymentStatus } from './payment';
+
 export type RentalStatus = 'Pending' | 'Confirmed' | 'Active' | 'Completed' | 'Cancelled';
 
 export interface Rental {
@@ -14,12 +17,22 @@ export interface Rental {
   rentDate?: Date | string;
   returnDate?: Date | string;
   rentalDays?: number;
+  vehicleSubtotal?: number;
+  extrasTotal?: number;
   totalRentPrice?: number | undefined;
+  selectedExtras?: BookingExtraSelection[];
+  customerId?: number;
   customerName?: string;
   customerEmail?: string;
   customerPhone?: string;
   pickupLocation?: string;
+  pickupLocationId?: string;
+  airportTerminal?: string;
   status?: RentalStatus;
+  paymentStatus?: PaymentStatus;
+  paymentMethod?: PaymentMethod;
+  paymentReference?: string;
+  paidAt?: string;
   createdAt?: string;
   updatedAt?: string;
 }

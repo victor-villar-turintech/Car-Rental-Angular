@@ -1,0 +1,38 @@
+<section class="auth-page container">
+  <div class="auth-card">
+    <span>Customer account</span>
+    <h1>Create account</h1>
+    <p>This creates a localStorage demo account. It is enough to test customer journeys without a backend.</p>
+
+    <div class="two-cols">
+      <div>
+        <label for="firstName">First name</label>
+        <input id="firstName" class="form-control" type="text" [(ngModel)]="firstName" />
+      </div>
+      <div>
+        <label for="lastName">Last name</label>
+        <input id="lastName" class="form-control" type="text" [(ngModel)]="lastName" />
+      </div>
+    </div>
+
+    <label for="email">Email</label>
+    <input id="email" class="form-control" type="email" [(ngModel)]="email" />
+
+    <label for="phone">Phone</label>
+    <input id="phone" class="form-control" type="text" [(ngModel)]="phone" />
+
+    <div class="two-cols">
+      <div>
+        <label for="password">Password</label>
+        <input id="password" class="form-control" type="password" [(ngModel)]="password" />
+      </div>
+      <div>
+        <label for="confirmPassword">Confirm password</label>
+        <input id="confirmPassword" class="form-control" type="password" [(ngModel)]="confirmPassword" />
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-block" type="button" (click)="register()">Create account</button>
+    <p class="auth-link">Already registered? <a routerLink="/login">Sign in</a></p>
+  </div>
+</section>

@@ -1,0 +1,55 @@
+<section class="receipt-page container" *ngIf="booking; else missingReceipt">
+  <div class="receipt-card">
+    <div class="receipt-header">
+      <div>
+        <span>Booking receipt</span>
+        <h1>Payment complete</h1>
+        <p>Your mock payment has been saved locally. Keep the booking reference for lookup.</p>
+      </div>
+      <div class="paid-badge">{{ booking.paymentStatus || 'Paid' }}</div>
+    </div>
+
+    <div class="reference-box">
+      <small>Booking reference</small>
+      <strong>{{ booking.bookingReference }}</strong>
+      <button class="btn btn-sm btn-outline-primary" type="button" (click)="copyReference()">{{ copied ? 'Copied' : 'Copy' }}</button>
+    </div>
+
+    <div class="receipt-grid">
+      <div><small>Vehicle</small><strong>{{ booking.brandName }} {{ booking.carName }}</strong></div>
+      <div><small>Customer</small><strong>{{ booking.customerName }}</strong></div>
+      <div><small>Email</small><strong>{{ booking.customerEmail }}</strong></div>
+      <div><small>Dates</small><strong>{{ booking.rentDate | date:'mediumDate' }} → {{ booking.returnDate | date:'mediumDate' }}</strong></div>
+      <div><small>Pickup</small><strong>{{ booking.pickupLocation }}</strong></div>
+      <div><small>Rental days</small><strong>{{ booking.rentalDays }}</strong></div>
+      <div><small>Payment method</small><strong>{{ booking.paymentMethod || payment?.method || 'N/A' }}</strong></div>
+      <div><small>Payment ref</small><strong>{{ booking.paymentReference || payment?.transactionReference || 'N/A' }}</strong></div>
+    </div>
+
+    <section class="extras" *ngIf="booking.selectedExtras?.length">
+      <h2>Selected services</h2>
+      <div *ngFor="let extra of booking.selectedExtras">
+        <span>{{ extra.name }}</span>
+        <strong>{{ extra.totalPrice | currency:'GBP':'symbol':'1.0-0' }}</strong>
+      </div>
+    </section>
+
+    <section class="price-summary">
+      <div><span>Vehicle subtotal</span><strong>{{ booking.vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+      <div><span>Extras subtotal</span><strong>{{ booking.extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+      <div class="total"><span>Total paid</span><strong>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    </section>
+
+    <div class="receipt-actions no-print">
+      <button class="btn btn-primary" type="button" (click)="printReceipt()">Print / save PDF</button>
+      <button class="btn btn-outline-primary" type="button" (click)="goToAccountBookings()">My bookings</button>
+      <a class="btn btn-outline-secondary" routerLink="/cars">Browse more cars</a>
+    </div>
+  </div>
+</section>
+
+<ng-template #missingReceipt>
+  <section class="receipt-page container">
+    <div class="receipt-card"><h1>Receipt not found</h1><p>Could not load the booking receipt.</p><a class="btn btn-primary" routerLink="/booking-lookup">Booking lookup</a></div>
+  </section>
+</ng-template>

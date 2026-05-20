@@ -43,3 +43,18 @@ label { font-weight: 800; color: #334155; margin-top: .75rem; }
 .reference-box small { grid-column: 1 / -1; color: #2563eb; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
 .reference-box strong { color: #0f172a; font-size: 1.15rem; overflow-wrap: anywhere; }
 @media (max-width: 575.98px) { .duration-grid, .reference-box { grid-template-columns: 1fr; } }
+.account-banner { border-radius: 16px; padding: .85rem 1rem; margin-bottom: 1rem; font-weight: 700; }
+.account-banner.signed-in { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+.account-banner.guest { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+.account-banner a { font-weight: 900; }
+.extras-panel { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 1rem; margin-top: 1rem; }
+.extras-heading h3 { color: #0f172a; font-weight: 900; margin: 0; font-size: 1.05rem; }
+.extras-heading p { margin: .25rem 0 .85rem; font-size: .86rem; }
+.extra-option { display: grid; grid-template-columns: 1fr auto; gap: .75rem; align-items: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: .75rem; margin-bottom: .6rem; }
+.extra-option.selected { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.08); }
+.extra-option label { display: flex; gap: .7rem; align-items: flex-start; margin: 0; cursor: pointer; }
+.extra-option input { margin-top: .25rem; }
+.extra-option small { display: block; color: #64748b; font-weight: 600; }
+.selected-extras-summary { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 1rem; margin: 1rem 0; }
+.selected-extras-summary h2 { font-size: 1.1rem; margin-bottom: .75rem; }
+.selected-extras-summary div { display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid #e2e8f0; padding: .5rem 0; }
