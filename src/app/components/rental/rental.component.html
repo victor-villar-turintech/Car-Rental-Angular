@@ -1,8 +1,16 @@
 <section class="rental-page container" *ngIf="car && !bookingConfirmed">
   <a class="back-link" [routerLink]="['/cars', car.carId]">← Back to details</a>
 
+  <div class="booking-progress" aria-label="Booking progress">
+    <span class="active">1 Vehicle</span>
+    <span class="active">2 Dates</span>
+    <span [class.active]="selectedExtrasCount > 0">3 Extras</span>
+    <span>4 Payment</span>
+    <span>5 Receipt</span>
+  </div>
+
   <div class="rental-grid">
-    <article class="rental-car-card">
+    <article class="rental-car-card vehicle-summary-card">
       <div class="rental-image-wrap">
         <img class="vehicle-photo" [src]="car.imagePath" [alt]="car.colorName + ' ' + car.brandName + ' ' + car.carName" (error)="handleVehicleImageError($event, car)" />
         <div class="vehicle-photo-caption">
@@ -12,96 +20,147 @@
         </div>
       </div>
 
-      <div>
-        <span>{{ car.brandName }}</span>
+      <div class="vehicle-details-panel">
+        <span class="eyebrow">{{ car.brandName }}</span>
         <h1>{{ car.carName }}</h1>
-        <p>{{ car.description }}</p>
-        <ul>
-          <li>Colour: {{ car.colorName }}</li>
-          <li>Model year: {{ car.modelYear }}</li>
-          <li>Daily price: {{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</li>
-          <li>Pickup: {{ pickupLocation }}</li>
-        </ul>
+        <p class="vehicle-description">{{ car.description }}</p>
+
+        <div class="vehicle-spec-grid">
+          <div class="spec-card">
+            <small>Colour</small>
+            <strong>{{ car.colorName }}</strong>
+          </div>
+          <div class="spec-card">
+            <small>Model year</small>
+            <strong>{{ car.modelYear }}</strong>
+          </div>
+          <div class="spec-card">
+            <small>Transmission</small>
+            <strong>{{ getTransmissionLabel(car) }}</strong>
+          </div>
+          <div class="spec-card highlight">
+            <small>Daily price</small>
+            <strong>{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</strong>
+          </div>
+        </div>
+
+        <section class="included-panel">
+          <h2>Included with this vehicle</h2>
+          <div class="included-list">
+            <span>London pickup support</span>
+            <span>Availability checked locally</span>
+            <span>Optional insurance and extras</span>
+            <span>Mock payment receipt</span>
+          </div>
+        </section>
+
+        <div class="vehicle-pickup-card">
+          <small>Selected pickup</small>
+          <strong>{{ pickupLocation }}</strong>
+          <span *ngIf="airportTerminal">Airport terminal pickup selected</span>
+        </div>
       </div>
     </article>
 
     <aside class="booking-card">
-      <span class="eyebrow">Booking confirmation</span>
-      <h2>Choose dates and customer details</h2>
+      <div class="booking-scroll-area">
+        <span class="eyebrow">Booking confirmation</span>
+        <h2>Choose dates and customer details</h2>
 
-      <div class="account-banner" [ngClass]="currentCustomer ? 'signed-in' : 'guest'">
-        <div *ngIf="currentCustomer; else guestBooking">
-          Signed in as <strong>{{ currentCustomer.firstName }} {{ currentCustomer.lastName }}</strong>. This booking will appear in My bookings.
+        <div class="account-banner" [ngClass]="currentCustomer ? 'signed-in' : 'guest'">
+          <div *ngIf="currentCustomer; else guestBooking">
+            Signed in as <strong>{{ currentCustomer.firstName }} {{ currentCustomer.lastName }}</strong>. This booking will appear in My bookings.
+          </div>
+          <ng-template #guestBooking>
+            Booking as guest. <a routerLink="/register">Create an account</a> to save bookings under My bookings.
+          </ng-template>
         </div>
-        <ng-template #guestBooking>
-          Booking as guest. <a routerLink="/register">Create an account</a> to save bookings under My bookings.
-        </ng-template>
-      </div>
 
-      <label for="pickupLocation">Pickup location</label>
-      <select id="pickupLocation" class="form-control" [(ngModel)]="pickupLocationId" (change)="onPickupLocationChange()">
-        <option *ngFor="let location of pickupLocations" [value]="location.id">{{ location.label }}{{ location.surcharge ? ' +' + (location.surcharge | currency:'GBP':'symbol':'1.0-0') : '' }}</option>
-      </select>
+        <div class="form-section">
+          <h3>Pickup and dates</h3>
 
-      <label for="pickupDate">Pickup date</label>
-      <input id="pickupDate" class="form-control" type="date" [min]="today" [(ngModel)]="pickupDate" (change)="onPickupDateChange()" />
-
-      <div class="duration-grid">
-        <div>
-          <label for="durationPreset">Rental length</label>
-          <select id="durationPreset" class="form-control" [(ngModel)]="durationPreset" (change)="onDurationChange()">
-            <option *ngFor="let option of durationOptions" [value]="option.value">{{ option.label }}</option>
+          <label for="pickupLocation">Pickup location</label>
+          <select id="pickupLocation" class="form-control" [(ngModel)]="pickupLocationId" (change)="onPickupLocationChange()">
+            <option *ngFor="let location of pickupLocations" [value]="location.id">{{ location.label }}{{ location.surcharge ? ' +' + (location.surcharge | currency:'GBP':'symbol':'1.0-0') : '' }}</option>
           </select>
+
+          <label for="pickupDate">Pickup date</label>
+          <input id="pickupDate" class="form-control" type="date" [min]="today" [(ngModel)]="pickupDate" (change)="onPickupDateChange()" />
+
+          <div class="duration-grid">
+            <div>
+              <label for="durationPreset">Rental length</label>
+              <select id="durationPreset" class="form-control" [(ngModel)]="durationPreset" (change)="onDurationChange()">
+                <option *ngFor="let option of durationOptions" [value]="option.value">{{ option.label }}</option>
+              </select>
+            </div>
+            <div *ngIf="durationPreset === 'custom'">
+              <label for="customRentalDays">Days</label>
+              <input id="customRentalDays" class="form-control" type="number" min="1" [(ngModel)]="customRentalDays" (ngModelChange)="onCustomRentalDaysChange()" />
+            </div>
+          </div>
+
+          <label for="returnDate">Return date</label>
+          <input id="returnDate" class="form-control" type="date" [min]="pickupDate || today" [(ngModel)]="returnDate" (change)="onReturnDateChange()" />
         </div>
-        <div *ngIf="durationPreset === 'custom'">
-          <label for="customRentalDays">Days</label>
-          <input id="customRentalDays" class="form-control" type="number" min="1" [(ngModel)]="customRentalDays" (ngModelChange)="onCustomRentalDaysChange()" />
+
+        <div class="form-section">
+          <h3>Customer details</h3>
+          <label for="customerName">Customer name</label>
+          <input id="customerName" class="form-control" type="text" [(ngModel)]="customerName" (ngModelChange)="calculatePrice()" />
+
+          <label for="customerEmail">Customer email</label>
+          <input id="customerEmail" class="form-control" type="email" [(ngModel)]="customerEmail" (ngModelChange)="calculatePrice()" />
+
+          <label for="customerPhone">Customer phone</label>
+          <input id="customerPhone" class="form-control" type="text" [(ngModel)]="customerPhone" (ngModelChange)="calculatePrice()" />
         </div>
+
+        <section class="extras-panel">
+          <div class="extras-heading">
+            <h3>Optional services</h3>
+            <p>Select insurance, equipment, support, fuel, and London airport pickup extras.</p>
+          </div>
+
+          <div class="extras-group" *ngFor="let group of groupedBookingExtras">
+            <button class="extras-group-toggle" type="button" (click)="toggleExtraCategory(group.category)">
+              <span>
+                <strong>{{ getExtraCategoryLabel(group.category) }}</strong>
+                <small>{{ getExtraCategoryHint(group.category) }}</small>
+              </span>
+              <em>{{ isExtraCategoryCollapsed(group.category) ? 'Show' : 'Hide' }}</em>
+            </button>
+
+            <div class="extras-group-body" *ngIf="!isExtraCategoryCollapsed(group.category)">
+              <article class="extra-option" *ngFor="let extra of group.extras" [ngClass]="extra.selected ? 'selected' : ''">
+                <label>
+                  <input type="checkbox" [checked]="extra.selected" (change)="onExtraToggle(extra)" />
+                  <span>
+                    <strong>{{ extra.name }}</strong>
+                    <small>{{ extra.description }}</small>
+                  </span>
+                </label>
+                <strong>{{ extra.price | currency:'GBP':'symbol':'1.0-0' }}{{ extra.pricingType === 'perDay' ? '/day' : '' }}</strong>
+              </article>
+            </div>
+          </div>
+        </section>
       </div>
 
-      <label for="returnDate">Return date</label>
-      <input id="returnDate" class="form-control" type="date" [min]="pickupDate || today" [(ngModel)]="returnDate" (change)="onReturnDateChange()" />
-
-      <label for="customerName">Customer name</label>
-      <input id="customerName" class="form-control" type="text" [(ngModel)]="customerName" (ngModelChange)="calculatePrice()" />
-
-      <label for="customerEmail">Customer email</label>
-      <input id="customerEmail" class="form-control" type="email" [(ngModel)]="customerEmail" (ngModelChange)="calculatePrice()" />
-
-      <label for="customerPhone">Customer phone</label>
-      <input id="customerPhone" class="form-control" type="text" [(ngModel)]="customerPhone" (ngModelChange)="calculatePrice()" />
-
-      <section class="extras-panel">
-        <div class="extras-heading">
-          <h3>Optional services</h3>
-          <p>Select insurance, equipment, support, fuel, and London airport pickup extras.</p>
-        </div>
-        <article class="extra-option" *ngFor="let extra of bookingExtras" [ngClass]="extra.selected ? 'selected' : ''">
-          <label>
-            <input type="checkbox" [checked]="extra.selected" (change)="onExtraToggle(extra)" />
-            <span>
-              <strong>{{ extra.name }}</strong>
-              <small>{{ extra.description }}</small>
-            </span>
-          </label>
-          <strong>{{ extra.price | currency:'GBP':'symbol':'1.0-0' }}{{ extra.pricingType === 'perDay' ? '/day' : '' }}</strong>
-        </article>
-      </section>
-
-      <div class="price-breakdown">
-        <div><span>Daily price</span><strong>{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-        <div><span>Rental days</span><strong>{{ rentalDays || 0 }}</strong></div>
-        <div><span>Vehicle subtotal</span><strong>{{ vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-        <div><span>Extras subtotal</span><strong>{{ extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-        <div class="total"><span>Total price</span><strong>{{ rentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+      <div class="sticky-booking-summary">
+        <div class="summary-row"><span>Daily price</span><strong>{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+        <div class="summary-row"><span>Rental days</span><strong>{{ rentalDays || 0 }}</strong></div>
+        <div class="summary-row"><span>Vehicle subtotal</span><strong>{{ vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+        <div class="summary-row"><span>Extras subtotal</span><strong>{{ extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+        <div class="summary-row total"><span>Total price</span><strong>{{ rentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+        <div class="availability-message" [ngClass]="rentable ? 'available' : 'unavailable'">{{ availabilityMessage }}</div>
+        <button class="btn btn-primary btn-block" type="button" [disabled]="!rental || !rentable" (click)="confirmBooking()">Request demo booking</button>
+        <p class="small-note">Bookings are saved in localStorage and appear in the Admin Bookings page.</p>
       </div>
-
-      <div class="availability-message" [ngClass]="rentable ? 'available' : 'unavailable'">{{ availabilityMessage }}</div>
-
-      <button class="btn btn-primary btn-block" type="button" [disabled]="!rental || !rentable" (click)="confirmBooking()">Request demo booking</button>
-      <p class="small-note">Bookings are saved in localStorage and appear in the Admin Bookings page. No backend API is required.</p>
     </aside>
   </div>
+
+  <button class="back-to-top-btn" type="button" (click)="scrollToTop()">↑ Top</button>
 </section>
 
 <section class="rental-page container" *ngIf="bookingConfirmed && confirmedBooking">
@@ -144,6 +203,8 @@
       <a class="btn btn-outline-secondary" routerLink="/admin/bookings">View admin bookings</a>
     </div>
   </div>
+
+  <button class="back-to-top-btn" type="button" (click)="scrollToTop()">↑ Top</button>
 </section>
 
 <section class="rental-page container" *ngIf="!car && !bookingConfirmed">

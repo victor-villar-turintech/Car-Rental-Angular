@@ -40,6 +40,7 @@ export class RentalComponent implements OnInit {
   durationPreset = '1';
   customRentalDays: number | undefined;
   copiedReference = false;
+  collapsedExtraCategories: { [category: string]: boolean } = {};
 
   durationOptions = [
     { label: '1 day', value: '1' },
@@ -294,6 +295,65 @@ export class RentalComponent implements OnInit {
   goToRegister(): void { this.router.navigate(['/register'], { queryParams: { returnUrl: this.router.url } }); }
 
   get selectedExtras(): BookingExtraSelection[] { return this.bookingExtras.filter((extra) => extra.selected); }
+
+  get selectedExtrasCount(): number { return this.selectedExtras.length; }
+
+  get groupedBookingExtras(): { category: string; extras: BookingExtraSelection[] }[] {
+    const groups: { [category: string]: BookingExtraSelection[] } = {};
+    this.bookingExtras.forEach((extra) => {
+      const category = extra.category || 'Other';
+      groups[category] = groups[category] || [];
+      groups[category].push(extra);
+    });
+
+    const preferredOrder = ['Insurance', 'Pickup', 'Driver', 'Equipment', 'Support', 'Fuel', 'Other'];
+    const rank = (category: string) => {
+      const index = preferredOrder.indexOf(category);
+      return index === -1 ? preferredOrder.length : index;
+    };
+
+    return Object.keys(groups)
+      .sort((left, right) => rank(left) - rank(right))
+      .map((category) => ({ category, extras: groups[category] }));
+  }
+
+  toggleExtraCategory(category: string): void {
+    this.collapsedExtraCategories[category] = !this.collapsedExtraCategories[category];
+  }
+
+  isExtraCategoryCollapsed(category: string): boolean {
+    return !!this.collapsedExtraCategories[category];
+  }
+
+  getExtraCategoryLabel(category: string): string {
+    const labels: { [category: string]: string } = {
+      Insurance: 'Insurance cover',
+      Pickup: 'Airport and pickup',
+      Driver: 'Driver options',
+      Equipment: 'Equipment',
+      Support: 'Support',
+      Fuel: 'Fuel options',
+      Other: 'Other services',
+    };
+    return labels[category] || category;
+  }
+
+  getExtraCategoryHint(category: string): string {
+    const hints: { [category: string]: string } = {
+      Insurance: 'Reduce excess and protect the rental.',
+      Pickup: 'London branch and airport terminal services.',
+      Driver: 'Add permitted drivers to the booking.',
+      Equipment: 'Navigation and passenger equipment.',
+      Support: 'Roadside and journey assistance.',
+      Fuel: 'Fuel options for easier return.',
+      Other: 'Additional demo services.',
+    };
+    return hints[category] || 'Optional booking add-ons.';
+  }
+
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   getVehicleCategory(car: Car): string {
     const text = `${car.carName} ${car.description}`.toLowerCase();
