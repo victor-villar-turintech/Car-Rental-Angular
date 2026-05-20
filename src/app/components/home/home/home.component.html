@@ -18,12 +18,12 @@
         </div>
       </div>
       <div class="col-lg-5 mt-4 mt-lg-0">
-        <div class="hero-card">
-          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80" alt="Rental car in London" />
+        <div class="hero-card" *ngIf="featuredCar as car">
+          <img [src]="car.imagePath" [alt]="car.brandName + ' ' + car.carName" />
           <div class="hero-card-body">
             <span>Featured</span>
-            <h3>Nissan Qashqai Tekna</h3>
-            <p>Compact SUV · Automatic · London pickup</p>
+            <h3>{{ car.brandName }} {{ car.carName }}</h3>
+            <p>{{ getFeaturedCarSummary(car) }}</p>
           </div>
         </div>
       </div>
@@ -36,7 +36,6 @@
     <span>How it works</span>
     <h2>A cleaner local rental flow</h2>
   </div>
-
   <div class="row">
     <div class="col-md-4 mb-4">
       <div class="feature-card">

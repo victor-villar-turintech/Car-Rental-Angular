@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { ListResponseModel } from '../models/listResponseModel';
 import { Brand } from '../models/brand';
+import { ListResponseModel } from '../models/listResponseModel';
 import { ResponseModel } from '../models/responseModel';
 import { SingleResponseModel } from '../models/singleResponseModel';
 import { MOCK_BRANDS } from '../data/mock-rental-data';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class BrandService {
   private brands: Brand[] = [...MOCK_BRANDS];
 
@@ -28,12 +26,14 @@ export class BrandService {
   }
 
   updateBrand(brand: Brand): Observable<ResponseModel> {
-    this.brands = this.brands.map((item) => item.brandId === brand.brandId ? brand : item);
+    const brandId = Number(brand.brandId);
+    this.brands = this.brands.map((item) => item.brandId === brandId ? { ...brand, brandId } : item);
     return of({ success: true, message: 'Brand updated.' });
   }
 
   deleteBrand(brand: Brand): Observable<ResponseModel> {
-    this.brands = this.brands.filter((item) => item.brandId !== brand.brandId);
+    const brandId = Number(brand.brandId);
+    this.brands = this.brands.filter((item) => item.brandId !== brandId);
     return of({ success: true, message: 'Brand deleted.' });
   }
 }

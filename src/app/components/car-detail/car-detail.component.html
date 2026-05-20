@@ -1,41 +1,58 @@
-<section class="detail-page" *ngIf="car">
-  <div class="container">
-    <a class="back-link" routerLink="/cars">← Back to cars</a>
+<section class="detail-page container" *ngIf="dataLoaded && car">
+  <a class="back-link" routerLink="/cars">← Back to cars</a>
 
-    <div class="detail-card">
-      <div class="detail-image">
-        <img
-          class="vehicle-photo detail-photo"
-          [src]="car.imagePath"
-          [alt]="car.colorName + ' ' + car.brandName + ' ' + car.carName"
-          (error)="handleVehicleImageError($event, car)"
-        />
-        <div class="vehicle-photo-caption detail-caption">
-          <strong>{{ car.colorName }}</strong>
-          <span>{{ car.brandName }} {{ car.carName }}</span>
+  <div class="detail-card">
+    <div class="detail-image">
+      <img class="vehicle-photo" [src]="getMainImage()" [alt]="car.colorName + ' ' + car.brandName + ' ' + car.carName" (error)="handleVehicleImageError($event, car)" />
+      <div class="vehicle-photo-caption">
+        <strong [style.background]="getVehicleColourHex(car.colorName)" [style.color]="getVehicleLabelColour(car.colorName)">{{ car.colorName }}</strong>
+        <span>{{ getVehicleCategory(car) }}</span>
+        <span>{{ getTransmissionLabel(car) }}</span>
+      </div>
+    </div>
+
+    <div class="detail-content">
+      <span class="eyebrow">{{ car.brandName }}</span>
+      <h1>{{ car.carName }}</h1>
+      <p class="lead-text">{{ car.description }}</p>
+
+      <div class="spec-grid">
+        <div><span>Daily price</span><strong>{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+        <div><span>Model year</span><strong>{{ car.modelYear }}</strong></div>
+        <div><span>Colour</span><strong>{{ car.colorName }}</strong></div>
+        <div><span>Pickup</span><strong>London</strong></div>
+      </div>
+
+      <div class="booking-estimator">
+        <h2>Estimate rental cost</h2>
+        <div class="date-grid">
+          <div>
+            <label for="detailPickup">Pickup date</label>
+            <input id="detailPickup" class="form-control" type="date" [min]="today" [(ngModel)]="pickupDate" (change)="updateRentalEstimate()" />
+          </div>
+          <div>
+            <label for="detailReturn">Return date</label>
+            <input id="detailReturn" class="form-control" type="date" [min]="pickupDate || today" [(ngModel)]="returnDate" (change)="updateRentalEstimate()" />
+          </div>
+        </div>
+        <div class="estimate-total">
+          <span>{{ rentalDays || 0 }} rental day{{ rentalDays === 1 ? '' : 's' }}</span>
+          <strong>{{ totalPrice | currency:'GBP':'symbol':'1.0-0' }}</strong>
+        </div>
+
+        <div class="availability-message" *ngIf="availabilityChecked" [ngClass]="availableForSelectedDates ? 'available' : 'unavailable'">
+          {{ availabilityMessage }}
         </div>
       </div>
-      <div class="detail-content">
-        <span class="eyebrow">{{ car.brandName }}</span>
-        <h1>{{ car.carName }}</h1>
-        <p class="lead-text">{{ car.description }}</p>
 
-        <div class="spec-grid">
-          <div><span>Daily price</span><strong>{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-          <div><span>Model year</span><strong>{{ car.modelYear }}</strong></div>
-          <div><span>Colour</span><strong>{{ car.colorName }}</strong></div>
-          <div><span>Pickup</span><strong>London</strong></div>
-        </div>
-
-        <div class="detail-actions">
-          <a class="btn btn-primary btn-lg" [routerLink]="['/car/rental', car.carId]">Rent this car</a>
-          <a class="btn btn-outline-primary btn-lg" routerLink="/cars">Browse more cars</a>
-        </div>
+      <div class="detail-actions">
+        <button class="btn btn-primary" type="button" [disabled]="pickupDate && returnDate && !availableForSelectedDates" (click)="rentThisCar()">Rent this car</button>
+        <a class="btn btn-outline-secondary" routerLink="/cars">Browse more cars</a>
       </div>
     </div>
   </div>
 </section>
 
-<div class="container py-5" *ngIf="!car">
-  <div class="alert alert-info">Loading car details...</div>
-</div>
+<section class="container detail-page" *ngIf="!dataLoaded">
+  <div class="empty-state">Loading car details...</div>
+</section>

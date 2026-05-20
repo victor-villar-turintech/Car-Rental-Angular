@@ -1,121 +1,30 @@
-.catalogue-hero {
-  background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, .18), transparent 28%), linear-gradient(135deg, #0f172a 0%, #1e293b 58%, #2563eb 100%);
-  color: #fff;
-  padding: 58px 0 44px;
-}
-.catalogue-hero-inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 520px);
-  gap: 2rem;
-  align-items: end;
-}
-.catalogue-hero span {
-  display: inline-flex;
-  color: #bfdbfe;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-  font-weight: 900;
-  font-size: .75rem;
-  margin-bottom: .7rem;
-}
-.catalogue-hero h1 {
-  font-size: clamp(2.4rem, 4vw, 4.4rem);
-  font-weight: 950;
-  line-height: .95;
-  letter-spacing: -.05em;
-  margin: 0 0 1rem;
-}
+.catalogue-hero { background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, .18), transparent 28%), linear-gradient(135deg, #0f172a 0%, #1e293b 58%, #2563eb 100%); color: #fff; padding: 58px 0 44px; }
+.catalogue-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 520px); gap: 2rem; align-items: end; }
+.catalogue-hero span { display: inline-flex; color: #bfdbfe; text-transform: uppercase; letter-spacing: .12em; font-weight: 900; font-size: .75rem; margin-bottom: .7rem; }
+.catalogue-hero h1 { font-size: clamp(2.4rem, 4vw, 4.4rem); font-weight: 950; line-height: .95; letter-spacing: -.05em; margin: 0 0 1rem; }
 .catalogue-hero p { color: #dbeafe; font-size: 1.1rem; max-width: 680px; }
-.catalogue-search {
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.18);
-  border-radius: 24px;
-  padding: 1rem;
-  backdrop-filter: blur(12px);
-}
+.catalogue-search { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); border-radius: 24px; padding: 1rem; backdrop-filter: blur(12px); }
 .catalogue-search label { color: #e0f2fe; font-weight: 900; margin-bottom: .5rem; }
 .search-row { display: grid; grid-template-columns: 1fr auto; gap: .7rem; }
 .search-row .form-control, .search-row .btn { border-radius: 14px; }
-.catalogue-layout {
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
-  gap: 1.5rem;
-  padding-top: 2rem;
-  padding-bottom: 4rem;
-}
+.catalogue-layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 1.5rem; padding-top: 2rem; padding-bottom: 4rem; }
 .filter-column { position: sticky; top: 94px; align-self: start; }
-.catalogue-toolbar {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: center;
-  margin-bottom: 1.2rem;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 22px;
-  padding: 1rem 1.2rem;
-  box-shadow: 0 12px 36px rgba(15,23,42,.06);
-}
+.filter-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 1.2rem; box-shadow: 0 12px 36px rgba(15,23,42,.06); display: grid; gap: .75rem; }
+.filter-card h3 { color: #0f172a; font-weight: 950; margin: 0 0 .25rem; }
+.filter-card label { color: #334155; font-size: .82rem; font-weight: 900; margin: .15rem 0 -.35rem; }
+.filter-card .form-control { border-radius: 13px; min-height: 44px; }
+.price-filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; }
+.catalogue-toolbar { display: flex; justify-content: space-between; gap: 1rem; align-items: center; margin-bottom: 1.2rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 22px; padding: 1rem 1.2rem; box-shadow: 0 12px 36px rgba(15,23,42,.06); }
 .catalogue-toolbar h2 { margin: 0; color: #0f172a; font-weight: 950; letter-spacing: -.03em; }
 .catalogue-toolbar p { margin: .15rem 0 0; color: #64748b; }
-.vehicle-card {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 26px;
-  box-shadow: 0 18px 46px rgba(15, 23, 42, .08);
-  transition: transform .18s ease, box-shadow .18s ease;
-}
+.vehicle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+.vehicle-card { display: flex; flex-direction: column; overflow: hidden; background: #fff; border: 1px solid #e2e8f0; border-radius: 26px; box-shadow: 0 18px 46px rgba(15, 23, 42, .08); transition: transform .18s ease, box-shadow .18s ease; }
 .vehicle-card:hover { transform: translateY(-4px); box-shadow: 0 24px 70px rgba(15, 23, 42, .14); }
 .vehicle-image { position: relative; height: 220px; background: #e2e8f0; overflow: hidden; }
-
-.vehicle-art {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 220px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #dbeafe 0%, #f8fafc 52%, #eff6ff 100%);
-}
-.vehicle-art-skyline { position: absolute; inset: 0 0 68px; opacity: .55; }
-.vehicle-art-skyline span { position: absolute; bottom: 0; width: 13%; border-radius: 12px 12px 0 0; background: #bfdbfe; }
-.vehicle-art-skyline span:nth-child(1) { left: 4%; height: 46%; }
-.vehicle-art-skyline span:nth-child(2) { left: 22%; height: 62%; }
-.vehicle-art-skyline span:nth-child(3) { left: 43%; height: 40%; }
-.vehicle-art-skyline span:nth-child(4) { left: 65%; height: 70%; }
-.vehicle-art-skyline span:nth-child(5) { left: 84%; height: 50%; }
-.vehicle-art-road { position: absolute; left: -5%; right: -5%; bottom: 0; height: 68px; background: linear-gradient(180deg, #cbd5e1, #94a3b8); }
-.vehicle-art-road::after { content: ''; position: absolute; left: 8%; right: 8%; top: 32px; border-top: 5px dashed rgba(255,255,255,.72); }
-.vehicle-art-car { position: absolute; left: 10%; right: 10%; bottom: 30px; height: 120px; filter: drop-shadow(0 18px 20px rgba(15,23,42,.25)); }
-.vehicle-art-roof { position: absolute; left: 24%; right: 22%; top: 18px; height: 55px; border-radius: 70px 90px 8px 8px; border: 3px solid rgba(15,23,42,.08); }
-.vehicle-art-body { position: absolute; left: 2%; right: 2%; bottom: 22px; height: 58px; border-radius: 34px 54px 18px 18px; border: 3px solid rgba(15,23,42,.08); }
-.vehicle-art-window { position: absolute; top: 31px; width: 21%; height: 34px; background: linear-gradient(135deg, #eff6ff, #93c5fd); border: 3px solid rgba(15,23,42,.18); }
-.vehicle-art-window.front { left: 50%; border-radius: 6px 44px 6px 6px; }
-.vehicle-art-window.rear { left: 29%; border-radius: 44px 6px 6px 6px; }
-.vehicle-art-light { position: absolute; bottom: 48px; width: 34px; height: 16px; border-radius: 999px; }
-.vehicle-art-light.front-light { right: 5%; background: #fde68a; }
-.vehicle-art-light.rear-light { left: 5%; background: #fecaca; }
-.vehicle-art-wheel { position: absolute; bottom: 0; width: 46px; height: 46px; border-radius: 50%; background: #020617; display: grid; place-items: center; }
-.vehicle-art-wheel.left { left: 19%; }
-.vehicle-art-wheel.right { right: 19%; }
-.vehicle-art-wheel span { width: 22px; height: 22px; border-radius: 50%; background: #e2e8f0; display: block; }
-.vehicle-art-caption { position: absolute; left: 14px; top: 14px; right: 14px; display: flex; gap: .45rem; align-items: center; flex-wrap: wrap; }
-.vehicle-art-caption strong { border-radius: 999px; padding: .35rem .6rem; font-size: .75rem; box-shadow: 0 8px 18px rgba(15,23,42,.16); }
-.vehicle-art-caption span { color: #0f172a; font-weight: 900; font-size: .8rem; background: rgba(255,255,255,.86); border-radius: 999px; padding: .35rem .6rem; }
-
-.price-badge {
-  position: absolute;
-  right: 14px;
-  bottom: 14px;
-  background: #0f172a;
-  color: #fff;
-  border-radius: 999px;
-  padding: .45rem .75rem;
-  font-weight: 900;
-  box-shadow: 0 10px 24px rgba(15,23,42,.24);
-}
+.vehicle-photo { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; background: #e2e8f0; }
+.vehicle-photo-caption { position: absolute; left: 14px; top: 14px; right: 14px; display: flex; gap: .45rem; align-items: center; flex-wrap: wrap; z-index: 2; }
+.vehicle-photo-caption strong, .vehicle-photo-caption span { color: #0f172a; font-weight: 900; font-size: .78rem; background: rgba(255,255,255,.88); border-radius: 999px; padding: .35rem .6rem; box-shadow: 0 8px 18px rgba(15,23,42,.12); }
+.price-badge { position: absolute; right: 14px; bottom: 14px; background: #0f172a; color: #fff; border-radius: 999px; padding: .45rem .75rem; font-weight: 900; box-shadow: 0 10px 24px rgba(15,23,42,.24); }
 .vehicle-body { padding: 1.1rem; flex: 1; }
 .vehicle-heading span { color: #2563eb; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; font-size: .72rem; }
 .vehicle-heading h3 { color: #0f172a; font-size: 1.28rem; font-weight: 950; margin: .15rem 0 .55rem; }
@@ -124,50 +33,7 @@
 .vehicle-meta span { background: #f1f5f9; color: #334155; border-radius: 999px; padding: .35rem .6rem; font-size: .8rem; font-weight: 800; }
 .vehicle-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; padding: 0 1.1rem 1.1rem; }
 .vehicle-actions .btn { border-radius: 14px; font-weight: 900; }
-.empty-state {
-  text-align: center;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 26px;
-  padding: 3rem;
-  color: #64748b;
-}
+.empty-state { text-align: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 26px; padding: 3rem; color: #64748b; }
 .empty-state h3 { color: #0f172a; font-weight: 950; }
-@media (max-width: 991.98px) {
-  .catalogue-hero-inner, .catalogue-layout { grid-template-columns: 1fr; }
-  .filter-column { position: static; }
-}
-@media (max-width: 575.98px) {
-  .search-row, .vehicle-actions { grid-template-columns: 1fr; }
-}
-
-/* v7: real vehicle photos replacing generated CSS illustrations */
-.vehicle-photo {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-  background: #e2e8f0;
-}
-.vehicle-photo-caption {
-  position: absolute;
-  left: 14px;
-  top: 14px;
-  right: 14px;
-  display: flex;
-  gap: .45rem;
-  align-items: center;
-  flex-wrap: wrap;
-  z-index: 2;
-}
-.vehicle-photo-caption strong,
-.vehicle-photo-caption span {
-  color: #0f172a;
-  font-weight: 900;
-  font-size: .78rem;
-  background: rgba(255,255,255,.88);
-  border-radius: 999px;
-  padding: .35rem .6rem;
-  box-shadow: 0 8px 18px rgba(15,23,42,.12);
-}
+@media (max-width: 991.98px) { .catalogue-hero-inner, .catalogue-layout { grid-template-columns: 1fr; } .filter-column { position: static; } }
+@media (max-width: 575.98px) { .search-row, .vehicle-actions, .price-filter-grid { grid-template-columns: 1fr; } }

@@ -1,17 +1,37 @@
-export interface Rental{
-    rentalId?:number,
-    // carName:String,
-    carId:number;
-    rentDate?:Date,
-    returnDate?:Date,
-    // companyName:String,
-    // firstName:String,
-    // lastName:String,
-    // brandName:String,
-    // colorName:String,
-    // carDesctiption:String,
-    // modelYear:String,
-    // dailyPrice:Number,
-    // userName:String,
-    totalRentPrice?:number | undefined;
+export type RentalStatus = 'Pending' | 'Confirmed' | 'Active' | 'Completed' | 'Cancelled';
+
+export interface Rental {
+  rentalId?: number;
+  bookingReference?: string;
+  carId: number;
+  carName?: string;
+  brandName?: string;
+  colorName?: string;
+  modelYear?: number;
+  dailyPrice?: number;
+  imagePath?: string;
+  rentDate?: Date | string;
+  returnDate?: Date | string;
+  rentalDays?: number;
+  totalRentPrice?: number | undefined;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  pickupLocation?: string;
+  status?: RentalStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface RentalMetrics {
+  totalBookings: number;
+  pendingBookings: number;
+  confirmedBookings: number;
+  activeBookings: number;
+  completedBookings: number;
+  cancelledBookings: number;
+  projectedRevenue: number;
+  completedRevenue: number;
+  unavailableCarsToday: number;
+  mostBookedBrand: string;
 }

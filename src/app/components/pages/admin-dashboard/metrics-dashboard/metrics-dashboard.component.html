@@ -1,0 +1,47 @@
+<section class="metrics-dashboard" *ngIf="metrics">
+  <div class="metrics-header">
+    <div>
+      <span>Admin overview</span>
+      <h1>Dashboard metrics</h1>
+      <p>Local demo metrics calculated from browser bookings in localStorage.</p>
+    </div>
+    <a class="btn btn-primary" routerLink="/admin/bookings">Manage bookings</a>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card"><span>Total bookings</span><strong>{{ metrics.totalBookings }}</strong></div>
+    <div class="metric-card"><span>Pending</span><strong>{{ metrics.pendingBookings }}</strong></div>
+    <div class="metric-card"><span>Confirmed</span><strong>{{ metrics.confirmedBookings }}</strong></div>
+    <div class="metric-card"><span>Active</span><strong>{{ metrics.activeBookings }}</strong></div>
+    <div class="metric-card"><span>Projected revenue</span><strong>{{ metrics.projectedRevenue | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    <div class="metric-card"><span>Completed revenue</span><strong>{{ metrics.completedRevenue | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    <div class="metric-card"><span>Unavailable today</span><strong>{{ metrics.unavailableCarsToday }}</strong></div>
+    <div class="metric-card"><span>Most booked brand</span><strong>{{ metrics.mostBookedBrand }}</strong></div>
+  </div>
+
+  <div class="recent-card">
+    <div class="recent-header">
+      <h2>Recent bookings</h2>
+      <a routerLink="/admin/bookings">View all</a>
+    </div>
+
+    <table class="table mb-0" *ngIf="recentBookings.length > 0">
+      <thead>
+        <tr><th>Reference</th><th>Customer</th><th>Vehicle</th><th>Status</th><th>Total</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of recentBookings">
+          <td><strong>{{ booking.bookingReference || ('RC-' + booking.rentalId) }}</strong></td>
+          <td>{{ booking.customerName }}</td>
+          <td>{{ booking.brandName }} {{ booking.carName }}</td>
+          <td><span class="status-pill" [ngClass]="booking.status">{{ booking.status }}</span></td>
+          <td>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="empty-state" *ngIf="recentBookings.length === 0">
+      No bookings have been created yet.
+    </div>
+  </div>
+</section>

@@ -3,9 +3,38 @@
     <div>
       <span>Colours</span>
       <h1>Colour management</h1>
-      <p>Colour filters are loaded from the local mock database.</p>
+      <p>Create, update and delete colour filters from the local mock database.</p>
     </div>
-    <a class="btn btn-primary" routerLink="/cars">Browse by colour</a>
+
+    <div class="admin-actions">
+      <button routerLink="/admin/colors/add" type="button" class="btn btn-primary">Add colour</button>
+      <button routerLink="/cars" type="button" class="btn btn-outline-secondary">Browse catalogue</button>
+    </div>
   </div>
-  <div class="admin-note">Available colours: Black, White, Grey, Blue, Red, Silver, Green and Orange.</div>
+
+  <div *ngIf="!dataLoaded" class="admin-note">Loading colours...</div>
+
+  <div *ngIf="dataLoaded && colors.length === 0" class="admin-note">No colours available.</div>
+
+  <div *ngIf="dataLoaded && colors.length > 0" class="table-responsive admin-table-wrap">
+    <table class="table align-middle admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Colour</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let color of colors">
+          <td>{{ color.colorId }}</td>
+          <td>{{ color.colorName }}</td>
+          <td class="text-end action-cell">
+            <button [routerLink]="['/admin/colors/edit', color.colorId]" type="button" class="btn btn-sm btn-outline-info">Edit</button>
+            <button (click)="deleteColor(color)" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

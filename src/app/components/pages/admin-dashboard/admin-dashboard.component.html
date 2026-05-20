@@ -1,13 +1,17 @@
 <section class="admin-shell">
   <aside class="admin-sidebar">
-    <div class="admin-title">
+    <div class="admin-brand">
       <span>Admin</span>
       <strong>Fleet management</strong>
     </div>
-    <nav>
+
+    <nav class="admin-nav">
+      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
       <a routerLink="/admin/cars" routerLinkActive="active">Cars</a>
       <a routerLink="/admin/brands" routerLinkActive="active">Brands</a>
       <a routerLink="/admin/colors" routerLinkActive="active">Colours</a>
+      <a routerLink="/admin/bookings" routerLinkActive="active">Bookings</a>
+      <a routerLink="/booking-lookup">Booking lookup</a>
       <a routerLink="/cars">Public catalogue</a>
     </nav>
   </aside>
