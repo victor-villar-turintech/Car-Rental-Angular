@@ -19,11 +19,19 @@
       </div>
       <div class="col-lg-5 mt-4 mt-lg-0">
         <div class="hero-card" *ngIf="featuredCar as car">
-          <img [src]="car.imagePath" [alt]="car.brandName + ' ' + car.carName" />
+          <a [routerLink]="['/cars', car.carId]" aria-label="View featured vehicle details">
+            <img [src]="car.imagePath" [alt]="car.brandName + ' ' + car.carName" />
+          </a>
           <div class="hero-card-body">
             <span>Featured</span>
-            <h3>{{ car.brandName }} {{ car.carName }}</h3>
+            <a class="featured-title-link" [routerLink]="['/cars', car.carId]">
+              <h3>{{ car.brandName }} {{ car.carName }}</h3>
+            </a>
             <p>{{ getFeaturedCarSummary(car) }}</p>
+            <div class="featured-actions">
+              <a class="btn btn-primary" [routerLink]="['/cars', car.carId]">View details</a>
+              <a class="btn btn-outline-primary" [routerLink]="['/car/rental', car.carId]">Book this car</a>
+            </div>
           </div>
         </div>
       </div>

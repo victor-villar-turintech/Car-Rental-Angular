@@ -37,7 +37,7 @@ export class RentalService {
     const booking: Rental = {
       ...rental,
       rentalId: rental.rentalId || nextId,
-      bookingReference: rental.bookingReference || this.createBookingReference(nextId),
+      bookingReference: rental.bookingReference || this.createBookingReference({ ...rental, rentalId: nextId }, now),
       status: rental.status || 'Pending',
       createdAt: rental.createdAt || now,
       updatedAt: now,
@@ -183,15 +183,44 @@ export class RentalService {
     return {
       ...booking,
       rentalId,
-      bookingReference: booking.bookingReference || (rentalId ? this.createBookingReference(rentalId) : undefined),
+      bookingReference: booking.bookingReference || this.createBookingReference({ ...booking, rentalId }, booking.createdAt),
       status: booking.status || 'Pending',
     };
   }
 
-  private createBookingReference(id: number): string {
-    const date = new Date();
-    const yyyymmdd = date.toISOString().slice(0, 10).replace(/-/g, '');
-    return `RC-${yyyymmdd}-${String(id).padStart(4, '0')}`;
+  private createBookingReference(booking: Rental, entropy?: string): string {
+    const brandCode = this.codeFromText(booking.brandName || 'CAR', 3);
+    const modelCode = this.codeFromText(booking.carName || 'MODEL', 3);
+    const pickupCode = this.dateOnly(booking.rentDate).replace(/-/g, '') || new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const hashSource = [
+      booking.rentalId || '',
+      booking.carId || '',
+      booking.brandName || '',
+      booking.carName || '',
+      booking.modelYear || '',
+      booking.numberPlate || '',
+      booking.rentDate || '',
+      booking.returnDate || '',
+      booking.customerEmail || '',
+      entropy || new Date().toISOString(),
+    ].join('|');
+    const hash = this.hashToBase36(hashSource).slice(0, 6).toUpperCase();
+
+    return `CR-${brandCode}-${modelCode}-${pickupCode}-${hash}`;
+  }
+
+  private codeFromText(value: string, length: number): string {
+    const clean = value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+    return (clean || 'XXX').padEnd(length, 'X').slice(0, length);
+  }
+
+  private hashToBase36(value: string): string {
+    let hash = 2166136261;
+    for (let index = 0; index < value.length; index++) {
+      hash ^= value.charCodeAt(index);
+      hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+    }
+    return Math.abs(hash >>> 0).toString(36).padStart(6, '0');
   }
 
   private toDate(value?: Date | string): Date | undefined {

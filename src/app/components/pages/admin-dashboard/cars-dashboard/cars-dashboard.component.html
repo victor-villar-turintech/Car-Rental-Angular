@@ -3,7 +3,7 @@
     <div>
       <span>Cars</span>
       <h1>Fleet management</h1>
-      <p>Create, update and delete cars from the local mock vehicle catalogue.</p>
+      <p>Create, update and delete cars from the local mock vehicle catalogue. Internal number plates are shown here only and are used in booking reference generation.</p>
     </div>
 
     <div class="admin-actions">
@@ -21,6 +21,7 @@
       <thead>
         <tr>
           <th>ID</th>
+          <th>Plate</th>
           <th>Brand</th>
           <th>Model</th>
           <th>Colour</th>
@@ -32,6 +33,7 @@
       <tbody>
         <tr *ngFor="let car of cars">
           <td>{{ car.carId }}</td>
+          <td><strong>{{ car.numberPlate }}</strong></td>
           <td>{{ car.brandName }}</td>
           <td>{{ car.carName }}</td>
           <td>{{ car.colorName }}</td>

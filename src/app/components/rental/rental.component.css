@@ -38,3 +38,8 @@ label { font-weight: 800; color: #334155; margin-top: .75rem; }
 .availability-message.available { color: #166534; background: #dcfce7; border: 1px solid #86efac; }
 .availability-message.unavailable { color: #991b1b; background: #fee2e2; border: 1px solid #fecaca; }
 .btn:disabled { cursor: not-allowed; opacity: .55; }
+.duration-grid { display: grid; grid-template-columns: 1fr 130px; gap: .75rem; align-items: end; }
+.reference-box { display: grid; grid-template-columns: 1fr auto; gap: .5rem 1rem; align-items: center; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 20px; padding: 1rem; margin: 1.25rem 0; }
+.reference-box small { grid-column: 1 / -1; color: #2563eb; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+.reference-box strong { color: #0f172a; font-size: 1.15rem; overflow-wrap: anywhere; }
+@media (max-width: 575.98px) { .duration-grid, .reference-box { grid-template-columns: 1fr; } }

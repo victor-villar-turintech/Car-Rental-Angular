@@ -20,6 +20,18 @@ export class CarDetailComponent implements OnInit {
   availabilityChecked = false;
   availableForSelectedDates = true;
   availabilityMessage = 'Select dates to check availability.';
+  durationPreset = '1';
+  customRentalDays: number | undefined;
+
+  durationOptions = [
+    { label: '1 day', value: '1' },
+    { label: '2 days', value: '2' },
+    { label: '3 days', value: '3' },
+    { label: '5 days', value: '5' },
+    { label: '7 days', value: '7' },
+    { label: '14 days', value: '14' },
+    { label: 'Custom', value: 'custom' },
+  ];
 
   constructor(
     private carService: CarService,
@@ -56,6 +68,46 @@ export class CarDetailComponent implements OnInit {
     return this.carImages.length > 0 ? this.carImages[0].imagePath : this.car.imagePath;
   }
 
+  onPickupDateChange(): void {
+    if (!this.pickupDate) {
+      this.returnDate = '';
+      this.updateRentalEstimate();
+      return;
+    }
+
+    if (!this.returnDate || new Date(this.returnDate) < new Date(this.pickupDate)) {
+      this.returnDate = this.pickupDate;
+      this.durationPreset = '1';
+      this.customRentalDays = undefined;
+    }
+
+    this.applyDurationToReturnDate(false);
+    this.updateRentalEstimate();
+  }
+
+  onReturnDateChange(): void {
+    if (this.pickupDate && this.returnDate && new Date(this.returnDate) < new Date(this.pickupDate)) {
+      this.returnDate = this.pickupDate;
+    }
+
+    this.syncDurationFromDates();
+    this.updateRentalEstimate();
+  }
+
+  onDurationChange(): void {
+    this.applyDurationToReturnDate(true);
+    this.updateRentalEstimate();
+  }
+
+  onCustomRentalDaysChange(): void {
+    if (this.durationPreset !== 'custom') {
+      return;
+    }
+
+    this.applyDurationToReturnDate(true);
+    this.updateRentalEstimate();
+  }
+
   updateRentalEstimate(): void {
     if (!this.car || !this.pickupDate || !this.returnDate) {
       this.rentalDays = 0;
@@ -66,10 +118,7 @@ export class CarDetailComponent implements OnInit {
       return;
     }
 
-    const start = new Date(this.pickupDate);
-    const end = new Date(this.returnDate);
-    const dayMs = 24 * 60 * 60 * 1000;
-    const days = Math.ceil((end.getTime() - start.getTime()) / dayMs) + 1;
+    const days = this.daysBetweenInclusive(this.pickupDate, this.returnDate);
 
     if (days <= 0) {
       this.rentalDays = 0;
@@ -147,6 +196,57 @@ export class CarDetailComponent implements OnInit {
     const target = event.target as HTMLImageElement;
     target.onerror = null;
     target.src = this.buildFallbackImage(car);
+  }
+
+  private applyDurationToReturnDate(forceUpdate: boolean): void {
+    if (!this.pickupDate) {
+      return;
+    }
+
+    const days = this.getSelectedDurationDays();
+    if (!days || days < 1) {
+      return;
+    }
+
+    if (!forceUpdate && this.returnDate && new Date(this.returnDate) >= new Date(this.pickupDate)) {
+      return;
+    }
+
+    this.returnDate = this.addDays(this.pickupDate, days - 1);
+  }
+
+  private syncDurationFromDates(): void {
+    if (!this.pickupDate || !this.returnDate) {
+      return;
+    }
+
+    const days = this.daysBetweenInclusive(this.pickupDate, this.returnDate);
+    if (days < 1) {
+      return;
+    }
+
+    const presetValues = this.durationOptions.filter((option) => option.value !== 'custom').map((option) => option.value);
+    this.durationPreset = presetValues.includes(String(days)) ? String(days) : 'custom';
+    this.customRentalDays = this.durationPreset === 'custom' ? days : undefined;
+  }
+
+  private getSelectedDurationDays(): number {
+    return this.durationPreset === 'custom'
+      ? Math.max(1, Number(this.customRentalDays || 1))
+      : Number(this.durationPreset || 1);
+  }
+
+  private daysBetweenInclusive(startDate: string, endDate: string): number {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const dayMs = 24 * 60 * 60 * 1000;
+    return Math.ceil((end.getTime() - start.getTime()) / dayMs) + 1;
+  }
+
+  private addDays(dateValue: string, daysToAdd: number): string {
+    const date = new Date(dateValue);
+    date.setDate(date.getDate() + daysToAdd);
+    return date.toISOString().slice(0, 10);
   }
 
   private buildFallbackImage(car: Car): string {

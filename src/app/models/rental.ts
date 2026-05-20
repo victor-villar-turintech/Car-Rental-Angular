@@ -10,6 +10,7 @@ export interface Rental {
   modelYear?: number;
   dailyPrice?: number;
   imagePath?: string;
+  numberPlate?: string;
   rentDate?: Date | string;
   returnDate?: Date | string;
   rentalDays?: number;

@@ -23,6 +23,19 @@ export class RentalComponent implements OnInit {
   bookingConfirmed = false;
   confirmedBooking: Rental;
   today = new Date().toISOString().slice(0, 10);
+  durationPreset = '1';
+  customRentalDays: number | undefined;
+  copiedReference = false;
+
+  durationOptions = [
+    { label: '1 day', value: '1' },
+    { label: '2 days', value: '2' },
+    { label: '3 days', value: '3' },
+    { label: '5 days', value: '5' },
+    { label: '7 days', value: '7' },
+    { label: '14 days', value: '14' },
+    { label: 'Custom', value: 'custom' },
+  ];
 
   constructor(
     private rentalService: RentalService,
@@ -42,6 +55,7 @@ export class RentalComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.pickupDate = params.pickupDate || this.pickupDate;
       this.returnDate = params.returnDate || this.returnDate;
+      this.syncDurationFromDates();
       this.calculatePrice();
     });
   }
@@ -49,8 +63,49 @@ export class RentalComponent implements OnInit {
   getCarDetail(carId: number): void {
     this.carService.getCarById(carId).subscribe((response) => {
       this.car = response.data;
+      this.applyDurationToReturnDate(false);
       this.calculatePrice();
     });
+  }
+
+  onPickupDateChange(): void {
+    if (!this.pickupDate) {
+      this.returnDate = '';
+      this.calculatePrice();
+      return;
+    }
+
+    if (!this.returnDate || new Date(this.returnDate) < new Date(this.pickupDate)) {
+      this.returnDate = this.pickupDate;
+      this.durationPreset = '1';
+      this.customRentalDays = undefined;
+    }
+
+    this.applyDurationToReturnDate(false);
+    this.calculatePrice();
+  }
+
+  onReturnDateChange(): void {
+    if (this.pickupDate && this.returnDate && new Date(this.returnDate) < new Date(this.pickupDate)) {
+      this.returnDate = this.pickupDate;
+    }
+
+    this.syncDurationFromDates();
+    this.calculatePrice();
+  }
+
+  onDurationChange(): void {
+    this.applyDurationToReturnDate(true);
+    this.calculatePrice();
+  }
+
+  onCustomRentalDaysChange(): void {
+    if (this.durationPreset !== 'custom') {
+      return;
+    }
+
+    this.applyDurationToReturnDate(true);
+    this.calculatePrice();
   }
 
   confirmBooking(): void {
@@ -78,6 +133,7 @@ export class RentalComponent implements OnInit {
       this.rentalService.addRental(this.rental).subscribe((saveResponse) => {
         this.confirmedBooking = this.rental;
         this.bookingConfirmed = true;
+        this.copiedReference = false;
         this.toastrService.success(saveResponse.message, 'Booking request saved');
       });
     });
@@ -117,6 +173,7 @@ export class RentalComponent implements OnInit {
       modelYear: this.car.modelYear,
       dailyPrice: this.car.dailyPrice,
       imagePath: this.car.imagePath,
+      numberPlate: this.car.numberPlate,
       rentDate: this.pickupDate,
       returnDate: this.returnDate,
       rentalDays: this.rentalDays,
@@ -132,6 +189,23 @@ export class RentalComponent implements OnInit {
       this.rentable = response.success;
       this.availabilityMessage = response.message;
     });
+  }
+
+  copyBookingReference(): void {
+    const reference = this.confirmedBooking?.bookingReference;
+    if (!reference) {
+      return;
+    }
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(reference).then(() => {
+        this.copiedReference = true;
+        this.toastrService.success('Booking reference copied.');
+      });
+      return;
+    }
+
+    this.copiedReference = true;
   }
 
   goToCars(): void {
@@ -174,6 +248,57 @@ export class RentalComponent implements OnInit {
     const target = event.target as HTMLImageElement;
     target.onerror = null;
     target.src = this.buildFallbackImage(car);
+  }
+
+  private applyDurationToReturnDate(forceUpdate: boolean): void {
+    if (!this.pickupDate) {
+      return;
+    }
+
+    const days = this.getSelectedDurationDays();
+    if (!days || days < 1) {
+      return;
+    }
+
+    if (!forceUpdate && this.returnDate && new Date(this.returnDate) >= new Date(this.pickupDate)) {
+      return;
+    }
+
+    this.returnDate = this.addDays(this.pickupDate, days - 1);
+  }
+
+  private syncDurationFromDates(): void {
+    if (!this.pickupDate || !this.returnDate) {
+      return;
+    }
+
+    const days = this.daysBetweenInclusive(this.pickupDate, this.returnDate);
+    if (days < 1) {
+      return;
+    }
+
+    const presetValues = this.durationOptions.filter((option) => option.value !== 'custom').map((option) => option.value);
+    this.durationPreset = presetValues.includes(String(days)) ? String(days) : 'custom';
+    this.customRentalDays = this.durationPreset === 'custom' ? days : undefined;
+  }
+
+  private getSelectedDurationDays(): number {
+    return this.durationPreset === 'custom'
+      ? Math.max(1, Number(this.customRentalDays || 1))
+      : Number(this.durationPreset || 1);
+  }
+
+  private daysBetweenInclusive(startDate: string, endDate: string): number {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const dayMs = 24 * 60 * 60 * 1000;
+    return Math.ceil((end.getTime() - start.getTime()) / dayMs) + 1;
+  }
+
+  private addDays(dateValue: string, daysToAdd: number): string {
+    const date = new Date(dateValue);
+    date.setDate(date.getDate() + daysToAdd);
+    return date.toISOString().slice(0, 10);
   }
 
   private buildFallbackImage(car: Car): string {
