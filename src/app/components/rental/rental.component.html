@@ -108,7 +108,7 @@
   <div class="confirmation-card">
     <span>Booking requested</span>
     <h1>Your rental request is pending</h1>
-    <p>The booking has been stored locally with Pending status. Admin can confirm it from Admin → Bookings.</p>
+    <p>The booking has been stored locally with Pending status. Complete a mock payment to generate a receipt.</p>
 
     <div class="reference-box">
       <small>Booking reference</small>
@@ -118,6 +118,7 @@
 
     <div class="confirmation-grid">
       <div><small>Status</small><strong>{{ confirmedBooking.status }}</strong></div>
+      <div><small>Payment</small><strong>{{ confirmedBooking.paymentStatus || 'Pending' }}</strong></div>
       <div><small>Vehicle</small><strong>{{ confirmedBooking.brandName }} {{ confirmedBooking.carName }}</strong></div>
       <div><small>Customer</small><strong>{{ confirmedBooking.customerName }}</strong></div>
       <div><small>Pickup date</small><strong>{{ confirmedBooking.rentDate | date:'mediumDate' }}</strong></div>
@@ -137,6 +138,7 @@
     </div>
 
     <div class="confirmation-actions">
+      <button class="btn btn-success" type="button" (click)="goToPayment()">Proceed to payment</button>
       <button class="btn btn-primary" type="button" (click)="goToCars()">Back to cars</button>
       <button class="btn btn-outline-primary" type="button" (click)="goToBookingLookup()">Look up booking</button>
       <a class="btn btn-outline-secondary" routerLink="/admin/bookings">View admin bookings</a>

@@ -285,6 +285,12 @@ export class RentalComponent implements OnInit {
 
   goToCars(): void { this.router.navigate(['/cars']); }
   goToBookingLookup(): void { this.router.navigate(['/booking-lookup']); }
+  goToPayment(): void {
+    const reference = this.confirmedBooking?.bookingReference;
+    if (reference) {
+      this.router.navigate(['/payment', reference]);
+    }
+  }
   goToRegister(): void { this.router.navigate(['/register'], { queryParams: { returnUrl: this.router.url } }); }
 
   get selectedExtras(): BookingExtraSelection[] { return this.bookingExtras.filter((extra) => extra.selected); }

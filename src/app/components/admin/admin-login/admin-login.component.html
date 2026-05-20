@@ -1,0 +1,21 @@
+<section class="admin-login-page">
+  <div class="admin-login-card">
+    <span>Demo admin</span>
+    <h1>Admin sign in</h1>
+    <p>Admin pages are protected with a local demo guard. Credentials are intentionally visible for this front-end demo.</p>
+
+    <div class="credential-box">
+      <div><small>Username</small><strong>{{ adminAuthService.demoUsername }}</strong></div>
+      <div><small>Password</small><strong>{{ adminAuthService.demoPassword }}</strong></div>
+    </div>
+
+    <label for="adminUsername">Username</label>
+    <input id="adminUsername" class="form-control" type="text" [(ngModel)]="username" />
+
+    <label for="adminPassword">Password</label>
+    <input id="adminPassword" class="form-control" type="password" [(ngModel)]="password" (keyup.enter)="login()" />
+
+    <button class="btn btn-primary btn-block" type="button" (click)="login()">Open admin dashboard</button>
+    <a class="back-link" routerLink="/home">← Back to public site</a>
+  </div>
+</section>

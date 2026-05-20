@@ -9,7 +9,6 @@
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary btn-lg" routerLink="/cars">Browse cars</a>
-          <a class="btn btn-light btn-lg" routerLink="/admin/cars">Open admin</a>
         </div>
         <div class="trust-row">
           <div><strong>{{ vehicleCount }}</strong><span>vehicles</span></div>
@@ -82,3 +81,12 @@
     </div>
   </div>
 </section>
+
+<a
+  class="admin-corner-link"
+  routerLink="/admin/login"
+  aria-label="Admin login"
+  style="position: fixed; right: 12px; bottom: 10px; z-index: 1000; font-size: 11px; color: rgba(0,0,0,.45); text-decoration: none; background: rgba(255,255,255,.75); border: 1px solid rgba(0,0,0,.08); border-radius: 999px; padding: 4px 8px;"
+>
+  Admin
+</a>
