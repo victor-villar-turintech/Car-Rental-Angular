@@ -1,0 +1,76 @@
+<section class="payment-page container" *ngIf="booking; else missingBooking">
+  <a class="back-link" [routerLink]="['/car/rental', booking.carId]">← Back to booking</a>
+
+  <div class="payment-grid">
+    <article class="payment-card">
+      <span>Mock checkout</span>
+      <h1>Complete payment</h1>
+      <p>No real payment provider is used. This stores a local demo payment record only.</p>
+
+      <div class="method-tabs">
+        <button type="button" [ngClass]="method === 'Card' ? 'active' : ''" (click)="selectMethod('Card')">Credit / debit card</button>
+        <button type="button" [ngClass]="method === 'PayPal' ? 'active' : ''" (click)="selectMethod('PayPal')">PayPal</button>
+        <button type="button" [ngClass]="method === 'ApplePay' ? 'active' : ''" (click)="selectMethod('ApplePay')">Apple Pay</button>
+      </div>
+
+      <section *ngIf="method === 'Card'" class="card-form">
+        <label for="cardholderName">Cardholder name</label>
+        <input id="cardholderName" class="form-control" type="text" [(ngModel)]="cardholderName" />
+
+        <label for="cardNumber">Card number</label>
+        <input id="cardNumber" class="form-control" type="text" maxlength="19" placeholder="4242 4242 4242 4242" [(ngModel)]="cardNumber" />
+
+        <div class="card-row">
+          <div>
+            <label for="expiryMonth">Expiry month</label>
+            <input id="expiryMonth" class="form-control" type="number" min="1" max="12" placeholder="12" [(ngModel)]="expiryMonth" />
+          </div>
+          <div>
+            <label for="expiryYear">Expiry year</label>
+            <input id="expiryYear" class="form-control" type="number" min="2026" placeholder="2028" [(ngModel)]="expiryYear" />
+          </div>
+          <div>
+            <label for="cvc">CVC</label>
+            <input id="cvc" class="form-control" type="text" maxlength="4" placeholder="123" [(ngModel)]="cvc" />
+          </div>
+        </div>
+
+        <label for="billingPostcode">Billing postcode</label>
+        <input id="billingPostcode" class="form-control" type="text" placeholder="SW1A 1AA" [(ngModel)]="billingPostcode" />
+      </section>
+
+      <section *ngIf="method === 'PayPal'" class="wallet-panel">
+        <h2>PayPal demo</h2>
+        <p>Click confirm to simulate a successful PayPal payment for this local booking.</p>
+      </section>
+
+      <section *ngIf="method === 'ApplePay'" class="wallet-panel">
+        <h2>Apple Pay demo</h2>
+        <p>Click confirm to simulate a successful Apple Pay payment for this local booking.</p>
+      </section>
+
+      <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <button class="btn btn-success btn-block" type="button" [disabled]="processing" (click)="pay()">
+        {{ processing ? 'Processing...' : ('Pay ' + (booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0')) }}
+      </button>
+    </article>
+
+    <aside class="summary-card">
+      <span>Booking summary</span>
+      <h2>{{ booking.brandName }} {{ booking.carName }}</h2>
+      <div><small>Reference</small><strong>{{ booking.bookingReference }}</strong></div>
+      <div><small>Customer</small><strong>{{ booking.customerName }}</strong></div>
+      <div><small>Dates</small><strong>{{ booking.rentDate | date:'mediumDate' }} → {{ booking.returnDate | date:'mediumDate' }}</strong></div>
+      <div><small>Pickup</small><strong>{{ booking.pickupLocation }}</strong></div>
+      <div><small>Vehicle</small><strong>{{ booking.vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+      <div><small>Extras</small><strong>{{ booking.extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+      <div class="total"><small>Total due</small><strong>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    </aside>
+  </div>
+</section>
+
+<ng-template #missingBooking>
+  <section class="payment-page container">
+    <div class="payment-card"><h1>Booking not found</h1><p>{{ errorMessage || 'Unable to load this booking.' }}</p><a class="btn btn-primary" routerLink="/booking-lookup">Booking lookup</a></div>
+  </section>
+</ng-template>

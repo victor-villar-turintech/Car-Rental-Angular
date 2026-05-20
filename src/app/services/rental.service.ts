@@ -38,6 +38,17 @@ export class RentalService {
     });
   }
 
+
+  getBookingByReferenceOnly(reference: string): Observable<ListResponseModel<Rental>> {
+    const normalisedReference = this.normalise(reference);
+    const matches = this.rentals.filter((booking) => this.normalise(booking.bookingReference || `RC-${booking.rentalId}`) === normalisedReference);
+    return of({
+      success: matches.length > 0,
+      message: matches.length > 0 ? 'Booking found.' : 'No booking matched that reference.',
+      data: matches,
+    });
+  }
+
   addRental(rental: Rental): Observable<ResponseModel> {
     const nextId = Math.max(...this.rentals.map((item) => item.rentalId || 0), 0) + 1;
     const now = new Date().toISOString();
@@ -46,6 +57,7 @@ export class RentalService {
       rentalId: rental.rentalId || nextId,
       bookingReference: rental.bookingReference || this.createBookingReference({ ...rental, rentalId: nextId }, now),
       status: rental.status || 'Pending',
+      paymentStatus: rental.paymentStatus || 'Pending',
       createdAt: rental.createdAt || now,
       updatedAt: now,
     };
@@ -74,6 +86,25 @@ export class RentalService {
     );
     this.saveRentals();
     return of({ success: true, message: 'Booking status updated.' });
+  }
+
+
+  updateBookingPayment(
+    bookingReference: string,
+    payment: Pick<Rental, 'paymentStatus' | 'paymentMethod' | 'paymentReference' | 'paidAt'>
+  ): Observable<ResponseModel> {
+    const normalisedReference = this.normalise(bookingReference);
+    let updated = false;
+    this.rentals = this.rentals.map((booking) => {
+      const reference = this.normalise(booking.bookingReference || `RC-${booking.rentalId}`);
+      if (reference !== normalisedReference) {
+        return booking;
+      }
+      updated = true;
+      return { ...booking, ...payment, updatedAt: new Date().toISOString() };
+    });
+    this.saveRentals();
+    return of({ success: updated, message: updated ? 'Booking payment updated.' : 'Booking not found.' });
   }
 
   updateCustomerDetails(rentalId: number, details: Pick<Rental, 'customerName' | 'customerEmail' | 'customerPhone'>): Observable<ResponseModel> {
@@ -195,6 +226,7 @@ export class RentalService {
       vehicleSubtotal: Number(booking.vehicleSubtotal || 0),
       extrasTotal: Number(booking.extrasTotal || 0),
       status: booking.status || 'Pending',
+      paymentStatus: booking.paymentStatus || 'Pending',
     };
   }
 

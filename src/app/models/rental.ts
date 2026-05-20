@@ -1,4 +1,5 @@
 import { BookingExtraSelection } from './booking-extra';
+import { PaymentMethod, PaymentStatus } from './payment';
 
 export type RentalStatus = 'Pending' | 'Confirmed' | 'Active' | 'Completed' | 'Cancelled';
 
@@ -28,6 +29,10 @@ export interface Rental {
   pickupLocationId?: string;
   airportTerminal?: string;
   status?: RentalStatus;
+  paymentStatus?: PaymentStatus;
+  paymentMethod?: PaymentMethod;
+  paymentReference?: string;
+  paidAt?: string;
   createdAt?: string;
   updatedAt?: string;
 }
