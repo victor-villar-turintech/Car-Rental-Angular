@@ -30,10 +30,23 @@
       <h2>Choose dates and customer details</h2>
 
       <label for="pickupDate">Pickup date</label>
-      <input id="pickupDate" class="form-control" type="date" [min]="today" [(ngModel)]="pickupDate" (change)="calculatePrice()" />
+      <input id="pickupDate" class="form-control" type="date" [min]="today" [(ngModel)]="pickupDate" (change)="onPickupDateChange()" />
+
+      <div class="duration-grid">
+        <div>
+          <label for="durationPreset">Rental length</label>
+          <select id="durationPreset" class="form-control" [(ngModel)]="durationPreset" (change)="onDurationChange()">
+            <option *ngFor="let option of durationOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+        <div *ngIf="durationPreset === 'custom'">
+          <label for="customRentalDays">Days</label>
+          <input id="customRentalDays" class="form-control" type="number" min="1" [(ngModel)]="customRentalDays" (ngModelChange)="onCustomRentalDaysChange()" />
+        </div>
+      </div>
 
       <label for="returnDate">Return date</label>
-      <input id="returnDate" class="form-control" type="date" [min]="pickupDate || today" [(ngModel)]="returnDate" (change)="calculatePrice()" />
+      <input id="returnDate" class="form-control" type="date" [min]="pickupDate || today" [(ngModel)]="returnDate" (change)="onReturnDateChange()" />
 
       <label for="customerName">Customer name</label>
       <input id="customerName" class="form-control" type="text" [(ngModel)]="customerName" (ngModelChange)="calculatePrice()" />
@@ -64,8 +77,13 @@
     <h1>Your rental request is pending</h1>
     <p>The booking has been stored locally with Pending status. Admin can confirm it from Admin → Bookings.</p>
 
+    <div class="reference-box">
+      <small>Booking reference</small>
+      <strong>{{ confirmedBooking.bookingReference || 'Generated locally' }}</strong>
+      <button class="btn btn-sm btn-outline-primary" type="button" (click)="copyBookingReference()">{{ copiedReference ? 'Copied' : 'Copy reference' }}</button>
+    </div>
+
     <div class="confirmation-grid">
-      <div><small>Reference</small><strong>{{ confirmedBooking.bookingReference || 'Generated locally' }}</strong></div>
       <div><small>Status</small><strong>{{ confirmedBooking.status }}</strong></div>
       <div><small>Vehicle</small><strong>{{ confirmedBooking.brandName }} {{ confirmedBooking.carName }}</strong></div>
       <div><small>Customer</small><strong>{{ confirmedBooking.customerName }}</strong></div>

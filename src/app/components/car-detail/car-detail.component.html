@@ -28,11 +28,21 @@
         <div class="date-grid">
           <div>
             <label for="detailPickup">Pickup date</label>
-            <input id="detailPickup" class="form-control" type="date" [min]="today" [(ngModel)]="pickupDate" (change)="updateRentalEstimate()" />
+            <input id="detailPickup" class="form-control" type="date" [min]="today" [(ngModel)]="pickupDate" (change)="onPickupDateChange()" />
+          </div>
+          <div>
+            <label for="detailDuration">Rental length</label>
+            <select id="detailDuration" class="form-control" [(ngModel)]="durationPreset" (change)="onDurationChange()">
+              <option *ngFor="let option of durationOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+          </div>
+          <div *ngIf="durationPreset === 'custom'">
+            <label for="detailCustomDays">Days</label>
+            <input id="detailCustomDays" class="form-control" type="number" min="1" [(ngModel)]="customRentalDays" (ngModelChange)="onCustomRentalDaysChange()" />
           </div>
           <div>
             <label for="detailReturn">Return date</label>
-            <input id="detailReturn" class="form-control" type="date" [min]="pickupDate || today" [(ngModel)]="returnDate" (change)="updateRentalEstimate()" />
+            <input id="detailReturn" class="form-control" type="date" [min]="pickupDate || today" [(ngModel)]="returnDate" (change)="onReturnDateChange()" />
           </div>
         </div>
         <div class="estimate-total">

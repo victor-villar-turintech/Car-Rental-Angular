@@ -10,7 +10,7 @@ import { MOCK_BRANDS, MOCK_CARS, MOCK_COLORS } from '../data/mock-rental-data';
 
 @Injectable({ providedIn: 'root' })
 export class CarService {
-  private cars: Car[] = [...MOCK_CARS];
+  private cars: Car[] = MOCK_CARS.map((car) => this.normaliseCar(car as Car));
 
   getCars(): Observable<ListResponseModel<Car>> {
     return this.list(this.cars);
@@ -80,8 +80,27 @@ export class CarService {
       colorName,
       modelYear: Number(car.modelYear),
       dailyPrice: Number(car.dailyPrice),
-      imagePath
+      imagePath,
+      numberPlate: this.normaliseNumberPlate(car.numberPlate, car.carId, brandName, car.carName, car.modelYear)
     };
+  }
+
+  private normaliseNumberPlate(numberPlate: string | undefined, carId: number, brandName: string, carName: string, modelYear: number): string {
+    if (numberPlate && numberPlate.trim()) {
+      return numberPlate.trim().toUpperCase();
+    }
+
+    const brandCode = this.alphaCode(brandName, 2);
+    const modelCode = this.alphaCode(carName, 3);
+    const yearCode = String(modelYear || new Date().getFullYear()).slice(-2);
+    const serial = String(Number(carId || 0) * 37 + 11).slice(-3).padStart(3, '0');
+
+    return `${brandCode}${yearCode} ${modelCode}${serial}`.toUpperCase();
+  }
+
+  private alphaCode(value: string, length: number): string {
+    const cleaned = (value || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+    return (cleaned || 'CAR').padEnd(length, 'X').slice(0, length);
   }
 
   private list<T>(data: T[]): Observable<ListResponseModel<T>> {

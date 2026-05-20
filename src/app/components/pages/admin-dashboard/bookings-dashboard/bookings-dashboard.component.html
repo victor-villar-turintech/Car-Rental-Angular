@@ -39,6 +39,7 @@
           <th>Ref</th>
           <th>Customer</th>
           <th>Vehicle</th>
+          <th>Plate</th>
           <th>Dates</th>
           <th>Total</th>
           <th>Status</th>
@@ -56,6 +57,7 @@
             <strong>{{ booking.brandName }} {{ booking.carName }}</strong>
             <small>{{ booking.colorName }} · {{ booking.modelYear }}</small>
           </td>
+          <td><strong>{{ booking.numberPlate || 'N/A' }}</strong></td>
           <td>
             <strong>{{ booking.rentDate | date:'mediumDate' }}</strong>
             <small>to {{ booking.returnDate | date:'mediumDate' }} · {{ booking.rentalDays }} day{{ booking.rentalDays === 1 ? '' : 's' }}</small>
