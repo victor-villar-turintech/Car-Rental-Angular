@@ -2,12 +2,47 @@
   <div class="admin-panel-header">
     <div>
       <span>Cars</span>
-      <h1>Fleet overview</h1>
-      <p>The public catalogue is backed by the local mock vehicle database.</p>
+      <h1>Fleet management</h1>
+      <p>Create, update and delete cars from the local mock vehicle catalogue.</p>
     </div>
-    <a class="btn btn-primary" routerLink="/cars">View catalogue</a>
+
+    <div class="admin-actions">
+      <button routerLink="/admin/cars/add" type="button" class="btn btn-primary">Add car</button>
+      <button routerLink="/cars" type="button" class="btn btn-outline-secondary">View catalogue</button>
+    </div>
   </div>
-  <div class="admin-note">
-    Admin create/edit actions are disabled in this frontend-only demo. Use the catalogue to verify vehicle browsing, details, filters and rental flow.
+
+  <div *ngIf="!dataLoaded" class="admin-note">Loading cars...</div>
+
+  <div *ngIf="dataLoaded && cars.length === 0" class="admin-note">No cars available.</div>
+
+  <div *ngIf="dataLoaded && cars.length > 0" class="table-responsive admin-table-wrap">
+    <table class="table align-middle admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>Colour</th>
+          <th>Year</th>
+          <th>Daily price</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let car of cars">
+          <td>{{ car.carId }}</td>
+          <td>{{ car.brandName }}</td>
+          <td>{{ car.carName }}</td>
+          <td>{{ car.colorName }}</td>
+          <td>{{ car.modelYear }}</td>
+          <td>{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</td>
+          <td class="text-end action-cell">
+            <button [routerLink]="['/admin/cars/edit', car.carId]" type="button" class="btn btn-sm btn-outline-info">Edit</button>
+            <button (click)="deleteCar(car)" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

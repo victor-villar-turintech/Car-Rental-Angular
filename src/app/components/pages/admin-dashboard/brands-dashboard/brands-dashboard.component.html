@@ -3,9 +3,38 @@
     <div>
       <span>Brands</span>
       <h1>Brand management</h1>
-      <p>Brands are loaded from the local mock database.</p>
+      <p>Create, update and delete brands from the local mock database.</p>
     </div>
-    <a class="btn btn-primary" routerLink="/cars">Browse by brand</a>
+
+    <div class="admin-actions">
+      <button routerLink="/admin/brands/add" type="button" class="btn btn-primary">Add brand</button>
+      <button routerLink="/services" type="button" class="btn btn-outline-secondary">Browse by brand</button>
+    </div>
   </div>
-  <div class="admin-note">Demo data includes Mercedes-Benz, BMW, Audi, Tesla, Volkswagen, Range Rover, Toyota, Ford, Nissan, Volvo, Hyundai and Porsche.</div>
+
+  <div *ngIf="!dataLoaded" class="admin-note">Loading brands...</div>
+
+  <div *ngIf="dataLoaded && brands.length === 0" class="admin-note">No brands available.</div>
+
+  <div *ngIf="dataLoaded && brands.length > 0" class="table-responsive admin-table-wrap">
+    <table class="table align-middle admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Brand</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let brand of brands">
+          <td>{{ brand.brandId }}</td>
+          <td>{{ brand.brandName }}</td>
+          <td class="text-end action-cell">
+            <button [routerLink]="['/admin/brands/edit', brand.brandId]" type="button" class="btn btn-sm btn-outline-info">Edit</button>
+            <button (click)="deleteBrand(brand)" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

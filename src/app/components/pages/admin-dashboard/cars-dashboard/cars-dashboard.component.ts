@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Car } from 'src/app/models/car';
-import { CarDetail } from 'src/app/models/carDetail';
 import { DashboardCars } from 'src/app/models/dashboard-cars';
 import { CarService } from 'src/app/services/car.service';
 
@@ -10,22 +10,35 @@ import { CarService } from 'src/app/services/car.service';
   styleUrls: ['./cars-dashboard.component.css']
 })
 export class CarsDashboardComponent implements OnInit {
+  cars: DashboardCars[] = [];
+  dataLoaded = false;
 
-  cars:DashboardCars[]=[];
-  dataLoaded=false;
   constructor(
-    private carService:CarService,
+    private carService: CarService,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
-    this.getCars()
+    this.getCars();
   }
 
-  getCars(){
-    this.carService.getAllCarDetail().subscribe(response => {
-      this.cars=response.data,
-      this.dataLoaded=true
+  getCars(): void {
+    this.dataLoaded = false;
 
-    })
+    this.carService.getAllCarDetail().subscribe((response) => {
+      this.cars = response.data || [];
+      this.dataLoaded = true;
+    });
+  }
+
+  deleteCar(car: DashboardCars): void {
+    if (!window.confirm(`Delete ${car.brandName} ${car.carName}?`)) {
+      return;
+    }
+
+    this.carService.deleteCar(car as unknown as Car).subscribe((response) => {
+      this.toastrService.success(response.message || 'Car deleted.');
+      this.getCars();
+    });
   }
 }

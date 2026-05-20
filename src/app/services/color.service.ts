@@ -6,9 +6,7 @@ import { ResponseModel } from '../models/responseModel';
 import { SingleResponseModel } from '../models/singleResponseModel';
 import { MOCK_COLORS } from '../data/mock-rental-data';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ColorService {
   private colors: Color[] = [...MOCK_COLORS];
 
@@ -28,12 +26,14 @@ export class ColorService {
   }
 
   updateColor(color: Color): Observable<ResponseModel> {
-    this.colors = this.colors.map((item) => item.colorId === color.colorId ? color : item);
+    const colorId = Number(color.colorId);
+    this.colors = this.colors.map((item) => item.colorId === colorId ? { ...color, colorId } : item);
     return of({ success: true, message: 'Colour updated.' });
   }
 
   deleteColor(color: Color): Observable<ResponseModel> {
-    this.colors = this.colors.filter((item) => item.colorId !== color.colorId);
+    const colorId = Number(color.colorId);
+    this.colors = this.colors.filter((item) => item.colorId !== colorId);
     return of({ success: true, message: 'Colour deleted.' });
   }
 }
