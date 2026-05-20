@@ -15,6 +15,7 @@ export class RentalComponent implements OnInit {
   rentPrice = 0;
   rental: Rental;
   rentable = true;
+  availabilityMessage = 'Select valid pickup and return dates to check availability.';
   customerName = 'Demo User';
   customerEmail = 'demo.user@example.com';
   customerPhone = '07123 456789';
@@ -67,15 +68,17 @@ export class RentalComponent implements OnInit {
 
     this.rentalService.isRentable(this.rental).subscribe((response) => {
       this.rentable = response.success;
+      this.availabilityMessage = response.message;
+
       if (!this.rentable) {
-        this.toastrService.error(response.message, 'Already booked');
+        this.toastrService.error(response.message, 'Unavailable');
         return;
       }
 
-      this.rentalService.addRental(this.rental).subscribe(() => {
+      this.rentalService.addRental(this.rental).subscribe((saveResponse) => {
         this.confirmedBooking = this.rental;
         this.bookingConfirmed = true;
-        this.toastrService.success('Your demo booking has been saved locally.', 'Booking confirmed');
+        this.toastrService.success(saveResponse.message, 'Booking request saved');
       });
     });
   }
@@ -85,6 +88,8 @@ export class RentalComponent implements OnInit {
       this.rentPrice = 0;
       this.rentalDays = 0;
       this.rental = undefined;
+      this.rentable = true;
+      this.availabilityMessage = 'Select valid pickup and return dates to check availability.';
       return;
     }
 
@@ -97,6 +102,8 @@ export class RentalComponent implements OnInit {
       this.rentPrice = 0;
       this.rentalDays = 0;
       this.rental = undefined;
+      this.rentable = false;
+      this.availabilityMessage = 'Return date must be the same day or after pickup date.';
       return;
     }
 
@@ -118,12 +125,21 @@ export class RentalComponent implements OnInit {
       customerEmail: this.customerEmail,
       customerPhone: this.customerPhone,
       pickupLocation: this.pickupLocation,
-      status: 'Confirmed',
+      status: 'Pending',
     };
+
+    this.rentalService.isRentable(this.rental).subscribe((response) => {
+      this.rentable = response.success;
+      this.availabilityMessage = response.message;
+    });
   }
 
   goToCars(): void {
     this.router.navigate(['/cars']);
+  }
+
+  goToBookingLookup(): void {
+    this.router.navigate(['/booking-lookup']);
   }
 
   getVehicleCategory(car: Car): string {
@@ -156,16 +172,19 @@ export class RentalComponent implements OnInit {
 
   handleVehicleImageError(event: Event, car: Car): void {
     const target = event.target as HTMLImageElement;
-    if (target.dataset.fallbackApplied === 'true') {
-      target.alt = `${car.colorName} ${car.brandName} ${car.carName} image unavailable`;
-      target.style.display = 'none';
-      return;
-    }
+    target.onerror = null;
+    target.src = this.buildFallbackImage(car);
+  }
 
-    target.dataset.fallbackApplied = 'true';
-    const prompt = encodeURIComponent(
-      `realistic high quality dealership photograph of a ${car.colorName} ${car.modelYear} ${car.brandName} ${car.carName}, exact exterior colour ${car.colorName}, front three quarter view, clean London street background, natural daylight, no text, no watermark, no logo overlay`
-    );
-    target.src = `https://image.pollinations.ai/prompt/${prompt}?width=900&height=520&seed=${car.carId + 1000}&nologo=true&private=true&enhance=true`;
+  private buildFallbackImage(car: Car): string {
+    const label = `${car.colorName || ''} ${car.brandName || ''} ${car.carName || 'Vehicle'}`.trim();
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+      <rect width="1200" height="720" fill="#e2e8f0"/>
+      <rect x="170" y="330" width="860" height="150" rx="55" fill="#0f172a" opacity="0.9"/>
+      <circle cx="360" cy="500" r="62" fill="#f8fafc"/><circle cx="840" cy="500" r="62" fill="#f8fafc"/>
+      <text x="600" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="54" font-weight="800" fill="#0f172a">Image unavailable</text>
+      <text x="600" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#334155">${label}</text>
+    </svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
   }
 }

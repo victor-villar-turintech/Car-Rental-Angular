@@ -3,13 +3,21 @@
     <div>
       <span>Local bookings</span>
       <h1>Bookings</h1>
-      <p>Confirmed demo bookings saved in browser localStorage.</p>
+      <p>Manage local demo bookings through Pending, Confirmed, Active, Completed and Cancelled statuses.</p>
     </div>
 
     <div class="summary-cards">
       <div><span>Total bookings</span><strong>{{ bookings.length }}</strong></div>
-      <div><span>Revenue</span><strong>{{ totalRevenue() | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+      <div><span>Projected revenue</span><strong>{{ totalRevenue() | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
     </div>
+  </div>
+
+  <div class="status-summary-grid">
+    <div><span>Pending</span><strong>{{ countByStatus('Pending') }}</strong></div>
+    <div><span>Confirmed</span><strong>{{ countByStatus('Confirmed') }}</strong></div>
+    <div><span>Active</span><strong>{{ countByStatus('Active') }}</strong></div>
+    <div><span>Completed</span><strong>{{ countByStatus('Completed') }}</strong></div>
+    <div><span>Cancelled</span><strong>{{ countByStatus('Cancelled') }}</strong></div>
   </div>
 
   <div class="bookings-toolbar">
@@ -18,6 +26,7 @@
       <option value="">All bookings</option>
       <option value="Pending">Pending</option>
       <option value="Confirmed">Confirmed</option>
+      <option value="Active">Active</option>
       <option value="Completed">Completed</option>
       <option value="Cancelled">Cancelled</option>
     </select>
@@ -27,7 +36,7 @@
     <table class="table table-hover mb-0">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>Ref</th>
           <th>Customer</th>
           <th>Vehicle</th>
           <th>Dates</th>
@@ -38,7 +47,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let booking of filteredBookings">
-          <td>#{{ booking.rentalId }}</td>
+          <td><strong>{{ booking.bookingReference || ('RC-' + booking.rentalId) }}</strong></td>
           <td>
             <strong>{{ booking.customerName || 'Demo customer' }}</strong>
             <small>{{ booking.customerEmail }}</small>
@@ -54,8 +63,16 @@
           <td>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</td>
           <td><span class="status-pill" [ngClass]="booking.status">{{ booking.status }}</span></td>
           <td class="text-right action-buttons">
-            <button class="btn btn-sm btn-outline-success" type="button" (click)="updateStatus(booking, 'Completed')">Complete</button>
-            <button class="btn btn-sm btn-outline-danger" type="button" (click)="updateStatus(booking, 'Cancelled')">Cancel</button>
+            <ng-container *ngFor="let action of getAvailableActions(booking)">
+              <button
+                class="btn btn-sm"
+                [ngClass]="action === 'Cancelled' ? 'btn-outline-danger' : 'btn-outline-success'"
+                type="button"
+                (click)="updateStatus(booking, action)">
+                {{ getActionLabel(action) }}
+              </button>
+            </ng-container>
+            <span class="no-actions" *ngIf="getAvailableActions(booking).length === 0">No actions</span>
           </td>
         </tr>
       </tbody>
@@ -63,8 +80,8 @@
   </div>
 
   <div class="empty-bookings" *ngIf="filteredBookings.length === 0">
-    <h2>No bookings yet</h2>
-    <p>Create a booking from a vehicle detail page, then return here to review it.</p>
+    <h2>No bookings found</h2>
+    <p>Create a booking from a vehicle detail page, or clear the status filter.</p>
     <a class="btn btn-primary" routerLink="/cars">Browse cars</a>
   </div>
 </section>

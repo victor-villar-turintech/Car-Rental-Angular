@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { NaviComponent } from './components/navi/navi.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { RentalComponent } from './components/rental/rental.component';
+import { BookingLookupComponent } from './components/booking-lookup/booking-lookup.component';
 import { ColorComponent } from './components/color/color.component';
 import { CarComponent } from './components/car/car.component';
 import { BrandComponent } from './components/brand/brand.component';
@@ -26,6 +27,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { AdminDashboardComponent } from './components/pages/admin-dashboard/admin-dashboard.component';
+import { AdminMetricsDashboardComponent } from './components/pages/admin-dashboard/metrics-dashboard/metrics-dashboard.component';
 import { ColorsDashboardComponent } from './components/pages/admin-dashboard/colors-dashboard/colors-dashboard.component';
 import { ColorAddComponent } from './components/pages/admin-dashboard/colors-dashboard/color-add/color-add.component';
 import { ColorEditComponent } from './components/pages/admin-dashboard/colors-dashboard/color-edit/color-edit.component';
@@ -49,6 +51,7 @@ export function tokenGetter() {
     NaviComponent,
     CustomerComponent,
     RentalComponent,
+    BookingLookupComponent,
     ColorComponent,
     CarComponent,
     BrandComponent,
@@ -66,6 +69,7 @@ export function tokenGetter() {
     LoginComponent,
     RegisterComponent,
     AdminDashboardComponent,
+    AdminMetricsDashboardComponent,
     ColorsDashboardComponent,
     ColorEditComponent,
     BrandsDashboardComponent,

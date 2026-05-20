@@ -1,5 +1,8 @@
+export type RentalStatus = 'Pending' | 'Confirmed' | 'Active' | 'Completed' | 'Cancelled';
+
 export interface Rental {
   rentalId?: number;
+  bookingReference?: string;
   carId: number;
   carName?: string;
   brandName?: string;
@@ -15,6 +18,20 @@ export interface Rental {
   customerEmail?: string;
   customerPhone?: string;
   pickupLocation?: string;
-  status?: 'Pending' | 'Confirmed' | 'Cancelled' | 'Completed';
+  status?: RentalStatus;
   createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface RentalMetrics {
+  totalBookings: number;
+  pendingBookings: number;
+  confirmedBookings: number;
+  activeBookings: number;
+  completedBookings: number;
+  cancelledBookings: number;
+  projectedRevenue: number;
+  completedRevenue: number;
+  unavailableCarsToday: number;
+  mostBookedBrand: string;
 }

@@ -50,7 +50,9 @@
         <div class="total"><span>Total price</span><strong>{{ rentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
       </div>
 
-      <button class="btn btn-primary btn-block" type="button" [disabled]="!rental" (click)="confirmBooking()">Confirm demo booking</button>
+      <div class="availability-message" [ngClass]="rentable ? 'available' : 'unavailable'">{{ availabilityMessage }}</div>
+
+      <button class="btn btn-primary btn-block" type="button" [disabled]="!rental || !rentable" (click)="confirmBooking()">Request demo booking</button>
       <p class="small-note">Bookings are saved in localStorage and appear in the Admin Bookings page. No backend API is required.</p>
     </aside>
   </div>
@@ -58,11 +60,13 @@
 
 <section class="rental-page container" *ngIf="bookingConfirmed && confirmedBooking">
   <div class="confirmation-card">
-    <span>Confirmed</span>
-    <h1>Your rental is booked</h1>
-    <p>The booking has been stored locally and can now be reviewed in Admin → Bookings.</p>
+    <span>Booking requested</span>
+    <h1>Your rental request is pending</h1>
+    <p>The booking has been stored locally with Pending status. Admin can confirm it from Admin → Bookings.</p>
 
     <div class="confirmation-grid">
+      <div><small>Reference</small><strong>{{ confirmedBooking.bookingReference || 'Generated locally' }}</strong></div>
+      <div><small>Status</small><strong>{{ confirmedBooking.status }}</strong></div>
       <div><small>Vehicle</small><strong>{{ confirmedBooking.brandName }} {{ confirmedBooking.carName }}</strong></div>
       <div><small>Customer</small><strong>{{ confirmedBooking.customerName }}</strong></div>
       <div><small>Pickup date</small><strong>{{ confirmedBooking.rentDate | date:'mediumDate' }}</strong></div>
@@ -73,6 +77,7 @@
 
     <div class="confirmation-actions">
       <button class="btn btn-primary" type="button" (click)="goToCars()">Back to cars</button>
+      <button class="btn btn-outline-primary" type="button" (click)="goToBookingLookup()">Look up booking</button>
       <a class="btn btn-outline-secondary" routerLink="/admin/bookings">View admin bookings</a>
     </div>
   </div>

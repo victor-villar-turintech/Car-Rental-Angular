@@ -33,3 +33,8 @@ label { font-weight: 800; color: #334155; margin-top: .75rem; }
 .empty-state { text-align: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 26px; padding: 3rem; color: #64748b; }
 @media (max-width: 991.98px) { .rental-grid { grid-template-columns: 1fr; } .booking-card { position: static; } .confirmation-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 575.98px) { .confirmation-grid { grid-template-columns: 1fr; } }
+
+.availability-message { margin: 1rem 0; border-radius: 14px; padding: .75rem .9rem; font-weight: 900; }
+.availability-message.available { color: #166534; background: #dcfce7; border: 1px solid #86efac; }
+.availability-message.unavailable { color: #991b1b; background: #fee2e2; border: 1px solid #fecaca; }
+.btn:disabled { cursor: not-allowed; opacity: .55; }
