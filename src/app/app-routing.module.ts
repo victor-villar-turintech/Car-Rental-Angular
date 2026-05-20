@@ -5,20 +5,22 @@ import { CarDetailComponent } from './components/car-detail/car-detail.component
 import { CarComponent } from './components/car/car.component';
 import { CreditCardComponent } from './components/creditcard/creditcard.component';
 import { RentalComponent } from './components/rental/rental.component';
-import { ColorAddComponent } from './components/pages/admin-dashboard/colors-dashboard/color-add/color-add.component';
-import { ColorEditComponent } from './components/pages/admin-dashboard/colors-dashboard/color-edit/color-edit.component';
-import { ColorsDashboardComponent } from './components/pages/admin-dashboard/colors-dashboard/colors-dashboard.component';
+import { BookingLookupComponent } from './components/booking-lookup/booking-lookup.component';
+import { CarEditComponent } from './components/pages/admin-dashboard/cars-dashboard/car-edit/car-edit.component';
+import { BrandAddComponent } from './components/pages/admin-dashboard/brands-dashboard/brand-add/brand-add.component';
 import { AdminDashboardComponent } from './components/pages/admin-dashboard/admin-dashboard.component';
 import { AdminMetricsDashboardComponent } from './components/pages/admin-dashboard/metrics-dashboard/metrics-dashboard.component';
-import { BrandAddComponent } from './components/pages/admin-dashboard/brands-dashboard/brand-add/brand-add.component';
-import { CarEditComponent } from './components/pages/admin-dashboard/cars-dashboard/car-edit/car-edit.component';
-import { BookingLookupComponent } from './components/booking-lookup/booking-lookup.component';
+import { ColorsDashboardComponent } from './components/pages/admin-dashboard/colors-dashboard/colors-dashboard.component';
+import { ColorAddComponent } from './components/pages/admin-dashboard/colors-dashboard/color-add/color-add.component';
+import { ColorEditComponent } from './components/pages/admin-dashboard/colors-dashboard/color-edit/color-edit.component';
 import { BrandsDashboardComponent } from './components/pages/admin-dashboard/brands-dashboard/brands-dashboard.component';
 import { BrandEditComponent } from './components/pages/admin-dashboard/brands-dashboard/brand-edit/brand-edit.component';
 import { CarsDashboardComponent } from './components/pages/admin-dashboard/cars-dashboard/cars-dashboard.component';
 import { AdminBookingsComponent } from './components/pages/admin-dashboard/bookings-dashboard/bookings-dashboard.component';
 import { AdminExtrasComponent } from './components/pages/admin-dashboard/extras-dashboard/extras-dashboard.component';
 import { AdminPaymentsComponent } from './components/pages/admin-dashboard/payments-dashboard/payments-dashboard.component';
+import { AdminActivityDashboardComponent } from './components/pages/admin-dashboard/activity-dashboard/activity-dashboard.component';
+import { AdminSettingsDashboardComponent } from './components/pages/admin-dashboard/settings-dashboard/settings-dashboard.component';
 import { HomeComponent } from './components/home/home/home.component';
 import { UserComponent } from './components/auth/user-profil/user-profil.component';
 import { UsereditComponent } from './components/auth/user-profil/useredit/useredit.component';
@@ -75,6 +77,8 @@ const routes: Routes = [
       { path: 'bookings', component: AdminBookingsComponent },
       { path: 'extras', component: AdminExtrasComponent },
       { path: 'payments', component: AdminPaymentsComponent },
+      { path: 'activity', component: AdminActivityDashboardComponent },
+      { path: 'settings', component: AdminSettingsDashboardComponent },
     ],
   },
   { path: '**', redirectTo: 'home' },
