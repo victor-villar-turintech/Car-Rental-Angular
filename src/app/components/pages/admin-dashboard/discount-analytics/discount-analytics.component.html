@@ -1,0 +1,34 @@
+<section class="admin-section">
+  <div class="section-header">
+    <div>
+      <span class="eyebrow">Promotions</span>
+      <h1>Discount analytics</h1>
+      <p>Review local demo code usage, total discount granted and revenue after discounts.</p>
+    </div>
+    <a class="btn btn-outline-primary" routerLink="/admin/discounts">Manage discount codes</a>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card"><span>Total codes</span><strong>{{ metrics.length }}</strong></div>
+    <div class="metric-card"><span>Total discount given</span><strong>{{ totalDiscountGiven | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    <div class="metric-card"><span>Revenue after discounts</span><strong>{{ totalDiscountedRevenue | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+  </div>
+
+  <div class="table-card" *ngIf="metrics.length > 0">
+    <table class="table mb-0">
+      <thead><tr><th>Code</th><th>Description</th><th>Status</th><th>Used</th><th>Discount given</th><th>Revenue after discount</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let metric of metrics">
+          <td><strong>{{ metric.code }}</strong></td>
+          <td>{{ metric.description }}</td>
+          <td><app-status-badge [status]="metric.active ? 'Active' : 'Inactive'"></app-status-badge></td>
+          <td>{{ metric.usedCount }}</td>
+          <td>{{ metric.totalDiscount | currency:'GBP':'symbol':'1.0-0' }}</td>
+          <td>{{ metric.revenueAfterDiscount | currency:'GBP':'symbol':'1.0-0' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-empty-state *ngIf="metrics.length === 0" title="No discount codes yet" message="Create demo discount codes under Admin Discounts to start tracking usage." icon="%"></app-empty-state>
+</section>

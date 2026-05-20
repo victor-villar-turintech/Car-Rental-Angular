@@ -1,50 +1,86 @@
-<div class="admin-panel-card">
-  <div class="admin-panel-header">
+<section class="admin-page fleet-page">
+  <div class="admin-page-header">
     <div>
-      <span>Cars</span>
+      <p class="eyebrow">Cars</p>
       <h1>Fleet management</h1>
-      <p>Create, update and delete cars from the local mock vehicle catalogue. Internal number plates are shown here only and are used in booking reference generation.</p>
+      <p>Create, update and delete cars from the local mock vehicle catalogue. Internal number plates and vehicle specification data are visible here for Admin users.</p>
     </div>
-
-    <div class="admin-actions">
-      <button routerLink="/admin/cars/add" type="button" class="btn btn-primary">Add car</button>
-      <button routerLink="/cars" type="button" class="btn btn-outline-secondary">View catalogue</button>
+    <div class="header-actions">
+      <a routerLink="/admin/cars/add" class="btn btn-primary">Add car</a>
+      <a routerLink="/cars" class="btn btn-outline-secondary">View catalogue</a>
     </div>
   </div>
 
-  <div *ngIf="!dataLoaded" class="admin-note">Loading cars...</div>
-
-  <div *ngIf="dataLoaded && cars.length === 0" class="admin-note">No cars available.</div>
-
-  <div *ngIf="dataLoaded && cars.length > 0" class="table-responsive admin-table-wrap">
-    <table class="table align-middle admin-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Plate</th>
-          <th>Brand</th>
-          <th>Model</th>
-          <th>Colour</th>
-          <th>Year</th>
-          <th>Daily price</th>
-          <th class="text-end">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let car of cars">
-          <td>{{ car.carId }}</td>
-          <td><strong>{{ car.numberPlate }}</strong></td>
-          <td>{{ car.brandName }}</td>
-          <td>{{ car.carName }}</td>
-          <td>{{ car.colorName }}</td>
-          <td>{{ car.modelYear }}</td>
-          <td>{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</td>
-          <td class="text-end action-cell">
-            <button [routerLink]="['/admin/cars/edit', car.carId]" type="button" class="btn btn-sm btn-outline-info">Edit</button>
-            <button (click)="deleteCar(car)" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="fleet-summary-grid" *ngIf="cars && cars.length">
+    <div class="summary-card"><span>Total vehicles</span><strong>{{ cars.length }}</strong></div>
+    <div class="summary-card"><span>Average daily price</span><strong>£{{ averageDailyPrice() }}</strong></div>
+    <div class="summary-card"><span>Automatic</span><strong>{{ countByTransmission('Automatic') }}</strong></div>
+    <div class="summary-card"><span>Electric / hybrid</span><strong>{{ countByFuelGroup() }}</strong></div>
   </div>
-</div>
+
+  <div class="table-card fleet-table-card" *ngIf="cars && cars.length > 0">
+    <div class="table-responsive">
+      <table class="table mb-0 fleet-spec-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Plate</th>
+            <th>Vehicle</th>
+            <th>Colour / Year</th>
+            <th>Daily price</th>
+            <th>Specification</th>
+            <th>Capacity</th>
+            <th>Efficiency</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let car of cars">
+            <td>{{ car.carId }}</td>
+            <td><strong>{{ car.numberPlate || 'N/A' }}</strong></td>
+            <td>
+              <strong>{{ displayBrand(car) }}</strong><br>
+              <span>{{ displayModel(car) }}</span><br>
+              <small>{{ specFor(car).vehicleType }} · {{ specFor(car).transmission }}</small>
+            </td>
+            <td>
+              <span>{{ displayColour(car) }}</span><br>
+              <small>{{ car.modelYear || 'N/A' }}</small>
+            </td>
+            <td><strong>£{{ car.dailyPrice || 0 }}</strong></td>
+            <td>
+              <div class="spec-pill-grid">
+                <span><b>Engine</b>{{ specFor(car).engineSize }}</span>
+                <span><b>HP</b>{{ specFor(car).horsepower }}</span>
+                <span><b>Fuel</b>{{ specFor(car).fuelType }}</span>
+                <span><b>Drive</b>{{ specFor(car).drivetrain }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="spec-pill-grid">
+                <span><b>Seats</b>{{ specFor(car).seats }}</span>
+                <span><b>Luggage</b>{{ specFor(car).luggageCapacityLitres }} L</span>
+                <span><b>Boot</b>{{ specFor(car).bootCapacityLitres }} L</span>
+                <span><b>Range</b>{{ specFor(car).estimatedRangeMiles }} mi</span>
+              </div>
+            </td>
+            <td>
+              <div class="spec-pill-grid">
+                <span><b>Economy</b>{{ specFor(car).fuelEconomyMpg }} mpg</span>
+                <span><b>CO₂</b>{{ specFor(car).emissionsBand }}</span>
+              </div>
+            </td>
+            <td class="actions">
+              <a [routerLink]="['/admin/cars/edit', car.carId]" class="btn btn-sm btn-outline-primary">Edit</a>
+              <button (click)="deleteCar(car)" type="button" class="btn btn-sm btn-outline-danger">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="!cars || cars.length === 0">
+    No cars are currently available in the local mock fleet.
+  </div>
+</section>

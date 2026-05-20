@@ -1,0 +1,6 @@
+.status-badge { display: inline-flex; align-items: center; min-height: 26px; padding: .25rem .65rem; border-radius: 999px; font-weight: 900; font-size: .78rem; background: #e2e8f0; color: #334155; }
+.status-badge.paid, .status-badge.completed, .status-badge.success, .status-badge.confirmed { background: #dcfce7; color: #166534; }
+.status-badge.pending, .status-badge.info { background: #eff6ff; color: #1d4ed8; }
+.status-badge.active { background: #fef9c3; color: #854d0e; }
+.status-badge.cancelled, .status-badge.failed, .status-badge.danger { background: #fee2e2; color: #991b1b; }
+.status-badge.refunded, .status-badge.warning { background: #ffedd5; color: #9a3412; }

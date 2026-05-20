@@ -1,0 +1,142 @@
+<section class="compare-page">
+  <div class="compare-header">
+    <div>
+      <span class="eyebrow">Vehicle comparison</span>
+      <h1>Compare rental vehicles</h1>
+      <p>Select vehicles from the matching results, then compare cost, performance, range, seating and carrying capacity side by side.</p>
+    </div>
+    <a routerLink="/cars" class="btn btn-outline-primary">Browse catalogue</a>
+  </div>
+
+  <section class="filter-card">
+    <div class="filter-title-row">
+      <div>
+        <h2>Browse vehicles for comparison</h2>
+        <p>Filter by size, type, seats, transmission, fuel type and price before adding vehicles.</p>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-outline-secondary" type="button" (click)="clearFilters()">Clear filters</button>
+        <button class="btn btn-outline-danger" type="button" (click)="resetComparison()">Reset comparison</button>
+        <button class="btn btn-primary" type="button" (click)="goToComparison()">Go to comparison</button>
+      </div>
+    </div>
+
+    <div class="filter-grid">
+      <label>
+        <span>Search</span>
+        <input class="form-control" type="text" [(ngModel)]="searchTerm" (ngModelChange)="onFilterChange()" placeholder="BMW, SUV, estate, electric..." />
+      </label>
+      <label>
+        <span>Size</span>
+        <select class="form-control" [(ngModel)]="selectedSize" (change)="onFilterChange()">
+          <option value="">All sizes</option>
+          <option *ngFor="let size of availableSizes" [value]="size">{{ size }}</option>
+        </select>
+      </label>
+      <label>
+        <span>Vehicle type</span>
+        <select class="form-control" [(ngModel)]="selectedType" (change)="onFilterChange()">
+          <option value="">All types</option>
+          <option *ngFor="let type of availableTypes" [value]="type">{{ type }}</option>
+        </select>
+      </label>
+      <label>
+        <span>Seats</span>
+        <select class="form-control" [(ngModel)]="selectedSeats" (change)="onFilterChange()">
+          <option value="">Any seats</option>
+          <option *ngFor="let seats of availableSeats" [value]="seats">{{ seats }} seats</option>
+        </select>
+      </label>
+      <label>
+        <span>Transmission</span>
+        <select class="form-control" [(ngModel)]="selectedTransmission" (change)="onFilterChange()">
+          <option value="">Any transmission</option>
+          <option *ngFor="let transmission of availableTransmissions" [value]="transmission">{{ transmission }}</option>
+        </select>
+      </label>
+      <label>
+        <span>Fuel type</span>
+        <select class="form-control" [(ngModel)]="selectedFuelType" (change)="onFilterChange()">
+          <option value="">Any fuel</option>
+          <option *ngFor="let fuelType of availableFuelTypes" [value]="fuelType">{{ fuelType }}</option>
+        </select>
+      </label>
+      <label>
+        <span>Max daily price</span>
+        <input class="form-control" type="number" min="0" [(ngModel)]="maxDailyPrice" (ngModelChange)="onFilterChange()" placeholder="e.g. 100" />
+      </label>
+    </div>
+  </section>
+
+  <section class="matching-card">
+    <div class="section-title-row">
+      <div>
+        <h2><span>{{ filteredCars.length }}</span> matching vehicles</h2>
+        <p>Add up to {{ maxCompareVehicles }} vehicles to the comparison dashboard.</p>
+      </div>
+      <div class="selected-counter">{{ selectedIds.length }} / {{ maxCompareVehicles }} selected</div>
+    </div>
+
+    <div class="matching-grid" *ngIf="filteredCars.length > 0">
+      <article class="match-card" *ngFor="let car of filteredCars">
+        <img [src]="imagePath(car)" [alt]="brandName(car) + ' ' + carName(car)" />
+        <div class="match-body">
+          <span class="brand">{{ brandName(car) }}</span>
+          <h3>{{ carName(car) }}</h3>
+          <p>{{ metrics(car).vehicleType }} · {{ metrics(car).seats }} seats · £{{ dailyPrice(car) }}/day</p>
+          <button class="btn btn-sm" type="button"
+                  [class.btn-primary]="!isSelected(carId(car))"
+                  [class.btn-outline-secondary]="isSelected(carId(car))"
+                  [disabled]="isSelected(carId(car)) || (!canAddMore && !isSelected(carId(car)))"
+                  (click)="addToCompare(carId(car))">
+            {{ isSelected(carId(car)) ? 'Added' : (canAddMore ? 'Add to compare' : 'Limit reached') }}
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <app-empty-state *ngIf="filteredCars.length === 0" title="No matching vehicles" message="Try clearing filters or increasing the maximum daily price." icon="🚗"></app-empty-state>
+  </section>
+
+  <section id="comparison-dashboard" class="comparison-dashboard">
+    <div class="section-title-row">
+      <div>
+        <span class="eyebrow">Comparison dashboard</span>
+        <h2>{{ selectedCars.length }} selected {{ selectedCars.length === 1 ? 'vehicle' : 'vehicles' }}</h2>
+        <p *ngIf="selectedCars.length > 0">Compare specifications side by side. The dashboard scrolls horizontally on smaller screens.</p>
+        <p *ngIf="selectedCars.length === 0">No vehicles selected yet. Use the Add to compare buttons above.</p>
+      </div>
+      <div class="comparison-actions">
+        <button class="btn btn-outline-danger" type="button" (click)="resetComparison()">Reset comparison</button>
+        <button class="btn btn-outline-primary" type="button" (click)="goToComparison()">Go to comparison</button>
+      </div>
+    </div>
+
+    <div class="comparison-scroll" *ngIf="selectedCars.length > 0">
+      <article class="comparison-card" *ngFor="let car of selectedCars">
+        <button class="remove-button" type="button" (click)="removeFromCompare(carId(car))" aria-label="Remove vehicle">×</button>
+        <img [src]="imagePath(car)" [alt]="brandName(car) + ' ' + carName(car)" />
+        <div class="comparison-body">
+          <span class="brand">{{ brandName(car) }}</span>
+          <h3>{{ carName(car) }}</h3>
+          <p>{{ description(car) }}</p>
+          <strong class="price">£{{ dailyPrice(car) }}/day</strong>
+          <div class="metric-grid">
+            <div><span>Engine</span><strong>{{ metrics(car).engineSize }}</strong></div>
+            <div><span>HP</span><strong>{{ metrics(car).horsepower }}</strong></div>
+            <div><span>Range</span><strong>{{ metrics(car).estimatedRangeMiles }} mi</strong></div>
+            <div><span>Seats</span><strong>{{ metrics(car).seats }}</strong></div>
+            <div><span>Luggage</span><strong>{{ metrics(car).luggageCapacityLitres }} L</strong></div>
+            <div><span>Boot</span><strong>{{ metrics(car).bootCapacityLitres }} L</strong></div>
+            <div><span>Drivetrain</span><strong>{{ metrics(car).drivetrain }}</strong></div>
+            <div><span>Economy</span><strong>{{ metrics(car).fuelEconomyMpg || 'EV' }}{{ metrics(car).fuelEconomyMpg ? ' mpg' : '' }}</strong></div>
+            <div><span>Fuel</span><strong>{{ metrics(car).fuelType }}</strong></div>
+            <div><span>CO₂</span><strong>{{ metrics(car).co2Band }}</strong></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</section>
+
+<app-back-to-top></app-back-to-top>

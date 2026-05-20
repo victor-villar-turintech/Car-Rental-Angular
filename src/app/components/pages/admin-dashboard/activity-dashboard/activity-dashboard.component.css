@@ -1,0 +1,15 @@
+.admin-page { padding: 1rem; }
+.page-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; }
+.eyebrow { color: #2563eb; font-weight: 950; text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; }
+h1 { color: #0f172a; font-weight: 950; margin: .25rem 0; }
+p { color: #64748b; }
+.toolbar-card, .activity-item, .empty-state { background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 18px 50px rgba(15,23,42,.06); }
+.toolbar-card { padding: 1rem; max-width: 360px; margin-bottom: 1rem; }
+.toolbar-card label { font-weight: 900; color: #334155; }
+.activity-list { display: grid; gap: .75rem; }
+.activity-item { display: grid; grid-template-columns: 110px 1fr; gap: 1rem; padding: 1rem; align-items: start; }
+.activity-item strong { color: #0f172a; font-weight: 950; }
+.activity-item p { margin: .2rem 0; }
+.activity-item small { color: #64748b; font-weight: 700; }
+.empty-state { padding: 2rem; color: #64748b; font-weight: 800; }
+@media (max-width: 575.98px) { .page-heading, .activity-item { display: block; } .activity-item app-status-badge { display: inline-block; margin-bottom: .5rem; } }

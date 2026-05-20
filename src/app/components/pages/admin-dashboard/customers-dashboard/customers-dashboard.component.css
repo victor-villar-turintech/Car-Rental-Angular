@@ -1,0 +1,8 @@
+.admin-page { display: grid; gap: 1rem; }
+.admin-page-header { display: flex; justify-content: space-between; align-items: flex-end; }
+.eyebrow { color: #0d6efd; text-transform: uppercase; font-size: .75rem; font-weight: 900; letter-spacing: .08em; }
+.search-box { max-width: 420px; }
+.table-card { background: white; border: 1px solid #e6edf6; border-radius: 20px; box-shadow: 0 14px 40px rgba(15,23,42,.06); overflow: auto; }
+.table th { font-size: .75rem; text-transform: uppercase; color: #64748b; }
+.actions { display: flex; gap: .4rem; flex-wrap: wrap; }
+.empty-state { padding: 2rem; color: #64748b; }

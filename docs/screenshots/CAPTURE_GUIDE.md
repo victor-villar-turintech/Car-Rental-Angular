@@ -3,61 +3,34 @@
 Run the app locally:
 
 ```bash
-npm install
 npm start
 ```
 
-Open `http://localhost:4200` and refresh the screenshots referenced by the README.
+Capture these pages after each major UI update and replace the matching files in `docs/screenshots/`:
 
-Recommended files:
+- `home.png` — `/home`
+- `catalogue.png` — `/cars`
+- `car-detail.png` — `/cars/1`
+- `booking-extras.png` — `/car/rental/1`
+- `payment.png` — `/payment/<booking-reference>`
+- `receipt.png` — `/booking-confirmation/<booking-reference>`
+- `account.png` — `/account`
+- `account-rewards.png` — `/account/rewards`
+- `account-activity.png` — `/account/activity`
+- `admin-dashboard.png` — `/admin/dashboard`
+- `admin-customers.png` — `/admin/customers`
+- `admin-discounts.png` — `/admin/discounts`
+- `admin-rewards.png` — `/admin/rewards`
+- `admin-payments.png` — `/admin/payments`
 
-```text
-docs/screenshots/home.png
-docs/screenshots/catalogue.png
-docs/screenshots/car-detail.png
-docs/screenshots/booking-extras.png
-docs/screenshots/payment.png
-docs/screenshots/receipt.png
-docs/screenshots/account.png
-docs/screenshots/customer-bookings.png
-docs/screenshots/admin-dashboard.png
-docs/screenshots/admin-cars.png
-docs/screenshots/admin-extras.png
-docs/screenshots/admin-payments.png
-```
+Recommended browser width: 1440px or wider for desktop screenshots.
 
-Suggested routes:
 
-```text
-/home
-/home scroll to Popular choices / trust section
-/cars
-/cars/1
-/car/rental/1
-/payment/<booking-reference>
-/booking-confirmation/<booking-reference>
-/account
-/account/bookings
-/admin/dashboard
-/admin/cars
-/admin/extras
-/admin/payments
-```
+## Additional CRM and comparison screenshots
 
-Admin demo credentials:
+Capture the following after this patch:
 
-```text
-Username: admin
-Password: admin123
-```
-
-Capture the polished featured vehicle hero, popular vehicle cards, trust/benefits section and revised How It Works section after applying the homepage polish patch.
-
-After replacing screenshots, run:
-
-```bash
-git status
-npm run build
-git add README.md docs/screenshots
-git commit -m "Update README screenshots"
-```
+- `docs/screenshots/compare.png` from `/compare`
+- `docs/screenshots/account-favourites.png` from `/account/favourites`
+- `docs/screenshots/admin-reward-settings.png` from `/admin/reward-settings`
+- `docs/screenshots/admin-discount-analytics.png` from `/admin/discount-analytics`

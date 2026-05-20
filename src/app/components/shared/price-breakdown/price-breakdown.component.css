@@ -1,0 +1,8 @@
+.shared-price-breakdown { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 1rem; display: grid; gap: .65rem; }
+.shared-price-breakdown div { display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
+.shared-price-breakdown span { color: #64748b; font-weight: 850; }
+.shared-price-breakdown strong { color: #0f172a; font-weight: 950; }
+.shared-price-breakdown .total { border-top: 1px solid #e2e8f0; padding-top: .8rem; }
+.shared-price-breakdown .total strong { font-size: 1.5rem; }
+.shared-price-breakdown.compact { padding: .85rem; gap: .45rem; }
+.shared-price-breakdown.compact .total strong { font-size: 1.25rem; }

@@ -1,12 +1,10 @@
-.admin-login-page { min-height: 80vh; display: grid; place-items: center; padding: 3rem 1rem; background: #f8fafc; }
-.admin-login-card { width: min(100%, 460px); background: #fff; border-radius: 24px; padding: 2rem; box-shadow: 0 24px 60px rgba(15, 23, 42, .12); }
-.admin-login-card span { text-transform: uppercase; font-size: .75rem; font-weight: 800; color: #2563eb; letter-spacing: .08em; }
-.admin-login-card h1 { margin: .35rem 0 .75rem; font-weight: 800; color: #0f172a; }
-.admin-login-card p { color: #64748b; }
-.admin-login-card label { display: block; margin-top: 1rem; font-weight: 700; color: #334155; }
-.credential-box { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: 1rem 0; }
-.credential-box div { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; padding: .85rem; }
-.credential-box small { display: block; color: #64748b; }
-.credential-box strong { color: #1d4ed8; }
-.btn-block { width: 100%; margin-top: 1.25rem; }
-.back-link { display: inline-block; margin-top: 1rem; color: #475569; }
+.admin-login-page { min-height: calc(100vh - 72px); display: grid; place-items: center; padding: 2rem; background: radial-gradient(circle at top left, #dbeafe, #f8fafc 42%, #eef2ff); }
+.admin-login-card { width: min(480px, 100%); background: #fff; border: 1px solid #e2e8f0; border-radius: 28px; padding: 2rem; box-shadow: 0 24px 80px rgba(15,23,42,.12); }
+.eyebrow { color: #2563eb; font-weight: 950; text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; }
+h1 { color: #0f172a; font-weight: 950; margin: .35rem 0 .5rem; }
+p { color: #64748b; }
+.demo-credentials { display: grid; gap: .25rem; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; border-radius: 18px; padding: 1rem; margin: 1rem 0; }
+.demo-credentials code { color: #0f172a; font-weight: 950; }
+label { display: block; margin-top: 1rem; color: #334155; font-weight: 900; }
+.form-control { border-radius: 14px; min-height: 46px; }
+.back-link { display: inline-block; margin-top: 1rem; font-weight: 850; color: #2563eb; text-decoration: none; }

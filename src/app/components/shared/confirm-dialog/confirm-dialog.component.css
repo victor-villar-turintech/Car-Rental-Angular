@@ -1,0 +1,7 @@
+.confirm-backdrop { position: fixed; inset: 0; z-index: 2500; display: grid; place-items: center; padding: 1rem; background: rgba(15, 23, 42, .45); backdrop-filter: blur(4px); }
+.confirm-card { width: min(420px, 100%); background: #fff; border: 1px solid #dbe4f0; border-radius: 24px; padding: 1.5rem; box-shadow: 0 24px 80px rgba(15, 23, 42, .24); }
+.confirm-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 14px; background: #eaf2ff; color: #0d6efd; font-weight: 900; margin-bottom: .75rem; }
+.confirm-icon.danger { background: #fff1f2; color: #dc3545; }
+.confirm-card h2 { margin: 0 0 .5rem; font-size: 1.45rem; color: #111827; }
+.confirm-card p { margin: 0; color: #64748b; line-height: 1.5; }
+.confirm-actions { margin-top: 1.25rem; display: flex; justify-content: flex-end; gap: .75rem; flex-wrap: wrap; }

@@ -1,0 +1,15 @@
+.account-page { padding: 2rem 0; }
+.account-header { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-end; margin-bottom: 1rem; }
+.account-header span { color: #0d6efd; text-transform: uppercase; font-size: .75rem; font-weight: 900; letter-spacing: .08em; }
+.reward-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.reward-card, .transaction-card, .empty-state { background: white; border: 1px solid #e6edf6; border-radius: 20px; padding: 1rem; box-shadow: 0 10px 30px rgba(15,23,42,.05); }
+.reward-card span { color: #64748b; font-weight: 800; text-transform: uppercase; font-size: .75rem; }
+.reward-card strong { display: block; font-size: 2rem; color: #0f172a; }
+.reward-card.hero { background: linear-gradient(135deg, #0d6efd, #143778); color: white; }
+.reward-card.hero strong, .reward-card.hero span { color: white; }
+.transaction-list { display: grid; gap: .75rem; }
+.transaction-card { display: flex; justify-content: space-between; gap: 1rem; }
+.transaction-card p { margin: .25rem 0; color: #475569; }
+.transaction-card span { color: #16a34a; font-weight: 900; }
+.transaction-card span.negative { color: #dc2626; }
+@media (max-width: 768px) { .reward-grid { grid-template-columns: 1fr; } }

@@ -1,0 +1,6 @@
+.account-page { padding: 2rem 0; }
+.account-header { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-end; margin-bottom: 1rem; }
+.account-header span { color: #0d6efd; text-transform: uppercase; font-size: .75rem; font-weight: 900; letter-spacing: .08em; }
+.activity-list { display: grid; gap: .75rem; }
+.activity-card, .empty-state { background: white; border: 1px solid #e6edf6; border-radius: 18px; padding: 1rem; box-shadow: 0 10px 30px rgba(15,23,42,.05); }
+.activity-card p { margin: .25rem 0; color: #475569; }

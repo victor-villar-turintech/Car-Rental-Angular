@@ -5,6 +5,9 @@ export interface Customer {
   email: string;
   phone?: string;
   password?: string;
+  isDisabled?: boolean;
+  resetToken?: string;
+  resetTokenCreatedAt?: string;
   createdAt: string;
   updatedAt?: string;
 }

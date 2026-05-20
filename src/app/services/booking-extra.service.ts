@@ -3,11 +3,14 @@ import { Observable, of } from 'rxjs';
 import { BookingExtra, BookingExtraCategory, BookingExtraPricingType } from '../models/booking-extra';
 import { ListResponseModel } from '../models/listResponseModel';
 import { ResponseModel } from '../models/responseModel';
+import { ActivityLogService } from './activity-log.service';
 
 @Injectable({ providedIn: 'root' })
 export class BookingExtraService {
   private readonly storageKey = 'rent-a-car-demo-booking-extras';
   private extras: BookingExtra[] = this.loadExtras();
+
+  constructor(private activityLogService: ActivityLogService) {}
 
   getExtras(): Observable<ListResponseModel<BookingExtra>> {
     return of({ success: true, message: 'Booking extras loaded.', data: this.extras.filter((extra) => extra.enabled !== false) });
@@ -19,49 +22,47 @@ export class BookingExtraService {
 
   addExtra(input: Omit<BookingExtra, 'extraId' | 'createdAt' | 'updatedAt'>): Observable<ResponseModel> {
     const now = new Date().toISOString();
-    const extra: BookingExtra = {
-      ...input,
-      extraId: Math.max(...this.extras.map((item) => item.extraId || 0), 0) + 1,
-      name: input.name.trim(),
-      description: input.description.trim(),
-      price: Number(input.price || 0),
-      enabled: input.enabled !== false,
-      createdAt: now,
-      updatedAt: now,
-    };
+    const extra: BookingExtra = { ...input, extraId: Math.max(...this.extras.map((item) => item.extraId || 0), 0) + 1, name: input.name.trim(), description: input.description.trim(), price: Number(input.price || 0), enabled: input.enabled !== false, createdAt: now, updatedAt: now };
     this.extras = [...this.extras, extra];
     this.saveExtras();
+    this.activityLogService.record('Extra added', 'Extra', `${extra.name} was added to booking extras.`, { entityReference: String(extra.extraId), severity: 'Success' });
     return of({ success: true, message: 'Extra added.' });
   }
 
   updateExtra(extra: BookingExtra): Observable<ResponseModel> {
     const now = new Date().toISOString();
-    this.extras = this.extras.map((item) =>
-      item.extraId === Number(extra.extraId)
-        ? { ...item, ...extra, name: extra.name.trim(), description: extra.description.trim(), price: Number(extra.price || 0), updatedAt: now }
-        : item
-    );
+    this.extras = this.extras.map((item) => item.extraId === Number(extra.extraId) ? { ...item, ...extra, name: extra.name.trim(), description: extra.description.trim(), price: Number(extra.price || 0), updatedAt: now } : item);
     this.saveExtras();
+    this.activityLogService.record('Extra updated', 'Extra', `${extra.name} was updated.`, { entityReference: String(extra.extraId), severity: 'Info' });
     return of({ success: true, message: 'Extra updated.' });
   }
 
   deleteExtra(extraId: number): Observable<ResponseModel> {
-    this.extras = this.extras.filter((extra) => extra.extraId !== Number(extraId));
+    const extra = this.extras.find((item) => item.extraId === Number(extraId));
+    this.extras = this.extras.filter((item) => item.extraId !== Number(extraId));
     this.saveExtras();
+    this.activityLogService.record('Extra deleted', 'Extra', `${extra?.name || 'Extra'} was deleted.`, { entityReference: String(extraId), severity: 'Warning' });
     return of({ success: true, message: 'Extra deleted.' });
   }
 
   toggleExtra(extraId: number): Observable<ResponseModel> {
-    this.extras = this.extras.map((extra) =>
-      extra.extraId === Number(extraId) ? { ...extra, enabled: extra.enabled === false, updatedAt: new Date().toISOString() } : extra
-    );
+    let changed: BookingExtra | undefined;
+    this.extras = this.extras.map((extra) => {
+      if (extra.extraId !== Number(extraId)) {
+        return extra;
+      }
+      changed = { ...extra, enabled: extra.enabled === false, updatedAt: new Date().toISOString() };
+      return changed;
+    });
     this.saveExtras();
+    this.activityLogService.record('Extra availability changed', 'Extra', `${changed?.name || 'Extra'} is now ${changed?.enabled === false ? 'disabled' : 'enabled'}.`, { entityReference: String(extraId), severity: 'Info' });
     return of({ success: true, message: 'Extra status updated.' });
   }
 
   resetDemoExtras(): Observable<ResponseModel> {
     this.extras = this.defaultExtras();
     this.saveExtras();
+    this.activityLogService.record('Demo extras reset', 'Extra', 'Default demo booking extras were restored.', { severity: 'Success' });
     return of({ success: true, message: 'Demo extras restored.' });
   }
 
@@ -72,7 +73,6 @@ export class BookingExtraService {
       localStorage.setItem(this.storageKey, JSON.stringify(defaults));
       return defaults;
     }
-
     try {
       const parsed = JSON.parse(raw);
       if (!Array.isArray(parsed)) {
@@ -89,17 +89,7 @@ export class BookingExtraService {
   }
 
   private normaliseExtra(extra: Partial<BookingExtra>): BookingExtra {
-    return {
-      extraId: Number(extra.extraId || 0),
-      name: String(extra.name || 'Extra'),
-      description: String(extra.description || ''),
-      price: Number(extra.price || 0),
-      pricingType: (extra.pricingType || 'fixed') as BookingExtraPricingType,
-      category: (extra.category || 'Other') as BookingExtraCategory,
-      enabled: extra.enabled !== false,
-      createdAt: extra.createdAt,
-      updatedAt: extra.updatedAt,
-    };
+    return { extraId: Number(extra.extraId || 0), name: String(extra.name || 'Extra'), description: String(extra.description || ''), price: Number(extra.price || 0), pricingType: (extra.pricingType || 'fixed') as BookingExtraPricingType, category: (extra.category || 'Other') as BookingExtraCategory, enabled: extra.enabled !== false, createdAt: extra.createdAt, updatedAt: extra.updatedAt };
   }
 
   private defaultExtras(): BookingExtra[] {

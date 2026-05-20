@@ -1,0 +1,39 @@
+<section class="admin-page activity-page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">Admin observability</span>
+      <h1>Activity log</h1>
+      <p>LocalStorage audit trail for demo admin, booking, payment, vehicle and extra actions.</p>
+    </div>
+    <button class="btn btn-outline-danger" type="button" (click)="clearLog()">Clear log</button>
+  </div>
+
+  <div class="toolbar-card">
+    <label for="entityFilter">Filter entity</label>
+    <select id="entityFilter" class="form-control" [(ngModel)]="entityFilter">
+      <option value="">All entities</option>
+      <option>Admin</option>
+      <option>Booking</option>
+      <option>Payment</option>
+      <option>Vehicle</option>
+      <option>Extra</option>
+      <option>Customer</option>
+      <option>System</option>
+    </select>
+  </div>
+
+  <div class="activity-list" *ngIf="filteredEntries.length > 0; else emptyState">
+    <article class="activity-item" *ngFor="let entry of filteredEntries">
+      <app-status-badge [status]="entry.severity"></app-status-badge>
+      <div>
+        <strong>{{ entry.action }}</strong>
+        <p>{{ entry.message }}</p>
+        <small>{{ entry.entityType }}<ng-container *ngIf="entry.entityReference"> · {{ entry.entityReference }}</ng-container> · {{ entry.createdAt | date:'medium' }}</small>
+      </div>
+    </article>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="empty-state">No activity has been recorded yet. Admin and booking actions will appear here.</div>
+  </ng-template>
+</section>
