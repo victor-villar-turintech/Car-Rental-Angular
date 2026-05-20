@@ -49,11 +49,30 @@ export class PaymentService {
   }
 
   updatePaymentStatus(transactionReference: string, status: PaymentStatus): Observable<ResponseModel> {
-    this.payments = this.payments.map((payment) =>
-      payment.transactionReference === transactionReference ? { ...payment, status, updatedAt: new Date().toISOString() } : payment
-    );
+    let updated = false;
+    this.payments = this.payments.map((payment) => {
+      if (payment.transactionReference !== transactionReference) { return payment; }
+      updated = true;
+      return { ...payment, status, updatedAt: new Date().toISOString() };
+    });
     this.savePayments();
-    return of({ success: true, message: 'Payment status updated.' });
+    return of({ success: updated, message: updated ? 'Payment status updated.' : 'Payment not found.' });
+  }
+
+  updatePaymentStatusByBookingReference(bookingReference: string, status: PaymentStatus): Observable<ListResponseModel<Payment>> {
+    const normalisedReference = this.normalise(bookingReference);
+    let updatedPayment: Payment | undefined;
+    this.payments = this.payments.map((payment) => {
+      if (this.normalise(payment.bookingReference) !== normalisedReference) { return payment; }
+      updatedPayment = { ...payment, status, updatedAt: new Date().toISOString() };
+      return updatedPayment;
+    });
+    this.savePayments();
+    return of({ success: !!updatedPayment, message: updatedPayment ? 'Payment status updated.' : 'Payment not found.', data: updatedPayment ? [updatedPayment] : [] });
+  }
+
+  refundPaymentByBookingReference(bookingReference: string): Observable<ListResponseModel<Payment>> {
+    return this.updatePaymentStatusByBookingReference(bookingReference, 'Refunded');
   }
 
   private createTransactionReference(bookingReference: string, method: PaymentMethod, entropy: string): string {

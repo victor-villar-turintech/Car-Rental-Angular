@@ -1,0 +1,62 @@
+<section class="admin-payments-page">
+  <div class="admin-page-header">
+    <div>
+      <span>Mock payments</span>
+      <h1>Payments dashboard</h1>
+      <p>Review local demo Card, PayPal and Apple Pay payments, including refund simulation.</p>
+    </div>
+  </div>
+
+  <div class="payment-metrics">
+    <div><span>Total payments</span><strong>{{ payments.length }}</strong></div>
+    <div><span>Paid total</span><strong>{{ paidTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    <div><span>Refunded total</span><strong>{{ refundedTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+  </div>
+
+  <div class="payments-toolbar">
+    <label for="paymentStatusFilter">Status</label>
+    <select id="paymentStatusFilter" class="form-control" [(ngModel)]="statusFilter">
+      <option value="">All payments</option>
+      <option value="Pending">Pending</option>
+      <option value="Paid">Paid</option>
+      <option value="Failed">Failed</option>
+      <option value="Refunded">Refunded</option>
+    </select>
+  </div>
+
+  <div class="table-card" *ngIf="filteredPayments.length > 0">
+    <table class="table table-hover mb-0">
+      <thead>
+        <tr>
+          <th>Payment ref</th>
+          <th>Booking</th>
+          <th>Customer</th>
+          <th>Method</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let payment of filteredPayments">
+          <td><strong>{{ payment.transactionReference }}</strong><small>{{ payment.createdAt | date:'medium' }}</small></td>
+          <td><strong>{{ payment.bookingReference }}</strong><small>{{ getBooking(payment)?.brandName }} {{ getBooking(payment)?.carName }}</small></td>
+          <td>{{ getBooking(payment)?.customerName || 'N/A' }}</td>
+          <td>{{ payment.method }}</td>
+          <td>{{ payment.amount | currency:'GBP':'symbol':'1.0-0' }}</td>
+          <td><span class="status-pill" [ngClass]="payment.status">{{ payment.status }}</span></td>
+          <td class="text-right action-buttons">
+            <button class="btn btn-sm btn-outline-success" type="button" *ngIf="payment.status !== 'Paid'" (click)="updateStatus(payment, 'Paid')">Mark paid</button>
+            <button class="btn btn-sm btn-outline-secondary" type="button" *ngIf="payment.status !== 'Failed'" (click)="updateStatus(payment, 'Failed')">Mark failed</button>
+            <button class="btn btn-sm btn-outline-danger" type="button" *ngIf="payment.status === 'Paid'" (click)="updateStatus(payment, 'Refunded')">Refund</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="empty-state" *ngIf="filteredPayments.length === 0">
+    <h2>No payments found</h2>
+    <p>Complete a mock checkout from a booking to populate this dashboard.</p>
+  </div>
+</section>

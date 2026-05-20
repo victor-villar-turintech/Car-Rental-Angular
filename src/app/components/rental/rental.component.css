@@ -619,3 +619,29 @@ label {
   .booking-card h2 { font-size: 1.55rem; }
   .back-to-top-btn { right: 14px; bottom: 14px; }
 }
+
+/* Mobile sticky total bar polish */
+@media (max-width: 991.98px) {
+  .sticky-booking-summary {
+    position: sticky;
+    bottom: 0;
+    z-index: 45;
+    border-radius: 22px 22px 0 0;
+    margin-left: -1px;
+    margin-right: -1px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .sticky-booking-summary {
+    padding: .85rem 1rem 1rem;
+    box-shadow: 0 -18px 42px rgba(15, 23, 42, .18);
+  }
+  .sticky-booking-summary .summary-row:not(.total):not(:nth-last-child(4)) {
+    display: none;
+  }
+  .sticky-booking-summary .btn {
+    min-height: 46px;
+    font-weight: 950;
+  }
+}
