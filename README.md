@@ -1,279 +1,198 @@
-# RentA-Car London — Angular Demo Fleet Platform
+# Car Rental Angular Demo
 
-RentA-Car London is an Angular 11 demo application for a realistic vehicle rental workflow. It uses local mock data and browser `localStorage` instead of a backend API, making it easy to clone, run, demo, reset and extend.
+Modern Angular car-rental demo application with a local mock catalogue, customer accounts, booking workflow, extras, payments, rewards, discount codes, vehicle comparison, and protected Admin tooling.
 
-The application now covers the full demo flow: vehicle catalogue, booking workflow, optional extras, London airport pickup locations, customer accounts, mock payments, receipts, Admin management, rewards, discount codes, customer activity, comparison and demo reset tooling.
-
-> This is a frontend-only demo. Customer, booking, payment, reward, discount and admin data are stored locally in the browser.
-
----
-
-## Screenshots
-
-The repository contains the original README screenshot set under `Readme-Images/`. These images are kept so GitHub renders screenshots directly in the README.
-
-### Home and catalogue
-
-![Homepage](Readme-Images/HomePage.PNG)
-
-![Homepage section](Readme-Images/HomePage2.PNG)
-
-![Homepage fleet section](Readme-Images/HomePage3.PNG)
-
-![Cars catalogue](Readme-Images/CarsPage.PNG)
-
-### Customer account
-
-![Login page](Readme-Images/LoginPage.PNG)
-
-![Register page](Readme-Images/RegisterPage.PNG)
-
-![User profile](Readme-Images/UserProfile.PNG)
-
-### Admin inventory
-
-![Admin page](Readme-Images/AdminPage.PNG)
-
-![Car update](Readme-Images/CarUpdate.PNG)
-
-![Colour management](Readme-Images/ColorPage.PNG)
-
-Newer flows such as `/compare`, `/account/rewards`, `/admin/customers`, `/admin/discount-analytics` and `/admin/reward-settings` should be captured into `docs/screenshots/` using `docs/screenshots/CAPTURE_GUIDE.md`.
-
----
+> The application is frontend-only and stores demo data in `localStorage`. It is designed as a UI/product workflow demo rather than a production rental backend.
 
 ## Current functionality
 
-### Public homepage and catalogue
+### Public website
 
-- Professional landing page with dynamic featured vehicle spotlight.
-- Featured vehicle links to vehicle details and direct reservation.
-- Dynamic popular vehicle choices from the local catalogue.
-- Trust/benefits and “How it works” sections.
-- Browse local mock fleet catalogue.
-- Search, filter and sort vehicles.
-- Query-param friendly catalogue filtering where implemented.
-- Vehicle detail pages with full vehicle information, image, pricing and booking CTA.
-- Favourite and recently viewed vehicle support.
-- Compare actions from the catalogue.
-- Back-to-top control on long catalogue and booking pages.
+- Professional homepage with a dynamic featured vehicle card, popular vehicle choices, trust/benefit cards, and a polished booking flow summary.
+- Vehicle catalogue at `/cars` with search, filters, sorting, favourites, recently viewed vehicles, and direct Compare actions.
+- Vehicle detail page at `/cars/:id` with vehicle information, image, price, specs, and booking CTA.
+- Five-vehicle comparison dashboard at `/compare` with filters for size, vehicle type, number of seats, transmission, fuel type, and maximum daily price.
+- Back-to-top controls on long catalogue, booking, account, receipt, and comparison pages.
 
-### Vehicle comparison
+### Booking flow
 
-The `/compare` page provides a dashboard-style comparison workflow:
+- Rental page at `/car/rental/:carId` with sticky vehicle details and a scrollable booking/options panel.
+- Pickup and return date handling with duration presets and automatic return-date updates.
+- London airport pickup locations and terminal-aware pickup options.
+- Optional booking extras such as insurance, driver support, roadside assistance, airport services, equipment, and fuel options.
+- Price breakdown with vehicle subtotal, extras subtotal, discounts, rewards redemption, and final total.
+- Booking references generated from booking and vehicle information.
+- Booking confirmation / receipt page with print-friendly styling.
 
-- Starts empty by default.
-- Browse and filter vehicles before adding them to the comparison.
-- Filter by search term, vehicle size, type/category, seats, transmission, fuel type and maximum daily price.
-- Explicit **Add to compare** action on matching vehicles.
-- **Reset comparison** control.
-- Supports up to five selected vehicles.
-- Comparison dashboard appears below matching vehicles.
-- Horizontal scrolling on smaller screens.
-- Comparison metrics include daily price, engine size, horsepower, range, seats, luggage capacity, boot capacity, drivetrain, fuel economy, fuel type and CO₂ band.
-- Metrics use explicit vehicle fields where available and sensible local demo fallbacks otherwise.
+### Payments
 
-### Booking workflow
-
-- Date-based rental price calculation.
-- Pickup date and return date support.
-- Rental length selector.
-- Automatic return-date update from rental duration.
-- Optional extras and insurance services.
-- London pickup locations, including main London airports and terminals.
-- Booking reference generation based on vehicle/date characteristics.
-- Booking lookup by reference and email.
-- Booking confirmation page.
-- Customer cancellation and mock refund handling.
-- Print-friendly receipt page.
-
-### Mock payments
-
-- Payment checkout by booking reference.
-- Card, PayPal and Apple Pay mock payment options.
-- Payment transaction reference generation using `PAY-*` references.
-- Payment status, method and reference shown in Admin Bookings.
-- Discount code application during checkout.
-- Reward point redemption during checkout.
-- Reward redemption validation so users cannot redeem more points than available or more than the booking total can absorb.
+- Mock checkout at `/payment/:bookingReference`.
+- Supports Card, PayPal, and Apple Pay demo flows.
+- Payment references use a `PAY-*` format.
+- Discount-code application with active/expired/minimum-spend/usage-limit validation.
+- Reward-points redemption with clamping so users cannot redeem more points than available or more than the booking total can absorb.
+- Receipts show payment method, payment reference, extras, discounts, rewards, and final total.
 
 ### Customer account
 
 - Local customer registration and login.
-- Logged-out navbar shows Login/Register.
-- Logged-in navbar shows account access and logout.
-- Account profile page.
-- Customer booking history.
-- Customer favourites and recently viewed vehicles at `/account/favourites`.
-- Customer rewards page at `/account/rewards`.
-- Customer activity page at `/account/activity`.
-- Local profile/customer data persisted in browser `localStorage`.
+- Logged-in navbar state shows account access and hides Login/Register.
+- `/account` customer dashboard with profile details and links to bookings, rewards, activity, and favourites.
+- `/account/bookings` shows customer booking history and eligible cancellation/refund simulation.
+- `/account/favourites` shows favourite and recently viewed vehicles.
+- `/account/rewards` shows points balance and reward transaction history.
+- `/account/activity` shows customer activity such as registration, login, booking, payment, discount, reward, and cancellation events.
 
-### Rewards and loyalty
+### Admin area
 
-- Local loyalty account per customer.
-- Points earned from paid bookings.
-- First paid booking bonus where configured.
-- Reward transaction history.
-- Reward redemption during payment.
-- Admin reward management and manual point adjustments.
-- Admin reward settings page for demo rules.
+- Protected Admin login at `/admin/login`.
+- Demo credentials are displayed on the login page:
+  - Username: `admin`
+  - Password: `admin123`
+- Admin dashboard and sidebar navigation.
+- Cars, brands, and colours inventory management.
+- Admin Cars inventory includes richer vehicle specification visibility such as engine size, horsepower, range, seats, luggage capacity, boot capacity, drivetrain, fuel economy, and emissions band.
+- Booking management with booking reference, customer, vehicle, dates, status, total, payment status, payment method, and payment reference.
+- Extras management at `/admin/extras`.
+- Payments dashboard at `/admin/payments` with paid/failed/refunded status simulation.
+- Customer management at `/admin/customers` with search, booking count, total spend, points, enabled/disabled status, and mock reset-link generation.
+- Customer activity log at `/admin/customer-activity`.
+- Rewards management at `/admin/rewards`.
+- Reward settings at `/admin/reward-settings`.
+- Discount code management at `/admin/discounts`.
+- Discount analytics at `/admin/discount-analytics`.
+- Admin activity log at `/admin/activity`.
+- Demo reset tools at `/admin/settings`.
 
-### Discount codes
+## Screenshots
 
-- Local discount-code service.
-- Discount codes can be active/inactive.
-- Fixed-amount and percentage discount support.
-- Minimum-spend validation.
-- Expiry and usage-limit handling where configured.
-- Admin discount code management.
-- Admin discount analytics page showing promotional impact.
+Screenshots are maintained under `docs/screenshots/`. The legacy `Readme-Images/` folder has been removed and should not be reintroduced.
 
-### Protected Admin console
+| Area | Screenshot |
+| --- | --- |
+| Homepage | ![Homepage](docs/screenshots/home.png) |
+| Vehicle catalogue | ![Vehicle catalogue](docs/screenshots/catalogue.png) |
+| Vehicle comparison | ![Vehicle comparison](docs/screenshots/compare.png) |
+| Vehicle detail | ![Vehicle detail](docs/screenshots/car-detail.png) |
+| Rental booking and extras | ![Rental booking and extras](docs/screenshots/rental-booking.png) |
+| Payment checkout | ![Payment checkout](docs/screenshots/payment.png) |
+| Booking receipt | ![Booking receipt](docs/screenshots/receipt.png) |
+| Customer account | ![Customer account](docs/screenshots/account.png) |
+| Customer rewards | ![Customer rewards](docs/screenshots/account-rewards.png) |
+| Customer favourites | ![Customer favourites](docs/screenshots/account-favourites.png) |
+| Admin dashboard | ![Admin dashboard](docs/screenshots/admin-dashboard.png) |
+| Admin cars/specs | ![Admin cars](docs/screenshots/admin-cars.png) |
+| Admin customers | ![Admin customers](docs/screenshots/admin-customers.png) |
+| Admin discounts | ![Admin discounts](docs/screenshots/admin-discounts.png) |
+| Admin discount analytics | ![Admin discount analytics](docs/screenshots/admin-discount-analytics.png) |
 
-Protected admin area with demo credentials:
+If any image is missing locally, regenerate it using `docs/screenshots/CAPTURE_GUIDE.md` and save it using the exact filename shown above.
 
-```text
-Username: admin
-Password: admin123
+## Route map
+
+| Route | Purpose |
+| --- | --- |
+| `/home` | Landing page with featured vehicle, popular choices, trust cards, and how-it-works section. |
+| `/cars` | Searchable/filterable vehicle catalogue with favourites and Compare actions. |
+| `/cars/:id` | Vehicle details page. |
+| `/compare` | Browse and compare up to five vehicles. |
+| `/car/rental/:carId` | Rental booking page with dates, pickup location, extras, and price breakdown. |
+| `/payment/:bookingReference` | Mock checkout for Card, PayPal, and Apple Pay. |
+| `/booking-confirmation/:bookingReference` | Booking confirmation and receipt. |
+| `/booking-lookup` | Booking lookup by reference and customer email. |
+| `/register` | Local customer registration. |
+| `/login` | Local customer login. |
+| `/account` | Customer account dashboard. |
+| `/account/bookings` | Customer booking history. |
+| `/account/favourites` | Favourite and recently viewed vehicles. |
+| `/account/rewards` | Reward points and reward history. |
+| `/account/activity` | Customer activity log. |
+| `/admin/login` | Protected Admin login. |
+| `/admin/dashboard` | Admin landing dashboard. |
+| `/admin/cars` | Admin vehicle inventory and specification visibility. |
+| `/admin/brands` | Admin brand management. |
+| `/admin/colors` | Admin colour management. |
+| `/admin/bookings` | Admin booking management. |
+| `/admin/extras` | Admin booking extras management. |
+| `/admin/payments` | Admin payments dashboard. |
+| `/admin/customers` | Admin customer management. |
+| `/admin/customer-activity` | Admin customer activity log. |
+| `/admin/rewards` | Admin rewards management. |
+| `/admin/reward-settings` | Admin reward scheme settings. |
+| `/admin/discounts` | Admin discount code management. |
+| `/admin/discount-analytics` | Admin discount usage analytics. |
+| `/admin/activity` | Admin activity log. |
+| `/admin/settings` | Admin demo reset tools. |
+
+## Local data model notes
+
+The demo uses local mock services and `localStorage` for persistence. This keeps the project easy to run without a backend, but it means data is browser-local and resettable.
+
+Key local concepts:
+
+- Vehicles and catalogue data come from local services/static data.
+- Bookings are saved locally.
+- Payments are mock records saved locally.
+- Customers are local demo accounts.
+- Rewards and reward transactions are local demo records.
+- Discount codes are locally managed and validated.
+- Admin authentication is demo-only.
+
+## Requirements
+
+This project uses an older Angular/Webpack stack. It can run on modern Node, but Node 17+ requires the OpenSSL legacy provider workaround.
+
+Recommended:
+
+```bash
+node --version
+npm --version
 ```
 
-Admin functionality includes:
-
-- Protected `/admin` routes.
-- Admin login/logout.
-- Dashboard metrics.
-- Cars inventory management.
-- Richer Admin Cars specification visibility: engine size, horsepower, fuel type, drivetrain, range, seats, luggage capacity, boot capacity, fuel economy and emissions band.
-- Brands inventory management.
-- Colours inventory management.
-- Bookings management.
-- Extras management.
-- Payments dashboard.
-- Customer management.
-- Mock password reset link generation.
-- Customer activity log.
-- Rewards management and manual point adjustments.
-- Reward settings.
-- Discount code management.
-- Discount analytics.
-- Admin activity log.
-- Demo reset tools.
-
----
-
-## Main routes
-
-| Area | Route | Purpose |
-|---|---|---|
-| Home | `/home` | Landing page and featured vehicle |
-| Catalogue | `/cars` | Browse, filter and compare cars |
-| Vehicle detail | `/cars/:carId` | Vehicle details and booking CTA |
-| Vehicle comparison | `/compare` | Compare up to five vehicles |
-| Rental booking | `/car/rental/:carId` | Select dates, extras and customer details |
-| Payment checkout | `/payment/:bookingReference` | Mock Card/PayPal/Apple Pay payment |
-| Receipt | `/booking-confirmation/:bookingReference` | Booking and payment receipt |
-| Booking lookup | `/booking-lookup` | Lookup booking by reference/email |
-| Customer login | `/login` | Local customer login |
-| Customer register | `/register` | Local customer registration |
-| Customer account | `/account` | Profile and account navigation |
-| Customer bookings | `/account/bookings` | Customer booking history |
-| Customer favourites | `/account/favourites` | Favourite and recently viewed vehicles |
-| Customer rewards | `/account/rewards` | Points balance and reward history |
-| Customer activity | `/account/activity` | Customer activity timeline |
-| Admin login | `/admin/login` | Admin authentication |
-| Admin dashboard | `/admin/dashboard` | Admin overview |
-| Admin cars | `/admin/cars` | Vehicle inventory/spec visibility |
-| Admin brands | `/admin/brands` | Brand management |
-| Admin colours | `/admin/colors` | Colour management |
-| Admin bookings | `/admin/bookings` | Booking management |
-| Admin extras | `/admin/extras` | Optional extras management |
-| Admin payments | `/admin/payments` | Payment status dashboard |
-| Admin customers | `/admin/customers` | Customer CRM management |
-| Admin customer activity | `/admin/customer-activity` | Customer activity log |
-| Admin rewards | `/admin/rewards` | Reward accounts and transactions |
-| Admin reward settings | `/admin/reward-settings` | Loyalty rule configuration |
-| Admin discounts | `/admin/discounts` | Discount code management |
-| Admin discount analytics | `/admin/discount-analytics` | Discount usage and impact |
-| Admin activity | `/admin/activity` | Admin activity log |
-| Admin settings | `/admin/settings` | Demo reset tools |
-
----
-
-## Tech stack
-
-- Angular 11.
-- TypeScript.
-- Angular Router.
-- Angular Forms and Reactive Forms.
-- Bootstrap-style layout/classes.
-- `ngx-toastr` for notifications.
-- Browser `localStorage` for demo persistence.
-- Mock services for vehicles, rentals, payments, extras, customers, rewards, discounts and activity logs.
-- Karma/Jasmine test setup from the original Angular project.
-
----
-
-## Prerequisites
-
-This project uses an older Angular/Webpack stack. With Node 17+ / Node 20, Webpack 4 can fail with:
-
-```text
-ERR_OSSL_EVP_UNSUPPORTED
-```
-
-Use either Node 14/16, or set the legacy OpenSSL provider for Node 20.
-
-Recommended quick setup on Node 20:
+Known working approach with Node 20:
 
 ```bash
 export NODE_OPTIONS=--openssl-legacy-provider
 ```
 
-Recommended long-term setup:
+Alternative: use Node 14 or Node 16 via `nvm`.
 
-```bash
-nvm install 16
-nvm use 16
-```
-
----
-
-## Clone, install, build, test and start
+## Install
 
 ```bash
 git clone https://github.com/victor-villar-turintech/Car-Rental-Angular.git
 cd Car-Rental-Angular
-```
-
-Install dependencies:
-
-```bash
 npm install
 ```
 
-Build on Node 20:
+Do not run `npm audit fix --force` casually on this project. The repo uses Angular 11-era dependencies and force-fixing can introduce breaking framework/package changes.
+
+## Build
+
+For Node 17+ / Node 20:
 
 ```bash
 export NODE_OPTIONS=--openssl-legacy-provider
 npm run build
 ```
 
-Build on Node 14/16:
+For Node 14/16, the environment variable may not be needed:
 
 ```bash
 npm run build
 ```
 
-Run tests:
+Autoprefixer warnings about `start` / `end` alignment are non-blocking.
+
+## Test
 
 ```bash
 npm test -- --watch=false
 ```
 
-If Karma/Chrome hangs or fails because of the local browser setup, stop it with `Ctrl + C` and use `npm run build` plus manual route validation as the primary demo validation.
+If Karma/Chrome setup hangs or fails locally, stop it with `Ctrl + C` and use `npm run build` plus the manual validation checklist below as the primary validation path.
 
-Start the app:
+## Start
 
 ```bash
 export NODE_OPTIONS=--openssl-legacy-provider
@@ -285,8 +204,6 @@ Open:
 ```text
 http://localhost:4200
 ```
-
----
 
 ## Manual validation checklist
 
@@ -300,9 +217,6 @@ After a clean build, validate:
 /car/rental/1
 /payment/<booking-reference>
 /booking-confirmation/<booking-reference>
-/booking-lookup
-/login
-/register
 /account
 /account/bookings
 /account/favourites
@@ -324,83 +238,53 @@ After a clean build, validate:
 /admin/settings
 ```
 
-Key checks:
+Specific behaviours to confirm:
 
-- Homepage featured vehicle looks professional and links to detail/booking.
-- Catalogue filtering and compare actions work.
-- `/compare` starts empty, supports Add to compare, Reset comparison, five vehicles and horizontal scrolling.
-- Booking dates, duration, extras and totals update correctly.
-- Payment supports discount codes and reward points.
-- Customer rewards/activity/favourites pages load.
-- Admin cars shows rich vehicle specs.
-- Admin customers/rewards/discounts/analytics pages load.
-- Demo reset tools clear local demo data.
+- Homepage featured vehicle card links to vehicle detail and rental booking.
+- Catalogue filters work and Compare actions navigate to `/compare`.
+- Compare page starts empty, supports Add to compare, Reset comparison, and up to five vehicles.
+- Compare dashboard scrolls horizontally on smaller screens.
+- Booking page keeps vehicle details visible while the options panel scrolls.
+- Payment applies discount codes and reward points correctly.
+- Reward points cannot exceed available balance or payable amount.
+- Customer account pages show bookings, favourites, rewards, and activity.
+- Admin login protects Admin routes.
+- Admin Cars shows richer vehicle specs.
+- Admin Customers, Rewards, Discount Codes, Discount Analytics, Activity Log, and Demo Reset pages load.
 
----
+## Demo reset / localStorage cleanup
 
-## Demo data and localStorage
-
-The app stores demo data in `localStorage`, including:
-
-- customers
-- bookings
-- payments
-- extras
-- discounts
-- rewards
-- activity logs
-- favourite vehicles
-- recently viewed vehicles
-
-Reset from the UI:
+Use the Admin Demo Settings page when possible:
 
 ```text
 /admin/settings
 ```
 
-Manual browser reset from DevTools:
+Or clear browser storage manually:
 
-```javascript
+```js
 localStorage.clear();
-location.reload();
 ```
 
----
+Then refresh the app.
 
-## Screenshot maintenance
+## Repository hygiene
 
-Existing screenshot assets live in:
+- Current screenshots belong in `docs/screenshots/`.
+- Do not use or restore `Readme-Images/`; it was the old README asset structure.
+- Keep patch branches short-lived and merge into `main` after validation.
+- After merging, perform a fresh clone from `main` and run `npm install`, `npm run build`, and `npm start`.
+
+## Suggested next refactor
+
+The Admin Cars page now exposes richer vehicle specs, but the long-term data model should separate catalogue specifications from physical fleet vehicles:
 
 ```text
-Readme-Images/
-docs/screenshots/
+/admin/vehicle-catalogue
+- Shared make/model/spec data: engine size, horsepower, range, seats, drivetrain, fuel type, boot capacity, emissions, body type.
+
+/admin/fleet
+- Physical vehicle instances: catalogue model, colour, number plate, status, mileage, location, availability.
 ```
 
-Use the capture guide to refresh screenshots after UI changes:
-
-```text
-docs/screenshots/CAPTURE_GUIDE.md
-```
-
-When replacing screenshots, keep filenames stable where possible so README links do not break.
-
----
-
-## Notes and future improvements
-
-Useful future improvements:
-
-- Split vehicle data into a model catalogue and physical fleet inventory:
-  - model catalogue: make, model, engine size, HP, range, seats, boot/luggage capacity, drivetrain, fuel type, economy, emissions.
-  - fleet inventory: colour, number plate, mileage, location, status and availability.
-- Add Admin add/edit support for all rich vehicle specification fields.
-- Replace remaining template-driven forms with Reactive Forms where useful.
-- Replace remaining `window.confirm()` calls with the reusable confirmation dialog.
-- Add stronger automated tests for pricing, payment, discount and rewards services.
-- Upgrade Angular and Webpack to remove the OpenSSL legacy provider requirement.
-
----
-
-## About
-
-Angular car rental demo using local mock catalogue data.
+That separation would allow multiple fleet units of the same make/model while only changing number plate, colour, mileage, location, and availability.
