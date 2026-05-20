@@ -8,7 +8,7 @@
   <div class="lookup-grid">
     <form class="lookup-card" (ngSubmit)="searchBooking()">
       <label for="bookingReference">Booking reference</label>
-      <input id="bookingReference" class="form-control" name="bookingReference" type="text" [(ngModel)]="bookingReference" placeholder="RC-20260520-0001" />
+      <input id="bookingReference" class="form-control" name="bookingReference" type="text" [(ngModel)]="bookingReference" placeholder="CR-BMW-320-20260520-A8F3K2" />
 
       <label for="customerEmail">Customer email</label>
       <input id="customerEmail" class="form-control" name="customerEmail" type="email" [(ngModel)]="customerEmail" placeholder="demo.user@example.com" />
@@ -29,10 +29,21 @@
       <div class="result-grid">
         <div><small>Customer</small><strong>{{ booking.customerName }}</strong></div>
         <div><small>Email</small><strong>{{ booking.customerEmail }}</strong></div>
-        <div><small>Pickup</small><strong>{{ booking.rentDate | date:'mediumDate' }}</strong></div>
+        <div><small>Pickup date</small><strong>{{ booking.rentDate | date:'mediumDate' }}</strong></div>
         <div><small>Return</small><strong>{{ booking.returnDate | date:'mediumDate' }}</strong></div>
+        <div><small>Pickup location</small><strong>{{ booking.pickupLocation }}</strong></div>
         <div><small>Days</small><strong>{{ booking.rentalDays }}</strong></div>
+        <div><small>Vehicle subtotal</small><strong>{{ booking.vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+        <div><small>Extras</small><strong>{{ booking.extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
         <div><small>Total</small><strong>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+      </div>
+
+      <div class="extras-summary" *ngIf="booking.selectedExtras?.length">
+        <h3>Selected services</h3>
+        <div *ngFor="let extra of booking.selectedExtras">
+          <span>{{ extra.name }}</span>
+          <strong>{{ extra.totalPrice | currency:'GBP':'symbol':'1.0-0' }}</strong>
+        </div>
       </div>
 
       <div class="edit-card" *ngIf="editMode">

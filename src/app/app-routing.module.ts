@@ -8,8 +8,6 @@ import { RentalComponent } from './components/rental/rental.component';
 import { BookingLookupComponent } from './components/booking-lookup/booking-lookup.component';
 import { CarEditComponent } from './components/pages/admin-dashboard/cars-dashboard/car-edit/car-edit.component';
 import { BrandAddComponent } from './components/pages/admin-dashboard/brands-dashboard/brand-add/brand-add.component';
-import { LoginComponent } from './components/auth/login/login.component';
-import { RegisterComponent } from './components/auth/register/register.component';
 import { AdminDashboardComponent } from './components/pages/admin-dashboard/admin-dashboard.component';
 import { AdminMetricsDashboardComponent } from './components/pages/admin-dashboard/metrics-dashboard/metrics-dashboard.component';
 import { ColorsDashboardComponent } from './components/pages/admin-dashboard/colors-dashboard/colors-dashboard.component';
@@ -23,6 +21,11 @@ import { HomeComponent } from './components/home/home/home.component';
 import { UserComponent } from './components/auth/user-profil/user-profil.component';
 import { UsereditComponent } from './components/auth/user-profil/useredit/useredit.component';
 import { BrandComponent } from './components/brand/brand.component';
+import { LocalLoginComponent } from './components/auth/local-login/local-login.component';
+import { LocalRegisterComponent } from './components/auth/local-register/local-register.component';
+import { CustomerAccountComponent } from './components/account/customer-account/customer-account.component';
+import { CustomerBookingsComponent } from './components/account/customer-bookings/customer-bookings.component';
+import { CustomerAuthGuard } from './guards/customer-auth.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
@@ -39,8 +42,10 @@ const routes: Routes = [
   { path: 'car/rental/:carId', component: RentalComponent },
   { path: 'booking-lookup', component: BookingLookupComponent },
   { path: 'creditcard/:rental', component: CreditCardComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LocalLoginComponent },
+  { path: 'register', component: LocalRegisterComponent },
+  { path: 'account', component: CustomerAccountComponent, canActivate: [CustomerAuthGuard] },
+  { path: 'account/bookings', component: CustomerBookingsComponent, canActivate: [CustomerAuthGuard] },
   { path: 'user', component: UserComponent, children: [{ path: 'edituser', component: UsereditComponent }] },
   {
     path: 'admin',

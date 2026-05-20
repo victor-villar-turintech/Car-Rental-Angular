@@ -29,6 +29,20 @@
       <span class="eyebrow">Booking confirmation</span>
       <h2>Choose dates and customer details</h2>
 
+      <div class="account-banner" [ngClass]="currentCustomer ? 'signed-in' : 'guest'">
+        <div *ngIf="currentCustomer; else guestBooking">
+          Signed in as <strong>{{ currentCustomer.firstName }} {{ currentCustomer.lastName }}</strong>. This booking will appear in My bookings.
+        </div>
+        <ng-template #guestBooking>
+          Booking as guest. <a routerLink="/register">Create an account</a> to save bookings under My bookings.
+        </ng-template>
+      </div>
+
+      <label for="pickupLocation">Pickup location</label>
+      <select id="pickupLocation" class="form-control" [(ngModel)]="pickupLocationId" (change)="onPickupLocationChange()">
+        <option *ngFor="let location of pickupLocations" [value]="location.id">{{ location.label }}{{ location.surcharge ? ' +' + (location.surcharge | currency:'GBP':'symbol':'1.0-0') : '' }}</option>
+      </select>
+
       <label for="pickupDate">Pickup date</label>
       <input id="pickupDate" class="form-control" type="date" [min]="today" [(ngModel)]="pickupDate" (change)="onPickupDateChange()" />
 
@@ -57,9 +71,28 @@
       <label for="customerPhone">Customer phone</label>
       <input id="customerPhone" class="form-control" type="text" [(ngModel)]="customerPhone" (ngModelChange)="calculatePrice()" />
 
+      <section class="extras-panel">
+        <div class="extras-heading">
+          <h3>Optional services</h3>
+          <p>Select insurance, equipment, support, fuel, and London airport pickup extras.</p>
+        </div>
+        <article class="extra-option" *ngFor="let extra of bookingExtras" [ngClass]="extra.selected ? 'selected' : ''">
+          <label>
+            <input type="checkbox" [checked]="extra.selected" (change)="onExtraToggle(extra)" />
+            <span>
+              <strong>{{ extra.name }}</strong>
+              <small>{{ extra.description }}</small>
+            </span>
+          </label>
+          <strong>{{ extra.price | currency:'GBP':'symbol':'1.0-0' }}{{ extra.pricingType === 'perDay' ? '/day' : '' }}</strong>
+        </article>
+      </section>
+
       <div class="price-breakdown">
         <div><span>Daily price</span><strong>{{ car.dailyPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
         <div><span>Rental days</span><strong>{{ rentalDays || 0 }}</strong></div>
+        <div><span>Vehicle subtotal</span><strong>{{ vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+        <div><span>Extras subtotal</span><strong>{{ extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
         <div class="total"><span>Total price</span><strong>{{ rentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
       </div>
 
@@ -90,7 +123,17 @@
       <div><small>Pickup date</small><strong>{{ confirmedBooking.rentDate | date:'mediumDate' }}</strong></div>
       <div><small>Return date</small><strong>{{ confirmedBooking.returnDate | date:'mediumDate' }}</strong></div>
       <div><small>Rental days</small><strong>{{ confirmedBooking.rentalDays }}</strong></div>
+      <div><small>Pickup</small><strong>{{ confirmedBooking.pickupLocation }}</strong></div>
+      <div><small>Extras</small><strong>{{ confirmedBooking.selectedExtras?.length || 0 }} selected</strong></div>
       <div><small>Total</small><strong>{{ confirmedBooking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    </div>
+
+    <div class="selected-extras-summary" *ngIf="confirmedBooking.selectedExtras?.length">
+      <h2>Selected services</h2>
+      <div *ngFor="let extra of confirmedBooking.selectedExtras">
+        <span>{{ extra.name }}</span>
+        <strong>{{ extra.totalPrice | currency:'GBP':'symbol':'1.0-0' }}</strong>
+      </div>
     </div>
 
     <div class="confirmation-actions">

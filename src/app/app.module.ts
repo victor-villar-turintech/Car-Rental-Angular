@@ -40,6 +40,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { HomeComponent } from './components/home/home/home.component';
 import { UserComponent } from './components/auth/user-profil/user-profil.component';
 import { UsereditComponent } from './components/auth/user-profil/useredit/useredit.component';
+import { LocalLoginComponent } from './components/auth/local-login/local-login.component';
+import { LocalRegisterComponent } from './components/auth/local-register/local-register.component';
+import { CustomerAccountComponent } from './components/account/customer-account/customer-account.component';
+import { CustomerBookingsComponent } from './components/account/customer-bookings/customer-bookings.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -79,6 +83,10 @@ export function tokenGetter() {
     HomeComponent,
     UserComponent,
     UsereditComponent,
+    LocalLoginComponent,
+    LocalRegisterComponent,
+    CustomerAccountComponent,
+    CustomerBookingsComponent,
   ],
   imports: [
     BrowserModule,

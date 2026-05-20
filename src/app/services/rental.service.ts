@@ -14,6 +14,13 @@ export class RentalService {
     return of({ success: true, message: 'Bookings loaded.', data: this.rentals });
   }
 
+
+  getBookingsForCustomer(email: string): Observable<ListResponseModel<Rental>> {
+    const normalisedEmail = this.normalise(email || '');
+    const bookings = this.rentals.filter((booking) => this.normalise(booking.customerEmail || '') === normalisedEmail);
+    return of({ success: true, message: 'Customer bookings loaded.', data: bookings });
+  }
+
   getBookingByReference(reference: string, email: string): Observable<ListResponseModel<Rental>> {
     const normalisedReference = this.normalise(reference);
     const normalisedEmail = this.normalise(email);
@@ -184,6 +191,9 @@ export class RentalService {
       ...booking,
       rentalId,
       bookingReference: booking.bookingReference || this.createBookingReference({ ...booking, rentalId }, booking.createdAt),
+      selectedExtras: booking.selectedExtras || [],
+      vehicleSubtotal: Number(booking.vehicleSubtotal || 0),
+      extrasTotal: Number(booking.extrasTotal || 0),
       status: booking.status || 'Pending',
     };
   }

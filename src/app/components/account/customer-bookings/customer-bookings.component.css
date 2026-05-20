@@ -1,0 +1,34 @@
+.account-page { padding: 46px 0 72px; }
+.account-header { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem; }
+.account-header span { color: #2563eb; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; }
+h1, h2 { color: #0f172a; font-weight: 900; }
+p { color: #64748b; }
+.account-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+.account-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.25rem; align-items: start; }
+.account-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 26px; padding: 1.5rem; box-shadow: 0 24px 70px rgba(15,23,42,.08); }
+.two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+label { margin-top: .8rem; font-weight: 800; color: #334155; }
+.form-control { border-radius: 12px; min-height: 46px; }
+.btn { border-radius: 14px; font-weight: 800; }
+.account-card .btn { margin-top: 1rem; }
+.summary-card { display: grid; gap: .75rem; }
+.summary-card div { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: .85rem; }
+.summary-card span { display: block; color: #64748b; font-weight: 800; font-size: .8rem; }
+.summary-card strong { color: #0f172a; overflow-wrap: anywhere; }
+@media (max-width: 991.98px) { .account-header, .account-grid { display: block; } .account-actions { margin-top: 1rem; } .summary-card { margin-top: 1rem; } }
+@media (max-width: 575.98px) { .two-cols { grid-template-columns: 1fr; } }
+.booking-list { display: grid; gap: .9rem; }
+.booking-card { display: grid; grid-template-columns: 1.25fr 1.5fr 1.5fr 1fr 1fr auto; gap: .85rem; align-items: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 22px; padding: 1rem; box-shadow: 0 18px 50px rgba(15,23,42,.06); }
+.booking-card small { display: block; color: #64748b; font-weight: 900; text-transform: uppercase; font-size: .68rem; }
+.booking-card strong { color: #0f172a; overflow-wrap: anywhere; }
+.booking-card span { display: block; color: #64748b; font-weight: 700; }
+.booking-actions { display: flex; gap: .5rem; flex-wrap: wrap; justify-content: flex-end; }
+.status-pill { display: inline-block; border-radius: 999px; padding: .25rem .55rem; font-size: .75rem; font-weight: 900; background: #e2e8f0; color: #334155; }
+.status-pill.Pending { background: #fef3c7; color: #92400e; }
+.status-pill.Confirmed { background: #dbeafe; color: #1d4ed8; }
+.status-pill.Active { background: #dcfce7; color: #166534; }
+.status-pill.Completed { background: #ede9fe; color: #5b21b6; }
+.status-pill.Cancelled { background: #fee2e2; color: #991b1b; }
+.empty-state { background: #fff; border: 1px solid #e2e8f0; border-radius: 26px; padding: 2rem; text-align: center; }
+@media (max-width: 991.98px) { .booking-card { grid-template-columns: 1fr 1fr; } .booking-actions { justify-content: flex-start; } }
+@media (max-width: 575.98px) { .booking-card { grid-template-columns: 1fr; } }

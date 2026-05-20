@@ -41,6 +41,7 @@
           <th>Vehicle</th>
           <th>Plate</th>
           <th>Dates</th>
+          <th>Services</th>
           <th>Total</th>
           <th>Status</th>
           <th class="text-right">Actions</th>
@@ -62,7 +63,14 @@
             <strong>{{ booking.rentDate | date:'mediumDate' }}</strong>
             <small>to {{ booking.returnDate | date:'mediumDate' }} · {{ booking.rentalDays }} day{{ booking.rentalDays === 1 ? '' : 's' }}</small>
           </td>
-          <td>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</td>
+          <td>
+            <strong>{{ booking.selectedExtras?.length || 0 }} selected</strong>
+            <small>{{ booking.extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</small>
+          </td>
+          <td>
+            <strong>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong>
+            <small>Vehicle {{ booking.vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</small>
+          </td>
           <td><span class="status-pill" [ngClass]="booking.status">{{ booking.status }}</span></td>
           <td class="text-right action-buttons">
             <ng-container *ngFor="let action of getAvailableActions(booking)">
