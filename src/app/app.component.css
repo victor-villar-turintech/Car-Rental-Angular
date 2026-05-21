@@ -2,3 +2,70 @@
   min-height: calc(100vh - 220px);
   background: #f8fafc;
 }
+
+
+.global-admin-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 18px;
+  background: #111827;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+}
+
+.global-admin-toolbar__title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.global-admin-toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.global-admin-toolbar__button {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.global-admin-toolbar__button:hover {
+  background: #1d4ed8;
+}
+
+.global-admin-toolbar__button--danger {
+  background: #dc2626;
+}
+
+.global-admin-toolbar__button--danger:hover {
+  background: #b91c1c;
+}
+
+@media (max-width: 640px) {
+  .global-admin-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .global-admin-toolbar__actions {
+    width: 100%;
+  }
+
+  .global-admin-toolbar__button {
+    flex: 1;
+  }
+}

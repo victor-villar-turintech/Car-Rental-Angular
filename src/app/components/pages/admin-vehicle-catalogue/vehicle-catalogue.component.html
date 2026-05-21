@@ -1,0 +1,175 @@
+<div class="admin-compatible-shell">
+  <aside class="admin-compatible-sidebar full-admin-menu">
+    <div class="admin-menu-card">
+      <div class="admin-sidebar__eyebrow">Admin</div>
+      <h2>Fleet management</h2>
+      <p>Protected local demo console</p>
+    </div>
+
+    <nav class="admin-menu-links">
+      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/cars" routerLinkActive="active">Cars inventory<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/vehicle-catalogue" routerLinkActive="active">Vehicle Catalogue<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/fleet" routerLinkActive="active">Fleet<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/brands" routerLinkActive="active">Brands inventory<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/colors" routerLinkActive="active">Colours inventory<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/bookings" routerLinkActive="active">Bookings<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/customers" routerLinkActive="active">Customers<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/customer-activity" routerLinkActive="active">Customer activity<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/rewards" routerLinkActive="active">Rewards<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/discounts" routerLinkActive="active">Discount codes<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/extras" routerLinkActive="active">Extras<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/payments" routerLinkActive="active">Payments<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/activity" routerLinkActive="active">Admin activity<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/settings" routerLinkActive="active">Demo settings<span class="admin-nav-chevron">›</span></a>
+    </nav>
+
+    <div class="admin-menu-secondary">
+      <a routerLink="/booking-lookup" routerLinkActive="active">Booking lookup<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/cars" routerLinkActive="active">Public catalogue<span class="admin-nav-chevron">›</span></a>
+      <button class="admin-logout" type="button" (click)="logout()">Logout admin</button>
+    </div>
+  </aside>
+
+  <main class="admin-compatible-content">
+    <h1>Vehicle Catalogue</h1>
+    <p class="page-intro">Shared vehicle models, specifications, pricing, and images migrated from the existing vehicle data.</p>
+
+    <section class="admin-form-card">
+      <h2>Add vehicle</h2>
+      <p class="page-intro">Upload a 1024x1024 vehicle image and optionally create the first fleet unit at the same time.</p>
+
+      <div class="admin-form-grid">
+        <label>
+          Make
+          <input type="text" [(ngModel)]="newVehicle.make" placeholder="BMW" />
+        </label>
+
+        <label>
+          Model
+          <input type="text" [(ngModel)]="newVehicle.model" placeholder="3 Series" />
+        </label>
+
+        <label>
+          Trim
+          <input type="text" [(ngModel)]="newVehicle.trim" placeholder="M Sport" />
+        </label>
+
+        <label>
+          Year
+          <input type="number" [(ngModel)]="newVehicle.year" />
+        </label>
+
+        <label>
+          Category
+          <input type="text" [(ngModel)]="newVehicle.category" placeholder="Premium" />
+        </label>
+
+        <label>
+          Body type
+          <input type="text" [(ngModel)]="newVehicle.bodyType" placeholder="Saloon" />
+        </label>
+
+        <label>
+          Fuel type
+          <input type="text" [(ngModel)]="newVehicle.fuelType" placeholder="Petrol" />
+        </label>
+
+        <label>
+          Transmission
+          <input type="text" [(ngModel)]="newVehicle.transmission" placeholder="Automatic" />
+        </label>
+
+        <label>
+          Seats
+          <input type="number" [(ngModel)]="newVehicle.seats" />
+        </label>
+
+        <label>
+          Base daily price
+          <input type="number" [(ngModel)]="newVehicle.baseDailyPrice" />
+        </label>
+
+        <label>
+          Registration
+          <input type="text" [(ngModel)]="newFleetUnit.registrationNumber" placeholder="Optional first fleet unit" />
+        </label>
+
+        <label>
+          Colour
+          <input type="text" [(ngModel)]="newFleetUnit.colour" placeholder="Optional" />
+        </label>
+
+        <label class="form-wide">
+          Description
+          <textarea [(ngModel)]="newVehicle.description"></textarea>
+        </label>
+
+        <label class="form-wide">
+          Vehicle image, exactly 1024x1024
+          <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+        </label>
+
+        <div class="form-wide image-upload-preview" *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Vehicle image preview" />
+          <span>Image accepted: 1024x1024</span>
+        </div>
+
+        <div class="form-full validation-error" *ngIf="imageValidationError">
+          {{ imageValidationError }}
+        </div>
+
+        <div class="form-full">
+          <button type="button" class="admin-primary-button" [disabled]="!canAddVehicle()" (click)="addVehicle()">
+            Add vehicle
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="admin-data-card">
+      <table class="admin-data-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Vehicle</th>
+            <th>Category</th>
+            <th>Fuel</th>
+            <th>Transmission</th>
+            <th>Seats</th>
+            <th>Base Price</th>
+            <th>Fleet Units</th>
+            <th>Available</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let vehicle of catalogueItems">
+            <td>
+              <img class="vehicle-thumb" [src]="vehicle.imageUrl" [alt]="getDisplayName(vehicle)" />
+            </td>
+            <td>
+              <strong>{{ getDisplayName(vehicle) }}</strong>
+              <div>{{ vehicle.year || 'Year not set' }}</div>
+            </td>
+            <td>{{ vehicle.category || vehicle.bodyType || 'Car' }}</td>
+            <td>{{ vehicle.fuelType }}</td>
+            <td>{{ vehicle.transmission }}</td>
+            <td>{{ vehicle.seats }}</td>
+            <td>£{{ vehicle.baseDailyPrice }}/day</td>
+            <td>{{ getFleetCount(vehicle) }}</td>
+            <td>
+              <span class="status-pill" [class.available]="getAvailableCount(vehicle) > 0">
+                {{ getAvailabilityLabel(vehicle) }}
+              </span>
+            </td>
+          </tr>
+
+          <tr *ngIf="catalogueItems.length === 0">
+            <td colspan="9">No catalogue vehicles found. Clear localStorage migration keys and reload.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

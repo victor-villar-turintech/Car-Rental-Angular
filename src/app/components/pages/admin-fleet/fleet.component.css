@@ -1,134 +1,404 @@
-
-
-/* ADMIN SIDEBAR COMPACT NORMALISATION
-   Keeps the legacy admin pages visually aligned with the newer Vehicle Catalogue/Fleet sidebar scale.
-   This is intentionally scoped to admin/sidebar-like classes only.
-*/
-
-.admin-sidebar,
-.admin-dashboard-sidebar,
-.dashboard-sidebar,
-.admin-side-nav,
-.admin-sidenav,
-.admin-menu,
-.admin-navigation,
-.admin-nav,
-.fleet-admin-sidebar,
-[class*="admin"] .sidebar,
-[class*="dashboard"] .sidebar {
-  width: 240px !important;
-  min-width: 240px !important;
-  max-width: 240px !important;
-  flex: 0 0 240px !important;
-  padding: 18px 16px !important;
-  box-sizing: border-box !important;
+:host {
+  display: block;
+  min-height: calc(100vh - 72px);
+  background: #f6f8fc;
 }
 
-.admin-sidebar a,
-.admin-dashboard-sidebar a,
-.dashboard-sidebar a,
-.admin-side-nav a,
-.admin-sidenav a,
-.admin-menu a,
-.admin-navigation a,
+.admin-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: calc(100vh - 72px);
+  background: #f6f8fc;
+}
+
+.admin-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  min-height: calc(100vh - 72px);
+  padding: 1.25rem;
+  background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+  color: #fff;
+  box-shadow: 12px 0 32px rgba(15, 23, 42, 0.12);
+  z-index: 5;
+}
+
+.admin-brand {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  background: rgba(255,255,255,.06);
+}
+
+.admin-kicker {
+  color: #93c5fd;
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.admin-brand strong {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.admin-brand small {
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+
 .admin-nav a,
-.fleet-admin-sidebar a,
-[class*="admin"] .sidebar a,
-[class*="dashboard"] .sidebar a,
-.admin-sidebar button,
-.admin-dashboard-sidebar button,
-.dashboard-sidebar button,
-.admin-side-nav button,
-.admin-sidenav button,
-.admin-menu button,
-.admin-navigation button,
-.admin-nav button,
-[class*="admin"] .sidebar button,
-[class*="dashboard"] .sidebar button {
-  min-height: 36px !important;
-  padding: 9px 12px !important;
-  font-size: 14px !important;
-  line-height: 1.2 !important;
-  border-radius: 9px !important;
+.admin-secondary-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: .75rem .9rem;
+  border-radius: 14px;
+  color: #dbeafe;
+  font-weight: 850;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background .15s ease, color .15s ease, transform .15s ease, border-color .15s ease;
 }
 
-.admin-sidebar h1,
-.admin-dashboard-sidebar h1,
-.dashboard-sidebar h1,
-.admin-sidebar h2,
-.admin-dashboard-sidebar h2,
-.dashboard-sidebar h2,
-.admin-sidebar h3,
-.admin-dashboard-sidebar h3,
-.dashboard-sidebar h3,
-[class*="admin"] .sidebar h1,
-[class*="admin"] .sidebar h2,
-[class*="admin"] .sidebar h3,
-[class*="dashboard"] .sidebar h1,
-[class*="dashboard"] .sidebar h2,
-[class*="dashboard"] .sidebar h3 {
-  font-size: 18px !important;
-  line-height: 1.15 !important;
-  margin-bottom: 8px !important;
+.admin-nav a:hover,
+.admin-secondary-link:hover {
+  color: #fff;
+  background: rgba(59, 130, 246, .2);
+  border-color: rgba(147, 197, 253, .22);
+  transform: translateX(2px);
+}
+
+.admin-nav a.active {
+  color: #0f172a;
+  background: #fff;
+  border-color: rgba(255,255,255,.6);
+  box-shadow: 0 10px 24px rgba(2, 6, 23, .22);
+}
+
+.admin-sidebar-footer {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,.12);
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+}
+
+.admin-secondary-link {
+  min-height: 38px;
+  padding: .55rem .75rem;
+  color: #bfdbfe;
+  background: rgba(255,255,255,.04);
+  font-size: .92rem;
+}
+
+.admin-logout {
+  width: 100%;
+  margin-top: .75rem;
+  border: 1px solid rgba(254, 202, 202, .55);
+  background: rgba(127, 29, 29, .22);
+  color: #fecaca;
+  border-radius: 14px;
+  padding: .75rem .9rem;
+  font-weight: 900;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-logout:hover {
+  background: rgba(220, 38, 38, .24);
+  color: #fff;
+}
+
+.admin-content {
+  min-width: 0;
+  padding: 1.5rem;
+}
+
+@media (max-width: 991.98px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: relative;
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .admin-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-sidebar-footer {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .admin-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .admin-nav,
+  .admin-sidebar-footer {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Vehicle catalogue/fleet compatibility layout */
+.admin-compatible-shell {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  min-height: calc(100vh - 64px);
+  background: #f4f7fb;
+}
+
+.admin-compatible-content {
+  padding: 28px;
+  min-width: 0;
+}
+
+.admin-compatible-content h1 {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.page-intro {
+  margin: 0 0 22px;
+  color: #64748b;
+}
+
+.admin-data-card,
+.admin-form-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  overflow-x: auto;
+  margin-bottom: 22px;
+}
+
+.admin-form-card {
+  padding: 18px;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.admin-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #334155;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.admin-form-grid input,
+.admin-form-grid select,
+.admin-form-grid textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px 10px;
+  font: inherit;
+}
+
+.admin-form-grid textarea {
+  min-height: 72px;
+}
+
+.form-wide {
+  grid-column: span 2;
+}
+
+.form-full {
+  grid-column: 1 / -1;
+}
+
+.image-upload-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.image-upload-preview img {
+  width: 112px;
+  height: 112px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+
+.validation-error {
+  color: #b91c1c;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.admin-primary-button {
+  border: 0;
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-primary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.admin-data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-data-table th,
+.admin-data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-data-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.vehicle-thumb {
+  width: 88px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  background: #e5e7eb;
+  color: #374151;
+  text-transform: capitalize;
+}
+
+.status-pill.available {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-pill.maintenance {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-pill.inactive,
+.status-pill.retired,
+.status-pill.booked {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.admin-action-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-action-button {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-action-button:hover {
+  background: #f3f4f6;
+}
+
+/* Fallback sidebar styles only apply if dashboard markup has these generic classes */
+.admin-sidebar {
+  background: #111827;
+  color: #ffffff;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-sidebar h2 {
+  color: #ffffff;
+  margin: 0;
 }
 
 .admin-sidebar p,
-.admin-dashboard-sidebar p,
-.dashboard-sidebar p,
-[class*="admin"] .sidebar p,
-[class*="dashboard"] .sidebar p {
-  font-size: 12px !important;
-  line-height: 1.3 !important;
+.admin-sidebar__eyebrow {
+  color: #94a3b8;
+  margin: 0 0 12px;
 }
 
-.admin-dashboard-layout,
-.admin-layout,
-.admin-shell,
-.dashboard-layout,
-.dashboard-shell,
-.admin-compatible-shell,
-[class*="admin"][class*="layout"],
-[class*="dashboard"][class*="layout"] {
-  grid-template-columns: 240px minmax(0, 1fr) !important;
+.admin-sidebar a {
+  color: #d1d5db;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-weight: 700;
 }
 
-.admin-content,
-.admin-dashboard-content,
-.dashboard-content,
-.admin-main,
-.dashboard-main,
-[class*="admin"] .content,
-[class*="dashboard"] .content {
-  min-width: 0 !important;
+.admin-sidebar a:hover,
+.admin-sidebar a.active {
+  background: #ffffff;
+  color: #111827;
 }
 
 @media (max-width: 900px) {
-  .admin-sidebar,
-  .admin-dashboard-sidebar,
-  .dashboard-sidebar,
-  .admin-side-nav,
-  .admin-sidenav,
-  .admin-menu,
-  .admin-navigation,
-  .admin-nav,
-  .fleet-admin-sidebar,
-  [class*="admin"] .sidebar,
-  [class*="dashboard"] .sidebar {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    flex: 0 0 auto !important;
+  .admin-compatible-shell {
+    grid-template-columns: 1fr;
   }
 
-  .admin-dashboard-layout,
-  .admin-layout,
-  .admin-shell,
-  .dashboard-layout,
-  .dashboard-shell,
-  .admin-compatible-shell,
-  [class*="admin"][class*="layout"],
-  [class*="dashboard"][class*="layout"] {
-    grid-template-columns: 1fr !important;
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-wide {
+    grid-column: auto;
   }
 }
 
@@ -686,4 +956,73 @@
     min-width: 0 !important;
     max-width: none !important;
   }
+}
+
+/* CATALOGUE FLEET HEADER CARD MATCH LEGACY
+   Scoped only to the newly added Vehicle Catalogue/Fleet sidebars.
+   Do not apply this to Dashboard/Cars/Brands/Colours.
+*/
+
+.admin-compatible-sidebar.full-admin-menu {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
+  padding: 14px 12px !important;
+  box-sizing: border-box !important;
+}
+
+.admin-compatible-sidebar.full-admin-menu .admin-menu-card {
+  width: 100% !important;
+  min-height: 104px !important;
+  height: auto !important;
+  box-sizing: border-box !important;
+  padding: 16px 14px !important;
+  margin: 0 0 22px 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.045) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  overflow: hidden !important;
+}
+
+.admin-compatible-sidebar.full-admin-menu .admin-sidebar__eyebrow {
+  color: #93c5fd !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  line-height: 1.1 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.14em !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.admin-compatible-sidebar.full-admin-menu .admin-menu-card h2 {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.015em !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.admin-compatible-sidebar.full-admin-menu .admin-menu-card p {
+  color: #cbd5e1 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.005em !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Keep the first menu row normal. This prevents the old global hard-size patch from ever affecting it again. */
+.admin-compatible-sidebar.full-admin-menu .admin-menu-links a:first-child {
+  height: auto !important;
+  min-height: 34px !important;
+  padding: 8px 11px !important;
+  margin: 0 !important;
 }

@@ -1,3 +1,19 @@
+<div class="global-admin-toolbar" *ngIf="isAdminToolbarVisible()">
+  <div class="global-admin-toolbar__title">
+    Admin Mode
+  </div>
+
+  <div class="global-admin-toolbar__actions">
+    <button type="button" class="global-admin-toolbar__button" (click)="goToAdminConsole()">
+      Admin Console
+    </button>
+
+    <button type="button" class="global-admin-toolbar__button global-admin-toolbar__button--danger" (click)="logoutAdmin()">
+      Logout Admin
+    </button>
+  </div>
+</div>
+
 <app-navi></app-navi>
 <main class="app-shell">
   <router-outlet></router-outlet>
