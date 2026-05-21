@@ -6,6 +6,7 @@ import { RentalLocation } from '../../../models/rental-location.model';
 import { VehicleCatalogueItem } from '../../../models/vehicle-catalogue-item.model';
 import { FleetService } from '../../../services/fleet.service';
 import { VehicleCatalogueService } from '../../../services/vehicle-catalogue.service';
+import { BookingFleetLifecycleService } from '../../../services/booking-fleet-lifecycle.service';
 
 @Component({
   selector: 'app-admin-fleet',
@@ -17,10 +18,9 @@ export class FleetComponent implements OnInit {
   catalogueItems: VehicleCatalogueItem[] = [];
   rentalLocations: RentalLocation[] = MOCK_RENTAL_LOCATIONS;
 
-  constructor(
-    private fleetService: FleetService,
-    private vehicleCatalogueService: VehicleCatalogueService
-  ) {}
+  constructor(private fleetService: FleetService,
+    private vehicleCatalogueService: VehicleCatalogueService,
+    private bookingFleetLifecycleService: BookingFleetLifecycleService) {}
 
   ngOnInit(): void {
     this.loadFleet();
@@ -95,4 +95,23 @@ export class FleetComponent implements OnInit {
     }
   }
 
+
+  getBookedFleetContext(fleetVehicleId: number): any | null {
+    return this.bookingFleetLifecycleService.getBookedFleetContext(fleetVehicleId);
+  }
+
+  getBookedFleetReference(fleetVehicleId: number): string {
+    const booking = this.getBookedFleetContext(fleetVehicleId);
+    return booking?.bookingReference || 'No active booking';
+  }
+
+  getBookedFleetCustomer(fleetVehicleId: number): string {
+    const booking = this.getBookedFleetContext(fleetVehicleId);
+    return booking?.customerName || '';
+  }
+
+  getBookedFleetReturnDate(fleetVehicleId: number): string {
+    const booking = this.getBookedFleetContext(fleetVehicleId);
+    return booking?.returnDate || '';
+  }
 }

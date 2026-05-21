@@ -55,6 +55,12 @@
           <tr *ngFor="let fleetVehicle of fleetVehicles">
             <td>
               <img class="vehicle-thumb" [src]="getVehicleImageUrl(fleetVehicle)" [alt]="getVehicleDisplayName(fleetVehicle)" />
+            
+              <div class="booked-context" *ngIf="fleetVehicle.status === 'booked'">
+                <strong>{{ getBookedFleetReference(fleetVehicle.id) }}</strong>
+                <span>{{ getBookedFleetCustomer(fleetVehicle.id) }}</span>
+                <span *ngIf="getBookedFleetReturnDate(fleetVehicle.id)">Return: {{ getBookedFleetReturnDate(fleetVehicle.id) }}</span>
+              </div>
             </td>
             <td>
               <strong>{{ fleetVehicle.registrationNumber }}</strong>

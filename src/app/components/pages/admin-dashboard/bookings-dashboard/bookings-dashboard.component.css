@@ -29,3 +29,104 @@ table small { display: block; color: #64748b; }
 .empty-bookings h2 { color: #0f172a; font-weight: 950; }
 @media (max-width: 991.98px) { .admin-page-header { flex-direction: column; } .summary-cards, .status-summary-grid { grid-template-columns: repeat(2, 1fr); } .table-card { overflow-x: auto; } }
 @media (max-width: 575.98px) { .summary-cards, .status-summary-grid { grid-template-columns: 1fr; } .bookings-toolbar { justify-content: flex-start; } }
+
+
+/* Fleet-aware admin booking panel */
+
+.fleet-aware-admin-booking-panel {
+  background: #ffffff;
+  border: 1px solid #dbe5f4;
+  border-radius: 20px;
+  padding: 22px;
+  margin: 0 0 24px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+.fleet-aware-admin-booking-panel h2 {
+  margin: 0 0 6px;
+  color: #0f172a;
+  font-weight: 900;
+}
+
+.fleet-aware-admin-booking-panel p {
+  margin: 0 0 18px;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.fleet-aware-booking-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.fleet-aware-booking-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 16px;
+  background: #f8fbff;
+}
+
+.booking-card-header,
+.booking-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.booking-reference,
+.booking-status {
+  display: inline-flex;
+  background: #e0f2fe;
+  color: #075985;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.booking-card-header h3 {
+  margin: 8px 0 0;
+  color: #0f172a;
+}
+
+.booking-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.booking-detail-grid div {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.booking-detail-grid span {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.booking-detail-grid strong {
+  color: #111827;
+}
+
+.booking-actions button {
+  border: 0;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #ffffff;
+  padding: 9px 11px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.booking-actions button:first-child {
+  background: #dc2626;
+}
