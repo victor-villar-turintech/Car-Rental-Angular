@@ -1,0 +1,279 @@
+<section class="rental-flow-page" *ngIf="vehicle">
+  <button type="button" class="back-link" (click)="backToCatalogue()">← Back to catalogue</button>
+
+  <div class="rental-grid">
+    <article class="vehicle-card">
+      <div class="image-panel">
+        <img [src]="vehicle.imageUrl" [alt]="getDisplayName()" />
+        <div class="badge-row">
+          <span>{{ vehicle.year || 'Year not set' }}</span>
+          <span>{{ vehicle.bodyType || vehicle.category || 'Vehicle' }}</span>
+          <span>{{ vehicle.transmission }}</span>
+        </div>
+      </div>
+
+      <div class="vehicle-body">
+        <p class="eyebrow">{{ vehicle.make }}</p>
+        <h1>{{ vehicle.model }}</h1>
+        <p class="description">{{ vehicle.description }}</p>
+
+        <div class="vehicle-stat-grid">
+          <div>
+            <span>Fuel</span>
+            <strong>{{ vehicle.fuelType }}</strong>
+          </div>
+          <div>
+            <span>Seats</span>
+            <strong>{{ vehicle.seats }}</strong>
+          </div>
+          <div class="price-tile">
+            <span>Daily rate</span>
+            <strong>£{{ vehicle.baseDailyPrice }}</strong>
+          </div>
+          <div>
+            <span>Pickup</span>
+            <strong>{{ getPickupLocationName() || 'Select branch' }}</strong>
+          </div>
+        </div>
+
+        <section class="included-section">
+          <h2>Included with this vehicle</h2>
+          <div class="included-grid">
+            <div>Fleet-verified availability</div>
+            <div>Assigned registration number</div>
+            <div>Branch pickup and drop-off</div>
+          </div>
+        </section>
+      </div>
+    </article>
+
+    <aside class="booking-panel">
+      <div class="stepper">
+        <button type="button" [class.active]="currentStep === 1" (click)="goToStep(1)">1 Vehicle</button>
+        <button type="button" [class.active]="currentStep === 2" (click)="goToStep(2)">2 Details</button>
+        <button type="button" [class.active]="currentStep === 3" (click)="goToStep(3)">3 Payment</button>
+        <button type="button" [class.active]="currentStep === 4">4 Receipt</button>
+      </div>
+
+      <div class="panel-heading">
+        <p class="eyebrow">Booking confirmation</p>
+        <h2 *ngIf="currentStep === 1">Choose dates and locations</h2>
+        <h2 *ngIf="currentStep === 2">Extras and customer details</h2>
+        <h2 *ngIf="currentStep === 3">Choose payment method</h2>
+        <h2 *ngIf="currentStep === 4">Receipt</h2>
+      </div>
+
+      <div class="alert error" *ngIf="bookingError">{{ bookingError }}</div>
+      <div class="alert success" *ngIf="bookingSuccess && currentStep === 4">{{ bookingSuccess }}</div>
+
+      <section *ngIf="currentStep === 1" class="step-content">
+        <label>
+          Pickup location
+          <select [(ngModel)]="selectedPickupLocationId" (ngModelChange)="onPickupLocationChange()">
+            <option value="">Select pickup branch</option>
+            <option *ngFor="let location of rentalLocations" [value]="location.id">
+              {{ location.name }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          Drop-off location
+          <select [(ngModel)]="selectedReturnLocationId" (ngModelChange)="refreshAvailability()">
+            <option value="">Same as pickup</option>
+            <option *ngFor="let location of rentalLocations" [value]="location.id">
+              {{ location.name }}
+            </option>
+          </select>
+        </label>
+
+        <div class="date-grid-enhanced">
+          <label>
+            Pickup date
+            <input type="date" [(ngModel)]="rentDate" (ngModelChange)="onPickupDateChange()" />
+          </label>
+
+          <label>
+            Rental length
+            <input
+              type="number"
+              min="1"
+              max="30"
+              [(ngModel)]="rentalLengthDays"
+              (ngModelChange)="onRentalLengthChange()"
+            />
+          </label>
+
+          <label>
+            Return date
+            <input type="date" [(ngModel)]="returnDate" (ngModelChange)="onReturnDateChange()" />
+          </label>
+        </div>
+
+        <div class="date-helper">
+          <span *ngIf="!dateValidationError">
+            {{ getRentalDays() }} rental day{{ getRentalDays() === 1 ? '' : 's' }} selected.
+            Updating the pickup date or rental length recalculates the return date.
+          </span>
+          <span class="date-error" *ngIf="dateValidationError">{{ dateValidationError }}</span>
+        </div>
+
+        <div class="availability-card">
+          <strong>{{ availableAtSelectedBranch }}</strong>
+          <span>fleet units available for selected branch/dates</span>
+        </div>
+      </section>
+
+      <section *ngIf="currentStep === 2" class="step-content">
+        <h3>Additional options</h3>
+
+        <div class="extras-category" *ngFor="let category of getExtraCategories()">
+          <h4>{{ category }}</h4>
+
+          <label class="extra-card" *ngFor="let extra of getExtrasByCategory(category)">
+            <input type="checkbox" [(ngModel)]="extra.selected" />
+            <div>
+              <strong>{{ extra.name }}</strong>
+              <span>{{ extra.description }}</span>
+            </div>
+            <b>£{{ extra.price }}</b>
+          </label>
+        </div>
+
+        <h3>Customer information</h3>
+
+        <label>
+          Customer name
+          <input type="text" [(ngModel)]="customerName" />
+        </label>
+
+        <label>
+          Customer email
+          <input type="email" [(ngModel)]="customerEmail" />
+        </label>
+
+        <label>
+          Customer phone
+          <input type="tel" [(ngModel)]="customerPhone" />
+        </label>
+
+        <label>
+          Driver licence number
+          <input type="text" [(ngModel)]="driverLicenceNumber" placeholder="Optional for demo" />
+        </label>
+
+        <label>
+          Delivery address / notes
+          <input type="text" [(ngModel)]="customerAddress" placeholder="Optional" />
+        </label>
+
+        <label>
+          Flight number
+          <input type="text" [(ngModel)]="flightNumber" placeholder="Optional airport pickup detail" />
+        </label>
+      </section>
+
+      <section *ngIf="currentStep === 3" class="step-content">
+        <div class="payment-method-grid">
+          <label class="payment-method-card" *ngFor="let method of paymentMethods" [class.selected]="selectedPaymentMethod === method.id">
+            <input type="radio" name="paymentMethod" [value]="method.id" [(ngModel)]="selectedPaymentMethod" />
+            <strong>{{ method.label }}</strong>
+            <span>{{ method.description }}</span>
+          </label>
+        </div>
+
+        <div *ngIf="selectedPaymentMethod === 'credit-card'" class="payment-fields">
+          <label>
+            Name on card
+            <input type="text" [(ngModel)]="paymentName" />
+          </label>
+
+          <label>
+            Card number
+            <input type="text" [(ngModel)]="paymentCardNumber" />
+          </label>
+
+          <div class="two-col">
+            <label>
+              Expiry
+              <input type="text" [(ngModel)]="paymentExpiry" />
+            </label>
+
+            <label>
+              CVV
+              <input type="text" [(ngModel)]="paymentCvv" />
+            </label>
+          </div>
+        </div>
+
+        <div *ngIf="selectedPaymentMethod === 'paypal'" class="payment-fields">
+          <label>
+            PayPal account email
+            <input type="email" [(ngModel)]="paypalEmail" />
+          </label>
+        </div>
+
+        <div *ngIf="selectedPaymentMethod === 'apple-pay'" class="wallet-card">
+          Apple Pay selected. This demo will record the payment method and confirm the booking.
+        </div>
+
+        <div *ngIf="selectedPaymentMethod === 'google-pay'" class="wallet-card">
+          Google Pay selected. This demo will record the payment method and confirm the booking.
+        </div>
+
+        <div *ngIf="selectedPaymentMethod === 'pay-at-branch'" class="wallet-card">
+          Pay at branch selected. The booking will be confirmed with payment status Pending.
+        </div>
+      </section>
+
+      <section *ngIf="currentStep === 4" class="step-content receipt-card">
+        <h3>{{ receiptBooking?.bookingReference }}</h3>
+        <p>{{ getDisplayName() }}</p>
+        <p><strong>Registration:</strong> {{ receiptBooking?.registrationNumber }}</p>
+        <p><strong>Pickup:</strong> {{ receiptBooking?.pickupLocationName }}</p>
+        <p><strong>Drop-off:</strong> {{ receiptBooking?.returnLocationName }}</p>
+        <p><strong>Payment:</strong> {{ receiptBooking?.paymentMethodLabel }} / {{ receiptBooking?.paymentStatus }}</p>
+        <p><strong>Extras:</strong> {{ receiptBooking?.selectedExtras?.length || 0 }}</p>
+        <p><strong>Total:</strong> £{{ receiptBooking?.totalRentPrice }}</p>
+      </section>
+
+      <div class="price-summary" *ngIf="currentStep !== 4">
+        <div>
+          <span>Daily rate</span>
+          <strong>£{{ vehicle.baseDailyPrice }}</strong>
+        </div>
+        <div>
+          <span>Rental days</span>
+          <strong>{{ getRentalDays() }}</strong>
+        </div>
+        <div>
+          <span>Vehicle subtotal</span>
+          <strong>£{{ getVehicleSubtotal() }}</strong>
+        </div>
+        <div>
+          <span>Selected services</span>
+          <strong>£{{ getExtrasTotal() }}</strong>
+        </div>
+        <div class="total">
+          <span>Total</span>
+          <strong>£{{ getTotalPrice() }}</strong>
+        </div>
+      </div>
+
+      <div class="button-row" *ngIf="currentStep !== 4">
+        <button type="button" class="secondary" *ngIf="currentStep > 1" (click)="previousStep()">Back</button>
+        <button type="button" class="primary" (click)="nextStep()">
+          {{ currentStep === 3 ? 'Pay and confirm' : 'Continue' }}
+        </button>
+      </div>
+
+      <button type="button" class="primary full" *ngIf="currentStep === 4" (click)="backToCatalogue()">
+        Back to catalogue
+      </button>
+    </aside>
+  </div>
+</section>
+
+<section class="rental-flow-page" *ngIf="!vehicle">
+  <div class="missing-card">{{ bookingError || 'Vehicle not found.' }}</div>
+</section>
