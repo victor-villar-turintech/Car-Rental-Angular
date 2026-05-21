@@ -71,7 +71,19 @@
     <div *ngIf="dataLoaded && filteredCars.length > 0" class="vehicle-grid">
       <article class="vehicle-card" *ngFor="let car of filteredCars">
         <div class="vehicle-image">
+          <button
+            class="favourite-heart"
+            type="button"
+            [class.active]="isFavourite(car)"
+            [attr.aria-label]="isFavourite(car) ? 'Remove from favourites' : 'Add to favourites'"
+            [title]="isFavourite(car) ? 'Remove from favourites' : 'Add to favourites'"
+            (click)="toggleFavourite(car, $event)">
+            <span>{{ isFavourite(car) ? '♥' : '♡' }}</span>
+          </button>
+
           <img class="vehicle-photo" [src]="car.imagePath" [alt]="car.colorName + ' ' + car.brandName + ' ' + car.carName" (error)="handleVehicleImageError($event, car)" />
+
+          
           <div class="vehicle-photo-caption">
             <strong [style.background]="getVehicleColourHex(car.colorName)" [style.color]="getVehicleLabelColour(car.colorName)">{{ car.colorName }}</strong>
             <span>{{ getVehicleCategory(car) }}</span>

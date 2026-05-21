@@ -13,6 +13,7 @@ import { CustomerAuthService } from 'src/app/services/customer-auth.service';
 import { PickupLocationService } from 'src/app/services/pickup-location.service';
 import { PricingService } from 'src/app/services/pricing.service';
 import { RentalService } from 'src/app/services/rental.service';
+import { FavouriteVehicleService } from '../../services/favourite-vehicle.service';
 
 @Component({ selector: 'app-rental', templateUrl: './rental.component.html', styleUrls: ['./rental.component.css'] })
 export class RentalComponent implements OnInit {
@@ -47,8 +48,7 @@ export class RentalComponent implements OnInit {
     { label: 'Custom', value: 'custom' },
   ];
 
-  constructor(
-    private fb: FormBuilder,
+  constructor(private fb: FormBuilder,
     private rentalService: RentalService,
     private carService: CarService,
     private bookingExtraService: BookingExtraService,
@@ -57,8 +57,7 @@ export class RentalComponent implements OnInit {
     private customerAuthService: CustomerAuthService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private toastrService: ToastrService
-  ) {
+    private toastrService: ToastrService, private favouriteVehicleService: FavouriteVehicleService) {
     this.rentalForm = this.fb.group({
       pickupLocationId: ['central-london', [Validators.required]],
       pickupDate: ['', [Validators.required]],
@@ -345,5 +344,67 @@ export class RentalComponent implements OnInit {
     const label = `${car.colorName || ''} ${car.brandName || ''} ${car.carName || 'Vehicle'}`.trim();
     const svg = `Image unavailable${label}`;
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  }
+
+  private readonly favouriteVehicleStorageKey = 'rentacar-favourite-car-ids';
+
+  get rentalFavouriteCarId(): number {
+    const carLike: any = this.car || {};
+    return Number(carLike.carId || carLike.id || 0);
+  }
+
+  isRentalCarFavourite(): boolean {
+    const carId = this.rentalFavouriteCarId;
+    if (!carId) {
+      return false;
+    }
+
+    return this.getFavouriteVehicleIds().includes(carId);
+  }
+
+  toggleRentalFavourite(): void {
+    const carId = this.rentalFavouriteCarId;
+    if (!carId) {
+      return;
+    }
+
+    const ids = this.getFavouriteVehicleIds();
+    const nextIds = ids.includes(carId)
+      ? ids.filter((id) => id !== carId)
+      : [...ids, carId];
+
+    localStorage.setItem(this.favouriteVehicleStorageKey, JSON.stringify(nextIds));
+  }
+
+  private getFavouriteVehicleIds(): number[] {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(this.favouriteVehicleStorageKey) || '[]');
+      return Array.isArray(parsed)
+        ? parsed.map((value) => Number(value)).filter((value) => Number.isFinite(value) && value > 0)
+        : [];
+    } catch {
+      return [];
+    }
+  }
+
+get selectedVehicleId(): number {
+    return Number((this as any).car?.carId || (this as any).car?.id || (this as any).carId || 0);
+  }
+
+  get favouriteActionLabel(): string {
+    return this.isCurrentVehicleFavourite() ? 'Saved to favourites' : 'Add to favourites';
+  }
+
+  isCurrentVehicleFavourite(): boolean {
+    return this.favouriteVehicleService.isFavourite(this.selectedVehicleId);
+  }
+
+  toggleCurrentVehicleFavourite(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    this.favouriteVehicleService.toggleFavourite(this.selectedVehicleId);
   }
 }

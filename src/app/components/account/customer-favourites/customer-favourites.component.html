@@ -1,0 +1,75 @@
+<section class="favourites-page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">My account</span>
+      <h1>Favourite vehicles</h1>
+      <p>Save vehicles from the catalogue and quickly return to recently viewed cars.</p>
+    </div>
+    <a routerLink="/cars" class="btn btn-primary">Browse cars</a>
+  </div>
+
+  <div class="loading-card" *ngIf="loading">Loading saved vehicles...</div>
+
+  <section class="panel" *ngIf="!loading">
+    <div class="panel-header">
+      <div>
+        <h2>Saved favourites</h2>
+        <p>{{ favouriteCars.length }} vehicle{{ favouriteCars.length === 1 ? '' : 's' }} saved</p>
+      </div>
+    </div>
+
+    <div class="empty-card" *ngIf="favouriteCars.length === 0">
+      <strong>No favourite vehicles yet</strong>
+      <span>Use the heart button in the catalogue to save vehicles here.</span>
+    </div>
+
+    <div class="vehicle-grid" *ngIf="favouriteCars.length > 0">
+      <article class="vehicle-card" *ngFor="let car of favouriteCars">
+        <img [src]="imagePath(car)" [alt]="vehicleName(car)" />
+        <div class="vehicle-body">
+          <span class="badge">{{ car.categoryName || car.category || 'Vehicle' }}</span>
+          <h3>{{ vehicleName(car) }}</h3>
+          <p>{{ car.modelYear || car.year || 'N/A' }} · {{ car.colorName || car.colourName || car.color || 'Colour N/A' }}</p>
+          <strong>£{{ car.dailyPrice || car.price || 0 }}/day</strong>
+          <div class="actions">
+            <button class="btn btn-outline-primary" type="button" (click)="openDetails(car)">View</button>
+            <button class="btn btn-primary" type="button" (click)="bookNow(car)">Book</button>
+            <button class="btn btn-outline-danger" type="button" (click)="removeFavourite(car)">Remove</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="panel" *ngIf="!loading">
+    <div class="panel-header">
+      <div>
+        <h2>Recently viewed</h2>
+        <p>Vehicles you opened from the catalogue or account pages.</p>
+      </div>
+      <button class="btn btn-outline-secondary" type="button" (click)="clearRecentlyViewed()" *ngIf="recentlyViewedCars.length > 0">Clear</button>
+    </div>
+
+    <div class="empty-card" *ngIf="recentlyViewedCars.length === 0">
+      <strong>No recently viewed vehicles</strong>
+      <span>Open vehicles from the catalogue and they will appear here.</span>
+    </div>
+
+    <div class="vehicle-grid compact" *ngIf="recentlyViewedCars.length > 0">
+      <article class="vehicle-card" *ngFor="let car of recentlyViewedCars">
+        <img [src]="imagePath(car)" [alt]="vehicleName(car)" />
+        <div class="vehicle-body">
+          <span class="badge">{{ car.categoryName || car.category || 'Vehicle' }}</span>
+          <h3>{{ vehicleName(car) }}</h3>
+          <p>{{ car.modelYear || car.year || 'N/A' }} · {{ car.transmission || 'Transmission N/A' }}</p>
+          <div class="actions">
+            <button class="btn btn-outline-primary" type="button" (click)="openDetails(car)">View</button>
+            <button class="btn btn-primary" type="button" (click)="bookNow(car)">Book</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <app-back-to-top></app-back-to-top>
+</section>

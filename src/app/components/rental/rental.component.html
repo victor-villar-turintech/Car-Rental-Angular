@@ -1,3 +1,8 @@
+
+<section class="rental-favourite-action" *ngIf="car">
+  
+</section>
+
 <section class="rental-page" *ngIf="car; else emptyState">
   <a class="back-link" [routerLink]="['/cars', car.carId]">← Back to details</a>
 
@@ -14,6 +19,16 @@
       <div class="vehicle-copy">
         <span>{{ car.brandName }}</span>
         <h1>{{ car.carName }}</h1>
+
+        <button
+          type="button"
+          class="vehicle-favourite-cta"
+          [class.saved]="isCurrentVehicleFavourite()"
+          (click)="toggleCurrentVehicleFavourite($event)">
+          <span class="vehicle-favourite-icon">{{ isCurrentVehicleFavourite() ? '♥' : '♡' }}</span>
+          <span>{{ favouriteActionLabel }}</span>
+        </button>
+
         <p>{{ car.description }}</p>
 
         <div class="vehicle-spec-grid">

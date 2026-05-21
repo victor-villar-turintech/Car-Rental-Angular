@@ -288,3 +288,26 @@ The Admin Cars page now exposes richer vehicle specs, but the long-term data mod
 ```
 
 That separation would allow multiple fleet units of the same make/model while only changing number plate, colour, mileage, location, and availability.
+
+
+## Favourite vehicle recovery
+
+The catalogue supports local favourite vehicles using browser localStorage. Customers can save vehicles using the heart control on catalogue cards, then review saved and recently viewed vehicles from `/account/favourites`. Recently viewed vehicles are updated when opening vehicle details or booking from the favourites page.
+
+
+## Favourite vehicles
+
+- The catalogue and booking pages include favourite controls; favourites are persisted locally and visible under the customer account favourites page.
+
+
+### Favourite vehicles
+
+Customers can save vehicles from the catalogue using the full circular heart control on each vehicle card. The booking page also includes an explicit `Add to favourites` / `Saved to favourites` action near the selected vehicle details, and saved vehicles are available under `/account/favourites` using localStorage-backed persistence.
+
+### Favourite vehicle UI note
+
+Catalogue cards expose a visible circular heart control inside the vehicle image area. The full heart control is clickable and persists favourites locally so saved vehicles appear under the customer favourites page.
+
+- Favourite heart controls are aligned inside the top-right corner of catalogue cards with a full circular clickable target.
+
+- Catalogue favourite hearts use compact top-right controls so they do not overlap vehicle feature badges.
