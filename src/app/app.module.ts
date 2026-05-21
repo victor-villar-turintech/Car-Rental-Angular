@@ -70,6 +70,7 @@ import { AdminRewardSettingsComponent } from './components/pages/admin-dashboard
 import { AdminDiscountAnalyticsComponent } from './components/pages/admin-dashboard/discount-analytics/discount-analytics.component';
 import { VehicleComparisonComponent } from './components/vehicle-comparison/vehicle-comparison.component';
 import { EmptyStateComponent } from './components/shared/empty-state/empty-state.component';
+import { CustomerFavouritesComponent } from './components/account/customer-favourites/customer-favourites.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -77,6 +78,7 @@ export function tokenGetter() {
 
 @NgModule({
   declarations: [
+    CustomerFavouritesComponent,
     ConfirmDialogComponent,
     AdminRewardSettingsComponent,
     AdminDiscountAnalyticsComponent,

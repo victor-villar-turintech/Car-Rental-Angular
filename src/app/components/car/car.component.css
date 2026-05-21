@@ -37,3 +37,695 @@
 .empty-state h3 { color: #0f172a; font-weight: 950; }
 @media (max-width: 991.98px) { .catalogue-hero-inner, .catalogue-layout { grid-template-columns: 1fr; } .filter-column { position: static; } }
 @media (max-width: 575.98px) { .search-row, .vehicle-actions, .price-filter-grid { grid-template-columns: 1fr; } }
+
+
+.favourite-toggle {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.75);
+  background: rgba(255,255,255,.92);
+  color: #d92d20;
+  font-size: 1.45rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(16,24,40,.18);
+  cursor: pointer;
+  z-index: 2;
+}
+.favourite-toggle.active {
+  position: absolute;
+  top: 14px;
+  right: 14px; background: #fff1f3; border-color: #fecdd3; }
+.favourite-toggle:hover {
+  position: absolute;
+  top: 14px;
+  right: 14px; transform: translateY(-1px); }
+
+.car-card, .vehicle-card, .card { position: relative; }
+
+
+/* Favourite hit-area fix: make the whole heart control clickable, not just the glyph/bottom edge. */
+.favourite-toggle,
+.favorite-toggle,
+.favourite-button,
+.favorite-button,
+.heart-toggle,
+.heart-button,
+.car-favourite-button,
+.car-favorite-button,
+button[aria-label*="favourite"],
+button[aria-label*="favorite"],
+button[title*="favourite"],
+button[title*="favorite"] {
+  top: 14px;
+  right: 14px;
+  position: relative;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  z-index: 5;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+}
+
+.favourite-toggle *,
+.favorite-toggle *,
+.favourite-button *,
+.favorite-button *,
+.heart-toggle *,
+.heart-button *,
+.car-favourite-button *,
+.car-favorite-button *,
+button[aria-label*="favourite"] *,
+button[aria-label*="favorite"] *,
+button[title*="favourite"] *,
+button[title*="favorite"] * {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  pointer-events: none;
+}
+
+.favourite-toggle::after,
+.favorite-toggle::after,
+.favourite-button::after,
+.favorite-button::after,
+.heart-toggle::after,
+.heart-button::after,
+.car-favourite-button::after,
+.car-favorite-button::after,
+button[aria-label*="favourite"]::after,
+button[aria-label*="favorite"]::after,
+button[title*="favourite"]::after,
+button[title*="favorite"]::after {
+  top: 14px;
+  right: 14px;
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+}
+
+
+.car-card,
+.vehicle-card {
+  position: relative;
+}
+
+.favourite-heart {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(255, 255, 255, 0.94);
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.18);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, color 0.16s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0;
+  line-height: 1;
+}
+
+.favourite-heart:hover,
+.favourite-heart:focus-visible {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.24);
+  outline: none;
+}
+
+.favourite-heart.active {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.favourite-heart .heart-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: block;
+  font-size: 25px;
+  line-height: 1;
+  transform: translateY(-1px);
+  pointer-events: none;
+}
+
+/* Favourite vehicle control - positioned inside the catalogue card image */
+.car-card,
+.vehicle-card,
+.fleet-card,
+.catalogue-card,
+.car-list-card,
+.card-car {
+  position: relative;
+  overflow: hidden;
+}
+
+.car-image,
+.vehicle-image,
+.card-image,
+.fleet-card-image,
+.catalogue-card-image,
+.image-wrap,
+.car-card figure,
+.vehicle-card figure {
+  position: relative;
+  overflow: hidden;
+}
+
+.favourite-heart,
+.favorite-heart,
+.favourite-toggle,
+.favorite-toggle {
+  right: 14px;
+  position: absolute;
+  top: 14px;
+  left: auto;
+  z-index: 8;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #0f172a;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.favourite-heart span,
+.favorite-heart span,
+.favourite-toggle span,
+.favorite-toggle span {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.favourite-heart:hover,
+.favorite-heart:hover,
+.favourite-toggle:hover,
+.favorite-toggle:hover {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.24);
+}
+
+.favourite-heart.active,
+.favorite-heart.active,
+.favourite-toggle.active,
+.favorite-toggle.active {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #fff1f2;
+  border-color: rgba(225, 29, 72, 0.26);
+  color: #e11d48;
+}
+
+@media (max-width: 575.98px) {
+  .favourite-heart,
+  .favorite-heart,
+  .favourite-toggle,
+  .favorite-toggle {
+  position: absolute;
+  right: 14px;
+    top: 10px;
+    left: auto;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+  }
+}
+
+/* Favourites UI fix: keep the heart control inside the top-right of the catalogue image. */
+.car-card,
+.vehicle-card,
+.catalogue-card,
+.fleet-card,
+.car-image,
+.vehicle-image,
+.catalogue-image,
+.fleet-image,
+.image-wrap,
+.image-wrapper,
+.car-image-wrap,
+.vehicle-image-wrap {
+  position: relative;
+}
+
+.favorite-button,
+.favourite-button,
+.favorite-toggle,
+.favourite-toggle,
+.favourite-heart,
+.favorite-heart,
+.favourite-control,
+.favorite-control,
+button[aria-label*="favourite"],
+button[aria-label*="Favourite"],
+button[title*="favourite"],
+button[title*="Favourite"] {
+  position: absolute !important;
+  top: 14px !important;
+  right: 14px !important;
+  left: auto;
+  bottom: auto !important;
+  z-index: 20 !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  line-height: 1 !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18) !important;
+  transform: none !important;
+}
+
+.favorite-button:hover,
+.favourite-button:hover,
+.favorite-toggle:hover,
+.favourite-toggle:hover,
+.favourite-heart:hover,
+.favorite-heart:hover,
+.favourite-control:hover,
+.favorite-control:hover,
+button[aria-label*="favourite"]:hover,
+button[aria-label*="Favourite"]:hover,
+button[title*="favourite"]:hover,
+button[title*="Favourite"]:hover {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #ffffff !important;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.24) !important;
+}
+
+.favorite-button span,
+.favourite-button span,
+.favorite-toggle span,
+.favourite-toggle span,
+.favourite-heart span,
+.favorite-heart span,
+.favourite-control span,
+.favorite-control span,
+button[aria-label*="favourite"] span,
+button[aria-label*="Favourite"] span,
+button[title*="favourite"] span,
+button[title*="Favourite"] span {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  pointer-events: none;
+}
+
+/* Favourite heart alignment fix: keep the heart centred inside the circular control. */
+.vehicle-card,
+.car-card,
+.catalogue-card,
+.fleet-card,
+.car-tile,
+.vehicle-tile,
+.car-image,
+.vehicle-image,
+.car-media,
+.vehicle-media,
+.card-media,
+.image-wrap,
+.image-wrapper {
+  position: relative;
+}
+
+.vehicle-card .favourite-toggle,
+.vehicle-card .favourite-button,
+.vehicle-card .favorite-toggle,
+.vehicle-card .favorite-button,
+.vehicle-card .favourite-heart,
+.vehicle-card .favorite-heart,
+.car-card .favourite-toggle,
+.car-card .favourite-button,
+.car-card .favorite-toggle,
+.car-card .favorite-button,
+.car-card .favourite-heart,
+.car-card .favorite-heart,
+.catalogue-card .favourite-toggle,
+.catalogue-card .favourite-button,
+.catalogue-card .favorite-toggle,
+.catalogue-card .favorite-button,
+.catalogue-card .favourite-heart,
+.catalogue-card .favorite-heart,
+.fleet-card .favourite-toggle,
+.fleet-card .favourite-button,
+.fleet-card .favorite-toggle,
+.fleet-card .favorite-button,
+.fleet-card .favourite-heart,
+.fleet-card .favorite-heart,
+.car-tile .favourite-toggle,
+.car-tile .favourite-button,
+.car-tile .favorite-toggle,
+.car-tile .favorite-button,
+.vehicle-tile .favourite-toggle,
+.vehicle-tile .favourite-button,
+.vehicle-tile .favorite-toggle,
+.vehicle-tile .favorite-button {
+  position: absolute !important;
+  top: 16px !important;
+  right: 16px !important;
+  left: auto !important;
+  bottom: auto !important;
+  z-index: 6 !important;
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transform: none !important;
+  overflow: hidden !important;
+}
+
+.vehicle-card .favourite-toggle *,
+.vehicle-card .favourite-button *,
+.vehicle-card .favorite-toggle *,
+.vehicle-card .favorite-button *,
+.vehicle-card .favourite-heart *,
+.vehicle-card .favorite-heart *,
+.car-card .favourite-toggle *,
+.car-card .favourite-button *,
+.car-card .favorite-toggle *,
+.car-card .favorite-button *,
+.car-card .favourite-heart *,
+.car-card .favorite-heart *,
+.catalogue-card .favourite-toggle *,
+.catalogue-card .favourite-button *,
+.catalogue-card .favorite-toggle *,
+.catalogue-card .favorite-button *,
+.catalogue-card .favourite-heart *,
+.catalogue-card .favorite-heart *,
+.fleet-card .favourite-toggle *,
+.fleet-card .favourite-button *,
+.fleet-card .favorite-toggle *,
+.fleet-card .favorite-button *,
+.fleet-card .favourite-heart *,
+.fleet-card .favorite-heart *,
+.car-tile .favourite-toggle *,
+.car-tile .favourite-button *,
+.car-tile .favorite-toggle *,
+.car-tile .favorite-button *,
+.vehicle-tile .favourite-toggle *,
+.vehicle-tile .favourite-button *,
+.vehicle-tile .favorite-toggle *,
+.vehicle-tile .favorite-button * {
+  position: static !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+
+.vehicle-card .favourite-toggle::before,
+.vehicle-card .favourite-button::before,
+.vehicle-card .favorite-toggle::before,
+.vehicle-card .favorite-button::before,
+.car-card .favourite-toggle::before,
+.car-card .favourite-button::before,
+.car-card .favorite-toggle::before,
+.car-card .favorite-button::before,
+.catalogue-card .favourite-toggle::before,
+.catalogue-card .favourite-button::before,
+.catalogue-card .favorite-toggle::before,
+.catalogue-card .favorite-button::before,
+.fleet-card .favourite-toggle::before,
+.fleet-card .favourite-button::before,
+.fleet-card .favorite-toggle::before,
+.fleet-card .favorite-button::before {
+  position: static !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+.vehicle-card .favourite-toggle i,
+.vehicle-card .favourite-toggle svg,
+.vehicle-card .favourite-toggle span,
+.vehicle-card .favourite-button i,
+.vehicle-card .favourite-button svg,
+.vehicle-card .favourite-button span,
+.car-card .favourite-toggle i,
+.car-card .favourite-toggle svg,
+.car-card .favourite-toggle span,
+.car-card .favourite-button i,
+.car-card .favourite-button svg,
+.car-card .favourite-button span,
+.catalogue-card .favourite-toggle i,
+.catalogue-card .favourite-toggle svg,
+.catalogue-card .favourite-toggle span,
+.catalogue-card .favourite-button i,
+.catalogue-card .favourite-button svg,
+.catalogue-card .favourite-button span,
+.fleet-card .favourite-toggle i,
+.fleet-card .favourite-toggle svg,
+.fleet-card .favourite-toggle span,
+.fleet-card .favourite-button i,
+.fleet-card .favourite-button svg,
+.fleet-card .favourite-button span {
+  font-size: 22px !important;
+  line-height: 1 !important;
+}
+
+/* FAVOURITES_HEART_SIZE_FIX_START */
+/* Keep the catalogue favourite control compact, centred and inside the image. */
+.car-card,
+.vehicle-card,
+.catalogue-card,
+.fleet-card {
+  position: relative;
+}
+
+.car-card .car-image,
+.car-card .car-image-wrapper,
+.car-card .vehicle-image,
+.car-card .vehicle-image-wrapper,
+.vehicle-card .car-image,
+.vehicle-card .car-image-wrapper,
+.vehicle-card .vehicle-image,
+.vehicle-card .vehicle-image-wrapper,
+.catalogue-card .car-image,
+.catalogue-card .car-image-wrapper,
+.catalogue-card .vehicle-image,
+.catalogue-card .vehicle-image-wrapper,
+.fleet-card .car-image,
+.fleet-card .car-image-wrapper,
+.fleet-card .vehicle-image,
+.fleet-card .vehicle-image-wrapper {
+  position: relative;
+}
+
+.car-card .favourite-toggle,
+.car-card .favorite-toggle,
+.car-card .favourite-button,
+.car-card .favorite-button,
+.car-card .favourite-heart,
+.car-card .favorite-heart,
+.car-card .car-favourite-button,
+.car-card .vehicle-favourite-button,
+.vehicle-card .favourite-toggle,
+.vehicle-card .favorite-toggle,
+.vehicle-card .favourite-button,
+.vehicle-card .favorite-button,
+.vehicle-card .favourite-heart,
+.vehicle-card .favorite-heart,
+.vehicle-card .car-favourite-button,
+.vehicle-card .vehicle-favourite-button,
+.catalogue-card .favourite-toggle,
+.catalogue-card .favorite-toggle,
+.catalogue-card .favourite-button,
+.catalogue-card .favorite-button,
+.catalogue-card .favourite-heart,
+.catalogue-card .favorite-heart,
+.catalogue-card .car-favourite-button,
+.catalogue-card .vehicle-favourite-button,
+.fleet-card .favourite-toggle,
+.fleet-card .favorite-toggle,
+.fleet-card .favourite-button,
+.fleet-card .favorite-button,
+.fleet-card .favourite-heart,
+.fleet-card .favorite-heart,
+.fleet-card .car-favourite-button,
+.fleet-card .vehicle-favourite-button {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  max-width: 32px !important;
+  max-height: 32px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  font-size: 15px !important;
+  z-index: 20 !important;
+  transform: none !important;
+}
+
+.car-card .favourite-toggle > *,
+.car-card .favorite-toggle > *,
+.car-card .favourite-button > *,
+.car-card .favorite-button > *,
+.car-card .favourite-heart > *,
+.car-card .favorite-heart > *,
+.car-card .car-favourite-button > *,
+.car-card .vehicle-favourite-button > *,
+.vehicle-card .favourite-toggle > *,
+.vehicle-card .favorite-toggle > *,
+.vehicle-card .favourite-button > *,
+.vehicle-card .favorite-button > *,
+.vehicle-card .favourite-heart > *,
+.vehicle-card .favorite-heart > *,
+.vehicle-card .car-favourite-button > *,
+.vehicle-card .vehicle-favourite-button > *,
+.catalogue-card .favourite-toggle > *,
+.catalogue-card .favorite-toggle > *,
+.catalogue-card .favourite-button > *,
+.catalogue-card .favorite-button > *,
+.catalogue-card .favourite-heart > *,
+.catalogue-card .favorite-heart > *,
+.catalogue-card .car-favourite-button > *,
+.catalogue-card .vehicle-favourite-button > *,
+.fleet-card .favourite-toggle > *,
+.fleet-card .favorite-toggle > *,
+.fleet-card .favourite-button > *,
+.fleet-card .favorite-button > *,
+.fleet-card .favourite-heart > *,
+.fleet-card .favorite-heart > *,
+.fleet-card .car-favourite-button > *,
+.fleet-card .vehicle-favourite-button > * {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  font-size: 15px !important;
+  transform: none !important;
+}
+
+.car-card .favourite-toggle svg,
+.car-card .favorite-toggle svg,
+.car-card .favourite-button svg,
+.car-card .favorite-button svg,
+.car-card .favourite-heart svg,
+.car-card .favorite-heart svg,
+.car-card .car-favourite-button svg,
+.car-card .vehicle-favourite-button svg,
+.vehicle-card .favourite-toggle svg,
+.vehicle-card .favorite-toggle svg,
+.vehicle-card .favourite-button svg,
+.vehicle-card .favorite-button svg,
+.vehicle-card .favourite-heart svg,
+.vehicle-card .favorite-heart svg,
+.vehicle-card .car-favourite-button svg,
+.vehicle-card .vehicle-favourite-button svg,
+.catalogue-card .favourite-toggle svg,
+.catalogue-card .favorite-toggle svg,
+.catalogue-card .favourite-button svg,
+.catalogue-card .favorite-button svg,
+.catalogue-card .favourite-heart svg,
+.catalogue-card .favorite-heart svg,
+.catalogue-card .car-favourite-button svg,
+.catalogue-card .vehicle-favourite-button svg,
+.fleet-card .favourite-toggle svg,
+.fleet-card .favorite-toggle svg,
+.fleet-card .favourite-button svg,
+.fleet-card .favorite-button svg,
+.fleet-card .favourite-heart svg,
+.fleet-card .favorite-heart svg,
+.fleet-card .car-favourite-button svg,
+.fleet-card .vehicle-favourite-button svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+/* FAVOURITES_HEART_SIZE_FIX_END */

@@ -43,6 +43,7 @@ import { AdminCustomersDashboardComponent } from './components/pages/admin-dashb
 import { AdminRewardSettingsComponent } from './components/pages/admin-dashboard/reward-settings/reward-settings.component';
 import { AdminDiscountAnalyticsComponent } from './components/pages/admin-dashboard/discount-analytics/discount-analytics.component';
 import { VehicleComparisonComponent } from './components/vehicle-comparison/vehicle-comparison.component';
+import { CustomerFavouritesComponent } from './components/account/customer-favourites/customer-favourites.component';
 
 const routes: Routes = [
   { path: 'compare', component: VehicleComparisonComponent },
@@ -98,7 +99,8 @@ const routes: Routes = [
       { path: 'rewards', component: AdminRewardsDashboardComponent },
       { path: 'discounts', component: AdminDiscountsDashboardComponent },
     ],
-  },
+  },  { path: 'account/favourites', component: CustomerFavouritesComponent, canActivate: [CustomerAuthGuard] },
+
   { path: '**', redirectTo: 'home' },
 ];
 

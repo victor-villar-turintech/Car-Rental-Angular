@@ -1,3 +1,4 @@
+import { FavouriteVehicleService } from '../../services/favourite-vehicle.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Car } from 'src/app/models/car';
@@ -14,7 +15,8 @@ export class CarComponent implements OnInit {
   maxPrice: number;
   sortBy = 'priceAsc';
 
-  constructor(private carService: CarService, private activatedRoute: ActivatedRoute) {}
+  constructor(private carService: CarService, private activatedRoute: ActivatedRoute,
+    private favouriteVehicleService: FavouriteVehicleService) {}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
@@ -186,5 +188,43 @@ export class CarComponent implements OnInit {
       <text x="600" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#334155">${label}</text>
     </svg>`;
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  }
+
+
+  carIdOf(car: any): number {
+    return Number(car?.carId || car?.id || 0);
+  }
+
+  isFavouriteVehicle(car: any): boolean {
+    return this.favouriteVehicleService.isFavourite(this.carIdOf(car));
+  }
+
+  toggleFavouriteVehicle(car: any, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.favouriteVehicleService.toggleFavourite(this.carIdOf(car));
+  }
+
+  trackRecentlyViewedVehicle(car: any): void {
+    this.favouriteVehicleService.addRecentlyViewed(this.carIdOf(car));
+  }
+
+getVehicleId(car: any): number {
+    return Number(car?.carId || car?.id || car?.vehicleId || 0);
+  }
+
+  isFavourite(car: any): boolean {
+    return this.favouriteVehicleService.isFavourite(this.getVehicleId(car));
+  }
+
+  toggleFavourite(car: any, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    this.favouriteVehicleService.toggleFavourite(this.getVehicleId(car));
   }
 }
