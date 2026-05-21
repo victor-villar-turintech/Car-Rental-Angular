@@ -46,6 +46,7 @@ import { VehicleComparisonComponent } from './components/vehicle-comparison/vehi
 import { CustomerFavouritesComponent } from './components/account/customer-favourites/customer-favourites.component';
 import { VehicleCatalogueComponent } from './components/pages/admin-vehicle-catalogue/vehicle-catalogue.component';
 import { FleetComponent } from './components/pages/admin-fleet/fleet.component';
+import { FleetAwareRentalFlowComponent } from './components/pages/fleet-aware-rental-flow/fleet-aware-rental-flow.component';
 
 const routes: Routes = [
   {
@@ -72,7 +73,7 @@ const routes: Routes = [
   { path: 'cars/:carId', component: CarDetailComponent },
   { path: 'car/details/:carId', component: CarDetailComponent },
   { path: 'cars/car-detail/:carId', component: CarDetailComponent },
-  { path: 'car/rental/:carId', component: RentalComponent },
+  { path: 'car/rental/:carId', component: FleetAwareRentalFlowComponent },
   { path: 'booking-lookup', component: BookingLookupComponent },
   { path: 'payment/:bookingReference', component: PaymentCheckoutComponent },
   { path: 'booking-confirmation/:bookingReference', component: BookingConfirmationComponent },

@@ -73,6 +73,7 @@ import { EmptyStateComponent } from './components/shared/empty-state/empty-state
 import { CustomerFavouritesComponent } from './components/account/customer-favourites/customer-favourites.component';
 import { VehicleCatalogueComponent } from './components/pages/admin-vehicle-catalogue/vehicle-catalogue.component';
 import { FleetComponent } from './components/pages/admin-fleet/fleet.component';
+import { FleetAwareRentalFlowComponent } from './components/pages/fleet-aware-rental-flow/fleet-aware-rental-flow.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -80,6 +81,7 @@ export function tokenGetter() {
 
 @NgModule({
   declarations: [
+    FleetAwareRentalFlowComponent,
     FleetComponent,
     VehicleCatalogueComponent,
     CustomerFavouritesComponent,

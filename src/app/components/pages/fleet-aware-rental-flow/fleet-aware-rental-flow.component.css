@@ -1,0 +1,522 @@
+/* Fleet-aware rental flow - preserves extras/details/payment while using the sleek layout. */
+
+.rental-flow-page {
+  min-height: 100vh;
+  padding: 38px;
+  background: radial-gradient(circle at top left, #eaf1ff 0, #f8fbff 42%, #ffffff 100%);
+}
+
+.back-link {
+  border: 0;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 900;
+  margin-bottom: 18px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.rental-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 460px;
+  gap: 30px;
+  align-items: start;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.vehicle-card,
+.booking-panel,
+.missing-card {
+  background: #ffffff;
+  border: 1px solid #dbe5f4;
+  border-radius: 28px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+  overflow: hidden;
+}
+
+.image-panel {
+  position: relative;
+  min-height: 520px;
+  background: #eef2f7;
+}
+
+.image-panel img {
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  object-fit: cover;
+  display: block;
+}
+
+.badge-row {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge-row span {
+  background: #ffffff;
+  color: #111827;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-weight: 900;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+}
+
+.vehicle-body {
+  padding: 28px;
+}
+
+.eyebrow {
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.vehicle-body h1 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: clamp(44px, 6vw, 70px);
+  line-height: 0.95;
+  font-weight: 950;
+  letter-spacing: -0.05em;
+}
+
+.description {
+  color: #51617a;
+  line-height: 1.55;
+  max-width: 850px;
+}
+
+.vehicle-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.vehicle-stat-grid div {
+  border: 1px solid #dbe5f4;
+  border-radius: 18px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.vehicle-stat-grid span,
+.price-summary span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.vehicle-stat-grid strong,
+.price-summary strong {
+  color: #111827;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.price-tile {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+}
+
+.price-tile span,
+.price-tile strong {
+  color: #ffffff !important;
+}
+
+.included-section {
+  border: 1px solid #dbe5f4;
+  border-radius: 22px;
+  padding: 18px;
+  background: #f8fbff;
+}
+
+.included-section h2 {
+  margin: 0 0 14px;
+  font-size: 18px;
+}
+
+.included-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.included-grid div {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 14px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.booking-panel {
+  padding: 24px;
+  position: sticky;
+  top: 20px;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.stepper button {
+  border: 1px solid #bfdbfe;
+  color: #64748b;
+  background: #f8fbff;
+  border-radius: 999px;
+  padding: 9px 8px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.stepper button.active {
+  background: #eaf2ff;
+  color: #2563eb;
+  border-color: #93c5fd;
+}
+
+.panel-heading h2 {
+  margin: 0 0 18px;
+  color: #0f172a;
+  font-size: 34px;
+  line-height: 1.02;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+}
+
+.step-content label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.step-content input,
+.step-content select {
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 12px 13px;
+  color: #111827;
+  font: inherit;
+  font-weight: 800;
+  background: #ffffff;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.availability-card {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  background: #ecfdf5;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  border-radius: 18px;
+  padding: 15px;
+  margin: 6px 0 18px;
+}
+
+.availability-card strong {
+  font-size: 32px;
+  font-weight: 950;
+}
+
+.availability-card span {
+  font-weight: 850;
+}
+
+.step-content h3 {
+  margin: 18px 0 10px;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.extra-card {
+  display: grid !important;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px !important;
+  border: 1px solid #dbe5f4;
+  border-radius: 16px;
+  padding: 13px;
+  margin-bottom: 10px !important;
+  background: #f8fbff;
+}
+
+.extra-card input {
+  width: 18px;
+  height: 18px;
+}
+
+.extra-card strong {
+  display: block;
+  color: #0f172a;
+  margin-bottom: 3px;
+}
+
+.extra-card span {
+  display: block;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.extra-card b {
+  color: #111827;
+}
+
+.price-summary {
+  background: #f8fbff;
+  border: 1px solid #dbe5f4;
+  border-radius: 20px;
+  padding: 16px;
+  margin: 18px 0;
+}
+
+.price-summary div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+}
+
+.price-summary .total {
+  border-top: 1px solid #dbe5f4;
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+.price-summary .total strong {
+  font-size: 24px;
+  color: #2563eb;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+}
+
+.primary,
+.secondary {
+  border: 0;
+  border-radius: 14px;
+  padding: 13px 15px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.primary {
+  background: #2563eb;
+  color: #ffffff;
+  flex: 1;
+}
+
+.primary.full {
+  width: 100%;
+}
+
+.secondary {
+  background: #e2e8f0;
+  color: #111827;
+}
+
+.alert {
+  border-radius: 16px;
+  padding: 13px;
+  margin-bottom: 14px;
+  font-weight: 850;
+}
+
+.alert.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.alert.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.receipt-card {
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  border-radius: 20px;
+  padding: 18px;
+  color: #166534;
+}
+
+.receipt-card h3 {
+  color: #166534;
+  margin-top: 0;
+}
+
+.missing-card {
+  max-width: 680px;
+  margin: 80px auto;
+  padding: 28px;
+  color: #991b1b;
+  font-weight: 900;
+}
+
+@media (max-width: 1050px) {
+  .rental-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 700px) {
+  .rental-flow-page {
+    padding: 18px;
+  }
+
+  .vehicle-stat-grid,
+  .included-grid,
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .stepper {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+
+/* Restored legacy functionality within the revised sleek layout */
+
+.extras-category {
+  margin-bottom: 16px;
+}
+
+.extras-category h4 {
+  margin: 12px 0 8px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.payment-method-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.payment-method-card {
+  display: grid !important;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  column-gap: 11px !important;
+  row-gap: 3px !important;
+  border: 1px solid #dbe5f4;
+  border-radius: 16px;
+  padding: 13px;
+  background: #f8fbff;
+  cursor: pointer;
+  margin-bottom: 0 !important;
+}
+
+.payment-method-card input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+}
+
+.payment-method-card strong {
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.payment-method-card span {
+  grid-column: 2;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.payment-method-card.selected {
+  border-color: #2563eb;
+  background: #eff6ff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.payment-fields {
+  margin-top: 14px;
+}
+
+.wallet-card {
+  background: #f8fbff;
+  border: 1px solid #dbe5f4;
+  border-radius: 16px;
+  padding: 14px;
+  color: #334155;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+
+/* Restored calendar/rental-length behaviour */
+
+.date-grid-enhanced {
+  display: grid;
+  grid-template-columns: 1.1fr 0.75fr 1.1fr;
+  gap: 12px;
+}
+
+.date-helper {
+  border: 1px solid #dbe5f4;
+  background: #f8fbff;
+  color: #475569;
+  border-radius: 14px;
+  padding: 11px 12px;
+  margin: -2px 0 14px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.date-helper .date-error {
+  color: #991b1b;
+}
+
+@media (max-width: 700px) {
+  .date-grid-enhanced {
+    grid-template-columns: 1fr;
+  }
+}
