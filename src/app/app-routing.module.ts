@@ -44,8 +44,20 @@ import { AdminRewardSettingsComponent } from './components/pages/admin-dashboard
 import { AdminDiscountAnalyticsComponent } from './components/pages/admin-dashboard/discount-analytics/discount-analytics.component';
 import { VehicleComparisonComponent } from './components/vehicle-comparison/vehicle-comparison.component';
 import { CustomerFavouritesComponent } from './components/account/customer-favourites/customer-favourites.component';
+import { VehicleCatalogueComponent } from './components/pages/admin-vehicle-catalogue/vehicle-catalogue.component';
+import { FleetComponent } from './components/pages/admin-fleet/fleet.component';
 
 const routes: Routes = [
+  {
+    path: 'admin/fleet',
+    component: FleetComponent,
+    canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'admin/vehicle-catalogue',
+    component: VehicleCatalogueComponent,
+    canActivate: [AdminAuthGuard]
+  },
   { path: 'compare', component: VehicleComparisonComponent },
   { path: 'admin/reward-settings', component: AdminRewardSettingsComponent, canActivate: [AdminAuthGuard] },
   { path: 'admin/discount-analytics', component: AdminDiscountAnalyticsComponent, canActivate: [AdminAuthGuard] },

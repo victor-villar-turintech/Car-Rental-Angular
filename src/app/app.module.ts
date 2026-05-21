@@ -71,6 +71,8 @@ import { AdminDiscountAnalyticsComponent } from './components/pages/admin-dashbo
 import { VehicleComparisonComponent } from './components/vehicle-comparison/vehicle-comparison.component';
 import { EmptyStateComponent } from './components/shared/empty-state/empty-state.component';
 import { CustomerFavouritesComponent } from './components/account/customer-favourites/customer-favourites.component';
+import { VehicleCatalogueComponent } from './components/pages/admin-vehicle-catalogue/vehicle-catalogue.component';
+import { FleetComponent } from './components/pages/admin-fleet/fleet.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -78,6 +80,8 @@ export function tokenGetter() {
 
 @NgModule({
   declarations: [
+    FleetComponent,
+    VehicleCatalogueComponent,
     CustomerFavouritesComponent,
     ConfirmDialogComponent,
     AdminRewardSettingsComponent,

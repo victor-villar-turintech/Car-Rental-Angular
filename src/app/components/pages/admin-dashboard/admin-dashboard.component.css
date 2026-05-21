@@ -161,3 +161,535 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ADMIN SIDEBAR COMPACT NORMALISATION
+   Keeps the legacy admin pages visually aligned with the newer Vehicle Catalogue/Fleet sidebar scale.
+   This is intentionally scoped to admin/sidebar-like classes only.
+*/
+
+.admin-sidebar,
+.admin-dashboard-sidebar,
+.dashboard-sidebar,
+.admin-side-nav,
+.admin-sidenav,
+.admin-menu,
+.admin-navigation,
+.admin-nav,
+.fleet-admin-sidebar,
+[class*="admin"] .sidebar,
+[class*="dashboard"] .sidebar {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
+  flex: 0 0 240px !important;
+  padding: 18px 16px !important;
+  box-sizing: border-box !important;
+}
+
+.admin-sidebar a,
+.admin-dashboard-sidebar a,
+.dashboard-sidebar a,
+.admin-side-nav a,
+.admin-sidenav a,
+.admin-menu a,
+.admin-navigation a,
+.admin-nav a,
+.fleet-admin-sidebar a,
+[class*="admin"] .sidebar a,
+[class*="dashboard"] .sidebar a,
+.admin-sidebar button,
+.admin-dashboard-sidebar button,
+.dashboard-sidebar button,
+.admin-side-nav button,
+.admin-sidenav button,
+.admin-menu button,
+.admin-navigation button,
+.admin-nav button,
+[class*="admin"] .sidebar button,
+[class*="dashboard"] .sidebar button {
+  min-height: 36px !important;
+  padding: 9px 12px !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  border-radius: 9px !important;
+}
+
+.admin-sidebar h1,
+.admin-dashboard-sidebar h1,
+.dashboard-sidebar h1,
+.admin-sidebar h2,
+.admin-dashboard-sidebar h2,
+.dashboard-sidebar h2,
+.admin-sidebar h3,
+.admin-dashboard-sidebar h3,
+.dashboard-sidebar h3,
+[class*="admin"] .sidebar h1,
+[class*="admin"] .sidebar h2,
+[class*="admin"] .sidebar h3,
+[class*="dashboard"] .sidebar h1,
+[class*="dashboard"] .sidebar h2,
+[class*="dashboard"] .sidebar h3 {
+  font-size: 18px !important;
+  line-height: 1.15 !important;
+  margin-bottom: 8px !important;
+}
+
+.admin-sidebar p,
+.admin-dashboard-sidebar p,
+.dashboard-sidebar p,
+[class*="admin"] .sidebar p,
+[class*="dashboard"] .sidebar p {
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+}
+
+.admin-dashboard-layout,
+.admin-layout,
+.admin-shell,
+.dashboard-layout,
+.dashboard-shell,
+.admin-compatible-shell,
+[class*="admin"][class*="layout"],
+[class*="dashboard"][class*="layout"] {
+  grid-template-columns: 240px minmax(0, 1fr) !important;
+}
+
+.admin-content,
+.admin-dashboard-content,
+.dashboard-content,
+.admin-main,
+.dashboard-main,
+[class*="admin"] .content,
+[class*="dashboard"] .content {
+  min-width: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .admin-sidebar,
+  .admin-dashboard-sidebar,
+  .dashboard-sidebar,
+  .admin-side-nav,
+  .admin-sidenav,
+  .admin-menu,
+  .admin-navigation,
+  .admin-nav,
+  .fleet-admin-sidebar,
+  [class*="admin"] .sidebar,
+  [class*="dashboard"] .sidebar {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+  }
+
+  .admin-dashboard-layout,
+  .admin-layout,
+  .admin-shell,
+  .dashboard-layout,
+  .dashboard-shell,
+  .admin-compatible-shell,
+  [class*="admin"][class*="layout"],
+  [class*="dashboard"][class*="layout"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Admin sidebar chevron normalisation */
+.admin-nav-chevron {
+  margin-left: auto;
+  font-weight: 800;
+  opacity: 0.8;
+}
+
+.admin-sidebar a,
+.admin-compatible-sidebar a,
+.admin-dashboard-sidebar a,
+.dashboard-sidebar a,
+.admin-menu a,
+.admin-nav a,
+[class*="admin"] .sidebar a,
+[class*="dashboard"] .sidebar a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ADMIN SIDEBAR REFINED STYLE NORMALISATION
+   Normalises all admin sidebars to the compact/refined style used by Vehicle Catalogue and Fleet.
+*/
+
+.admin-sidebar,
+.admin-compatible-shell > aside,
+.admin-compatible-sidebar,
+.admin-dashboard-sidebar,
+.dashboard-sidebar,
+.admin-side-nav,
+.admin-sidenav,
+.admin-menu,
+.admin-navigation,
+.admin-nav,
+[class*="admin"] .sidebar,
+[class*="dashboard"] .sidebar {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
+  flex: 0 0 240px !important;
+  box-sizing: border-box !important;
+  background: #111827 !important;
+  color: #ffffff !important;
+  padding: 18px 14px !important;
+  font-family: inherit !important;
+  letter-spacing: normal !important;
+}
+
+.admin-compatible-shell {
+  grid-template-columns: 240px minmax(0, 1fr) !important;
+}
+
+/* Sidebar header card */
+.admin-sidebar > div:first-child,
+.admin-compatible-sidebar > div:first-child,
+.admin-dashboard-sidebar > div:first-child,
+.dashboard-sidebar > div:first-child,
+[class*="admin"] .sidebar > div:first-child,
+[class*="dashboard"] .sidebar > div:first-child {
+  font-family: inherit !important;
+}
+
+/* Header labels */
+.admin-sidebar h1,
+.admin-sidebar h2,
+.admin-sidebar h3,
+.admin-compatible-sidebar h1,
+.admin-compatible-sidebar h2,
+.admin-compatible-sidebar h3,
+.admin-dashboard-sidebar h1,
+.admin-dashboard-sidebar h2,
+.admin-dashboard-sidebar h3,
+.dashboard-sidebar h1,
+.dashboard-sidebar h2,
+.dashboard-sidebar h3,
+[class*="admin"] .sidebar h1,
+[class*="admin"] .sidebar h2,
+[class*="admin"] .sidebar h3,
+[class*="dashboard"] .sidebar h1,
+[class*="dashboard"] .sidebar h2,
+[class*="dashboard"] .sidebar h3 {
+  color: #ffffff !important;
+  font-family: inherit !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  line-height: 1.16 !important;
+  margin: 0 0 4px !important;
+  letter-spacing: -0.01em !important;
+}
+
+.admin-sidebar p,
+.admin-compatible-sidebar p,
+.admin-dashboard-sidebar p,
+.dashboard-sidebar p,
+[class*="admin"] .sidebar p,
+[class*="dashboard"] .sidebar p {
+  color: #cbd5e1 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  margin: 0 !important;
+}
+
+/* Small uppercase Admin label */
+.admin-sidebar .admin-sidebar__eyebrow,
+.admin-sidebar [class*="eyebrow"],
+.admin-compatible-sidebar .admin-sidebar__eyebrow,
+.admin-compatible-sidebar [class*="eyebrow"],
+.admin-dashboard-sidebar [class*="eyebrow"],
+.dashboard-sidebar [class*="eyebrow"],
+[class*="admin"] .sidebar [class*="eyebrow"],
+[class*="dashboard"] .sidebar [class*="eyebrow"] {
+  color: #93c5fd !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.14em !important;
+  line-height: 1.2 !important;
+  margin-bottom: 4px !important;
+}
+
+/* Sidebar links/buttons */
+.admin-sidebar a,
+.admin-compatible-sidebar a,
+.admin-dashboard-sidebar a,
+.dashboard-sidebar a,
+.admin-side-nav a,
+.admin-sidenav a,
+.admin-menu a,
+.admin-navigation a,
+.admin-nav a,
+[class*="admin"] .sidebar a,
+[class*="dashboard"] .sidebar a,
+.admin-sidebar button,
+.admin-compatible-sidebar button,
+.admin-dashboard-sidebar button,
+.dashboard-sidebar button,
+.admin-side-nav button,
+.admin-sidenav button,
+.admin-menu button,
+.admin-navigation button,
+.admin-nav button,
+[class*="admin"] .sidebar button,
+[class*="dashboard"] .sidebar button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  min-height: 36px !important;
+  padding: 9px 12px !important;
+  border-radius: 9px !important;
+  color: #dbe4f0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-decoration: none !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.005em !important;
+  box-sizing: border-box !important;
+}
+
+.admin-sidebar a:hover,
+.admin-compatible-sidebar a:hover,
+.admin-dashboard-sidebar a:hover,
+.dashboard-sidebar a:hover,
+.admin-side-nav a:hover,
+.admin-sidenav a:hover,
+.admin-menu a:hover,
+.admin-navigation a:hover,
+.admin-nav a:hover,
+[class*="admin"] .sidebar a:hover,
+[class*="dashboard"] .sidebar a:hover,
+.admin-sidebar button:hover,
+.admin-compatible-sidebar button:hover,
+.admin-dashboard-sidebar button:hover,
+.dashboard-sidebar button:hover,
+[class*="admin"] .sidebar button:hover,
+[class*="dashboard"] .sidebar button:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+}
+
+.admin-sidebar a.active,
+.admin-compatible-sidebar a.active,
+.admin-dashboard-sidebar a.active,
+.dashboard-sidebar a.active,
+.admin-side-nav a.active,
+.admin-sidenav a.active,
+.admin-menu a.active,
+.admin-navigation a.active,
+.admin-nav a.active,
+[class*="admin"] .sidebar a.active,
+[class*="dashboard"] .sidebar a.active,
+.admin-sidebar a.router-link-active,
+.admin-compatible-sidebar a.router-link-active,
+.admin-dashboard-sidebar a.router-link-active,
+.dashboard-sidebar a.router-link-active,
+[class*="admin"] .sidebar a.router-link-active,
+[class*="dashboard"] .sidebar a.router-link-active {
+  background: #ffffff !important;
+  color: #111827 !important;
+}
+
+/* Chevron consistency */
+.admin-nav-chevron,
+.admin-sidebar a::after,
+.admin-compatible-sidebar a::after,
+.admin-dashboard-sidebar a::after,
+.dashboard-sidebar a::after,
+[class*="admin"] .sidebar a::after,
+[class*="dashboard"] .sidebar a::after {
+  margin-left: auto !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  opacity: 0.9 !important;
+}
+
+/* Add chevron via CSS where HTML does not have one yet. 
+   Only applies to sidebar/admin links, not top navigation. */
+.admin-sidebar a:not(:has(.admin-nav-chevron))::after,
+.admin-compatible-sidebar a:not(:has(.admin-nav-chevron))::after,
+.admin-dashboard-sidebar a:not(:has(.admin-nav-chevron))::after,
+.dashboard-sidebar a:not(:has(.admin-nav-chevron))::after,
+[class*="admin"] .sidebar a:not(:has(.admin-nav-chevron))::after,
+[class*="dashboard"] .sidebar a:not(:has(.admin-nav-chevron))::after {
+  content: "›" !important;
+}
+
+/* Logout button in sidebar */
+.admin-sidebar .admin-logout,
+.admin-compatible-sidebar .admin-logout,
+.admin-dashboard-sidebar .admin-logout,
+.dashboard-sidebar .admin-logout,
+[class*="admin"] .sidebar .admin-logout,
+[class*="dashboard"] .sidebar .admin-logout {
+  margin-top: 8px !important;
+  color: #fecaca !important;
+  background: rgba(220, 38, 38, 0.16) !important;
+  border: 1px solid rgba(248, 113, 113, 0.45) !important;
+}
+
+.admin-sidebar .admin-logout:hover,
+.admin-compatible-sidebar .admin-logout:hover,
+.admin-dashboard-sidebar .admin-logout:hover,
+.dashboard-sidebar .admin-logout:hover,
+[class*="admin"] .sidebar .admin-logout:hover,
+[class*="dashboard"] .sidebar .admin-logout:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+/* Divider/secondary block normalisation */
+.admin-sidebar hr,
+.admin-compatible-sidebar hr,
+.admin-dashboard-sidebar hr,
+.dashboard-sidebar hr,
+[class*="admin"] .sidebar hr,
+[class*="dashboard"] .sidebar hr {
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  margin: 12px 0 !important;
+}
+
+@media (max-width: 900px) {
+  .admin-sidebar,
+  .admin-compatible-shell > aside,
+  .admin-compatible-sidebar,
+  .admin-dashboard-sidebar,
+  .dashboard-sidebar,
+  .admin-side-nav,
+  .admin-sidenav,
+  .admin-menu,
+  .admin-navigation,
+  .admin-nav,
+  [class*="admin"] .sidebar,
+  [class*="dashboard"] .sidebar {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+  }
+
+  .admin-compatible-shell {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ADMIN SIDEBAR ALIGNMENT AND SINGLE CHEVRON FIX
+   Fixes duplicate chevrons and aligns compact admin sidebar items.
+*/
+
+.admin-sidebar,
+.admin-compatible-shell > aside,
+.admin-compatible-sidebar,
+.admin-dashboard-sidebar,
+.dashboard-sidebar,
+.admin-side-nav,
+.admin-sidenav,
+.admin-menu,
+.admin-navigation,
+.admin-nav,
+[class*="admin"] .sidebar,
+[class*="dashboard"] .sidebar {
+  width: 240px !important;
+  min-width: 240px !important;
+  max-width: 240px !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+/* Make every sidebar link one clean row. */
+.admin-sidebar a,
+.admin-compatible-sidebar a,
+.admin-dashboard-sidebar a,
+.dashboard-sidebar a,
+.admin-side-nav a,
+.admin-sidenav a,
+.admin-menu a,
+.admin-navigation a,
+.admin-nav a,
+[class*="admin"] .sidebar a,
+[class*="dashboard"] .sidebar a {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-height: 36px !important;
+  padding: 9px 12px !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+}
+
+/* Disable CSS-generated chevrons. Chevrons should come only from .admin-nav-chevron spans. */
+.admin-sidebar a::after,
+.admin-compatible-sidebar a::after,
+.admin-dashboard-sidebar a::after,
+.dashboard-sidebar a::after,
+.admin-side-nav a::after,
+.admin-sidenav a::after,
+.admin-menu a::after,
+.admin-navigation a::after,
+.admin-nav a::after,
+[class*="admin"] .sidebar a::after,
+[class*="dashboard"] .sidebar a::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Single real chevron span. */
+.admin-nav-chevron {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-left: auto !important;
+  width: 12px !important;
+  min-width: 12px !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  opacity: 0.9 !important;
+}
+
+/* Remove accidental duplicate chevron-looking text spacing. */
+.admin-sidebar a .admin-nav-chevron + .admin-nav-chevron,
+.admin-compatible-sidebar a .admin-nav-chevron + .admin-nav-chevron,
+.admin-dashboard-sidebar a .admin-nav-chevron + .admin-nav-chevron,
+.dashboard-sidebar a .admin-nav-chevron + .admin-nav-chevron,
+[class*="admin"] .sidebar a .admin-nav-chevron + .admin-nav-chevron,
+[class*="dashboard"] .sidebar a .admin-nav-chevron + .admin-nav-chevron {
+  display: none !important;
+}
+
+/* Keep active pill aligned inside the sidebar width. */
+.admin-sidebar a.active,
+.admin-compatible-sidebar a.active,
+.admin-dashboard-sidebar a.active,
+.dashboard-sidebar a.active,
+.admin-side-nav a.active,
+.admin-sidenav a.active,
+.admin-menu a.active,
+.admin-navigation a.active,
+.admin-nav a.active,
+[class*="admin"] .sidebar a.active,
+[class*="dashboard"] .sidebar a.active,
+.admin-sidebar a.router-link-active,
+.admin-compatible-sidebar a.router-link-active,
+.admin-dashboard-sidebar a.router-link-active,
+.dashboard-sidebar a.router-link-active,
+[class*="admin"] .sidebar a.router-link-active,
+[class*="dashboard"] .sidebar a.router-link-active {
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}

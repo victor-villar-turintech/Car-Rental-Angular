@@ -1,0 +1,91 @@
+<div class="admin-compatible-shell">
+  <aside class="admin-compatible-sidebar full-admin-menu">
+    <div class="admin-menu-card">
+      <div class="admin-sidebar__eyebrow">Admin</div>
+      <h2>Fleet management</h2>
+      <p>Protected local demo console</p>
+    </div>
+
+    <nav class="admin-menu-links">
+      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/cars" routerLinkActive="active">Cars inventory<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/vehicle-catalogue" routerLinkActive="active">Vehicle Catalogue<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/fleet" routerLinkActive="active">Fleet<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/brands" routerLinkActive="active">Brands inventory<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/colors" routerLinkActive="active">Colours inventory<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/bookings" routerLinkActive="active">Bookings<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/customers" routerLinkActive="active">Customers<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/customer-activity" routerLinkActive="active">Customer activity<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/rewards" routerLinkActive="active">Rewards<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/discounts" routerLinkActive="active">Discount codes<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/extras" routerLinkActive="active">Extras<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/payments" routerLinkActive="active">Payments<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/activity" routerLinkActive="active">Admin activity<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/admin/settings" routerLinkActive="active">Demo settings<span class="admin-nav-chevron">›</span></a>
+    </nav>
+
+    <div class="admin-menu-secondary">
+      <a routerLink="/booking-lookup" routerLinkActive="active">Booking lookup<span class="admin-nav-chevron">›</span></a>
+      <a routerLink="/cars" routerLinkActive="active">Public catalogue<span class="admin-nav-chevron">›</span></a>
+      <button class="admin-logout" type="button" (click)="logout()">Logout admin</button>
+    </div>
+  </aside>
+
+  <main class="admin-compatible-content">
+    <h1>Fleet</h1>
+    <p class="page-intro">Physical rentable units linked to the new vehicle catalogue structure.</p>
+
+    <div class="admin-data-card">
+      <table class="admin-data-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Registration</th>
+            <th>Vehicle</th>
+            <th>Colour</th>
+            <th>Mileage</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Service</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let fleetVehicle of fleetVehicles">
+            <td>
+              <img class="vehicle-thumb" [src]="getVehicleImageUrl(fleetVehicle)" [alt]="getVehicleDisplayName(fleetVehicle)" />
+            </td>
+            <td>
+              <strong>{{ fleetVehicle.registrationNumber }}</strong>
+            </td>
+            <td>{{ getVehicleDisplayName(fleetVehicle) }}</td>
+            <td>{{ fleetVehicle.colour }}</td>
+            <td>{{ fleetVehicle.mileage | number }}</td>
+            <td>{{ getLocationName(fleetVehicle.currentLocationId) }}</td>
+            <td>
+              <span class="status-pill" [ngClass]="fleetVehicle.status">
+                {{ fleetVehicle.status }}
+              </span>
+            </td>
+            <td>
+              <div>Last: {{ fleetVehicle.lastServiceDate || 'N/A' }}</div>
+              <div>Next: {{ fleetVehicle.nextServiceDueDate || 'N/A' }}</div>
+            </td>
+            <td>
+              <div class="admin-action-row">
+                <button type="button" class="admin-action-button" (click)="updateStatus(fleetVehicle, 'available')">Available</button>
+                <button type="button" class="admin-action-button" (click)="updateStatus(fleetVehicle, 'maintenance')">Maintenance</button>
+                <button type="button" class="admin-action-button" (click)="updateStatus(fleetVehicle, 'inactive')">Inactive</button>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="fleetVehicles.length === 0">
+            <td colspan="9">No fleet vehicles found. Clear localStorage migration keys and reload.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
