@@ -40,6 +40,15 @@ export interface Rental {
   paidAt?: string;
   createdAt?: string;
   updatedAt?: string;
+
+  // Fleet-aware booking fields. These preserve backwards compatibility with the old car-based booking shape
+  // while allowing each booking to reserve one physical fleet unit.
+  catalogueItemId?: number;
+  fleetVehicleId?: number;
+  registrationNumber?: string;
+  pickupLocationName?: string;
+  returnLocationId?: number;
+  returnLocationName?: string;
 }
 
 export interface RentalMetrics {
