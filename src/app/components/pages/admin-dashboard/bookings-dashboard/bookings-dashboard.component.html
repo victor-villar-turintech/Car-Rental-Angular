@@ -1,3 +1,63 @@
+
+<section class="fleet-aware-admin-booking-panel">
+  <h2>Fleet-aware booking operations</h2>
+  <p>Physical fleet assignment, registration numbers, pickup/drop-off locations and lifecycle actions.</p>
+
+  <div class="fleet-aware-booking-grid">
+    <article class="fleet-aware-booking-card" *ngFor="let booking of bookings">
+      <ng-container *ngIf="getFleetAwareBookingSummary(booking) as summary">
+        <div class="booking-card-header">
+          <div>
+            <span class="booking-reference">{{ summary.bookingReference }}</span>
+            <h3>{{ summary.vehicleLabel }}</h3>
+          </div>
+          <span class="booking-status">{{ summary.bookingStatus }}</span>
+        </div>
+
+        <div class="booking-detail-grid">
+          <div>
+            <span>Customer</span>
+            <strong>{{ summary.customerName }}</strong>
+          </div>
+          <div>
+            <span>Registration</span>
+            <strong>{{ summary.registrationNumber }}</strong>
+          </div>
+          <div>
+            <span>Pickup</span>
+            <strong>{{ summary.pickupLocationName }}</strong>
+          </div>
+          <div>
+            <span>Drop-off</span>
+            <strong>{{ summary.returnLocationName }}</strong>
+          </div>
+          <div>
+            <span>Dates</span>
+            <strong>{{ summary.rentDate }} → {{ summary.returnDate }}</strong>
+          </div>
+          <div>
+            <span>Payment</span>
+            <strong>{{ summary.paymentMethodLabel }} / {{ summary.paymentStatus }}</strong>
+          </div>
+          <div>
+            <span>Extras</span>
+            <strong>{{ summary.selectedExtras.length }}</strong>
+          </div>
+          <div>
+            <span>Total</span>
+            <strong>£{{ summary.totalRentPrice }}</strong>
+          </div>
+        </div>
+
+        <div class="booking-actions">
+          <button type="button" (click)="cancelFleetAwareBooking(booking)">Cancel + release fleet unit</button>
+          <button type="button" (click)="completeFleetAwareBooking(booking)">Complete + release fleet unit</button>
+        </div>
+      </ng-container>
+    </article>
+  </div>
+</section>
+
 <section class="bookings-dashboard">
   <div class="admin-page-header">
     <div><span>Local bookings</span><h1>Bookings</h1><p>Manage booking status, selected extras and payment/refund state.</p></div>
