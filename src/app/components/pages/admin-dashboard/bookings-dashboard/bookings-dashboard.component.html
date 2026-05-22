@@ -113,6 +113,7 @@
       <input class="form-control" type="date" [(ngModel)]="toDate" />
     </label>
     <button type="button" class="btn btn-outline-secondary toolbar-reset" (click)="resetFilters()">Reset</button>
+    <button type="button" class="btn btn-outline-primary export-csv-btn" (click)="exportBookingsCsv()" [disabled]="!filteredBookings.length">Export CSV</button>
   </div>
 
   <div class="table-card" *ngIf="filteredBookings.length > 0">

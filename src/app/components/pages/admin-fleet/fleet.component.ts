@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CsvColumn, downloadCsv, timestampedFilename } from '../../../helpers/csv-export';
 
 interface AdminCatalogueVehicle {
   id: number;
@@ -464,6 +465,29 @@ export class FleetComponent implements OnInit {
       nextServiceDue: '',
       isActive: true
     };
+  }
+
+  exportFleetCsv(): void {
+    const columns: CsvColumn<AdminFleetVehicle>[] = [
+      { header: 'Fleet ID', value: (unit) => unit.id },
+      { header: 'Registration', value: (unit) => unit.registrationNumber || '' },
+      { header: 'Vehicle', value: (unit) => this.getVehicleDisplayName(this.getCatalogueVehicle(unit)) },
+      { header: 'Catalogue ID', value: (unit) => unit.catalogueItemId || unit.vehicleCatalogueId || unit.vehicleId || '' },
+      { header: 'Colour', value: (unit) => this.getColour(unit) },
+      { header: 'Mileage', value: (unit) => unit.mileage || 0 },
+      { header: 'Status', value: (unit) => this.getFleetStatus(unit) },
+      { header: 'Location', value: (unit) => this.getLocationName(unit) },
+      { header: 'Service status', value: (unit) => unit.serviceStatus || '' },
+      { header: 'Next service due', value: (unit) => unit.nextServiceDue || '' },
+      { header: 'Active booking', value: (unit) => this.getActiveBooking(unit)?.bookingReference || '' },
+      { header: 'Active booking customer', value: (unit) => {
+          const booking = this.getActiveBooking(unit);
+          return booking?.customerName || booking?.name || '';
+        } },
+      { header: 'Created at', value: (unit) => unit.createdAt || '' },
+      { header: 'Updated at', value: (unit) => unit.updatedAt || '' }
+    ];
+    downloadCsv(timestampedFilename('admin-fleet'), this.filteredFleet, columns);
   }
 
   private getNextId(items: Array<{ id?: number }>): number {

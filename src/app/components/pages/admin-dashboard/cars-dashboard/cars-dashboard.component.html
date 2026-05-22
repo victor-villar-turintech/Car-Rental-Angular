@@ -8,6 +8,7 @@
     <div class="header-actions">
       <a routerLink="/admin/cars/add" class="btn btn-primary">Add car</a>
       <a routerLink="/cars" class="btn btn-outline-secondary">View catalogue</a>
+      <button type="button" class="btn btn-outline-primary" (click)="exportCatalogueCsv()" [disabled]="!cars?.length">Export CSV</button>
     </div>
   </div>
 

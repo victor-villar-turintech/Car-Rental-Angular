@@ -4,6 +4,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 import { RentalService } from 'src/app/services/rental.service';
 import { BookingFleetLifecycleService } from '../../../../services/booking-fleet-lifecycle.service';
 import { FleetAvailabilityService } from 'src/app/services/fleet-availability.service';
+import { CsvColumn, downloadCsv, timestampedFilename } from '../../../../helpers/csv-export';
 
 interface LocationFilterOption {
   id: string;
@@ -169,6 +170,40 @@ export class AdminBookingsComponent implements OnInit {
   bookingStatusVariant(status: string | undefined): string {
     return (status || 'Pending').toLowerCase();
   }
+
+  exportBookingsCsv(): void {
+    const columns: CsvColumn<Rental>[] = [
+      { header: 'Booking reference', value: (row) => row.bookingReference || (row.rentalId ? `RC-${row.rentalId}` : '') },
+      { header: 'Status', value: (row) => row.status || '' },
+      { header: 'Customer name', value: (row) => row.customerName || '' },
+      { header: 'Customer email', value: (row) => row.customerEmail || '' },
+      { header: 'Customer phone', value: (row) => row.customerPhone || '' },
+      { header: 'Vehicle', value: (row: any) => [row.modelYear, row.brandName, row.carName].filter(Boolean).join(' ') },
+      { header: 'Registration', value: (row: any) => row.registrationNumber || row.numberPlate || '' },
+      { header: 'Fleet vehicle ID', value: (row: any) => row.fleetVehicleId || '' },
+      { header: 'Pickup location', value: (row: any) => row.pickupLocationName || row.pickupLocation || '' },
+      { header: 'Drop-off location', value: (row: any) => row.returnLocationName || row.dropoffLocation || row.returnLocation || '' },
+      { header: 'Rent date', value: (row) => this.formatDateField(row.rentDate) },
+      { header: 'Return date', value: (row) => this.formatDateField(row.returnDate) },
+      { header: 'Rental days', value: (row: any) => row.rentalDays || '' },
+      { header: 'Extras count', value: (row: any) => Array.isArray(row.selectedExtras) ? row.selectedExtras.length : 0 },
+      { header: 'Extras total', value: (row: any) => row.extrasTotal || 0 },
+      { header: 'Total', value: (row: any) => row.totalRentPrice || 0 },
+      { header: 'Payment status', value: (row) => row.paymentStatus || 'Pending' },
+      { header: 'Payment method', value: (row) => row.paymentMethod || '' },
+      { header: 'Payment reference', value: (row) => row.paymentReference || '' },
+      { header: 'Paid at', value: (row) => this.formatDateField(row.paidAt) },
+      { header: 'Created at', value: (row) => this.formatDateField(row.createdAt) }
+    ];
+    downloadCsv(timestampedFilename('admin-bookings'), this.filteredBookings, columns);
+  }
+
+  private formatDateField(value: string | Date | undefined | null): string {
+    if (!value) { return ''; }
+    if (value instanceof Date) { return isNaN(value.getTime()) ? '' : value.toISOString(); }
+    return value;
+  }
+
 
   getFleetAwareBookingSummary(booking: any): any {
     return this.bookingFleetLifecycleService.getBookingSummary(booking);

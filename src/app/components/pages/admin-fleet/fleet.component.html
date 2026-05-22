@@ -203,6 +203,7 @@
             <option value="mileage">Mileage</option>
           </select>
         </label>
+        <button type="button" class="ghost-button patch3f-export-csv" (click)="exportFleetCsv()" [disabled]="!filteredFleet.length">Export CSV</button>
       </div>
 
       <div class="patch3f-fleet-grid">

@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Car } from 'src/app/models/car';
 import { DashboardCars } from 'src/app/models/dashboard-cars';
 import { CarService } from 'src/app/services/car.service';
+import { CsvColumn, downloadCsv, timestampedFilename } from '../../../../helpers/csv-export';
 
 @Component({
   selector: 'app-cars-dashboard',
@@ -40,6 +41,21 @@ export class CarsDashboardComponent implements OnInit {
       this.toastrService.success(response.message || 'Car deleted.');
       this.getCars();
     });
+  }
+
+  exportCatalogueCsv(): void {
+    const columns: CsvColumn<DashboardCars>[] = [
+      { header: 'Catalogue ID', value: (car) => car.carId },
+      { header: 'Brand', value: (car) => this.displayBrand(car) },
+      { header: 'Model', value: (car) => car.carName || '' },
+      { header: 'Colour', value: (car) => car.colorName || '' },
+      { header: 'Model year', value: (car) => car.modelYear || '' },
+      { header: 'Daily price (GBP)', value: (car) => car.dailyPrice || 0 },
+      { header: 'Number plate', value: (car) => car.numberPlate || '' },
+      { header: 'Description', value: (car) => car.description || '' },
+      { header: 'Image path', value: (car) => car.imagePath || '' }
+    ];
+    downloadCsv(timestampedFilename('admin-catalogue'), this.cars, columns);
   }
 
   displayBrand(car: any): string {
