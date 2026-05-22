@@ -1,175 +1,271 @@
-<div class="admin-compatible-shell">
-  <aside class="admin-compatible-sidebar full-admin-menu">
-    <div class="admin-menu-card">
-      <div class="admin-sidebar__eyebrow">Admin</div>
-      <h2>Fleet management</h2>
-      <p>Protected local demo console</p>
+<div class="patch3c-admin-page-shell">
+  <aside class="patch3c-admin-sidebar" aria-label="Admin navigation">
+    <div class="patch3c-admin-sidebar-panel">
+      <span class="patch3c-sidebar-eyebrow">ADMIN</span>
+      <strong>Fleet management</strong>
+      <small>Protected local demo console</small>
     </div>
 
-    <nav class="admin-menu-links">
-      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/cars" routerLinkActive="active">Cars inventory<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/vehicle-catalogue" routerLinkActive="active">Vehicle Catalogue<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/fleet" routerLinkActive="active">Fleet<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/brands" routerLinkActive="active">Brands inventory<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/colors" routerLinkActive="active">Colours inventory<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/bookings" routerLinkActive="active">Bookings<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/customers" routerLinkActive="active">Customers<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/customer-activity" routerLinkActive="active">Customer activity<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/rewards" routerLinkActive="active">Rewards<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/discounts" routerLinkActive="active">Discount codes<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/extras" routerLinkActive="active">Extras<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/payments" routerLinkActive="active">Payments<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/activity" routerLinkActive="active">Admin activity<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/admin/settings" routerLinkActive="active">Demo settings<span class="admin-nav-chevron">›</span></a>
+    <nav class="patch3c-admin-sidebar-nav">
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Dashboard</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/cars" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Cars inventory</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link active" routerLink="/admin/vehicle-catalogue" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Vehicle Catalogue</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/fleet" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Fleet</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/brands" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Brands inventory</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/colors" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Colours inventory</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/bookings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Bookings</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/customers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Customers</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/customer-activity" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Customer activity</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/rewards" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Rewards</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/discount-codes" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Discount codes</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/extras" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Extras</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/payments" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Payments</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/activity" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Admin activity</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link" routerLink="/admin/demo-settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Demo settings</span>
+        <span class="patch3c-admin-chevron">›</span>
+      </a>
+
+      <div class="patch3c-sidebar-divider"></div>
+
+      <a class="patch3c-admin-sidebar-link patch3c-sidebar-secondary-link" routerLink="/booking-lookup">
+        <span>Booking lookup</span>
+      </a>
+      <a class="patch3c-admin-sidebar-link patch3c-sidebar-secondary-link" routerLink="/cars">
+        <span>Public catalogue</span>
+      </a>
+      <a class="patch3c-admin-sidebar-logout" routerLink="/">
+        Logout admin
+      </a>
     </nav>
-
-    <div class="admin-menu-secondary">
-      <a routerLink="/booking-lookup" routerLinkActive="active">Booking lookup<span class="admin-nav-chevron">›</span></a>
-      <a routerLink="/cars" routerLinkActive="active">Public catalogue<span class="admin-nav-chevron">›</span></a>
-      <button class="admin-logout" type="button" (click)="logout()">Logout admin</button>
-    </div>
   </aside>
 
-  <main class="admin-compatible-content">
-    <h1>Vehicle Catalogue</h1>
-    <p class="page-intro">Shared vehicle models, specifications, pricing, and images migrated from the existing vehicle data.</p>
-
-    <section class="admin-form-card">
-      <h2>Add vehicle</h2>
-      <p class="page-intro">Upload a 1024x1024 vehicle image and optionally create the first fleet unit at the same time.</p>
-
-      <div class="admin-form-grid">
-        <label>
-          Make
-          <input type="text" [(ngModel)]="newVehicle.make" placeholder="BMW" />
-        </label>
-
-        <label>
-          Model
-          <input type="text" [(ngModel)]="newVehicle.model" placeholder="3 Series" />
-        </label>
-
-        <label>
-          Trim
-          <input type="text" [(ngModel)]="newVehicle.trim" placeholder="M Sport" />
-        </label>
-
-        <label>
-          Year
-          <input type="number" [(ngModel)]="newVehicle.year" />
-        </label>
-
-        <label>
-          Category
-          <input type="text" [(ngModel)]="newVehicle.category" placeholder="Premium" />
-        </label>
-
-        <label>
-          Body type
-          <input type="text" [(ngModel)]="newVehicle.bodyType" placeholder="Saloon" />
-        </label>
-
-        <label>
-          Fuel type
-          <input type="text" [(ngModel)]="newVehicle.fuelType" placeholder="Petrol" />
-        </label>
-
-        <label>
-          Transmission
-          <input type="text" [(ngModel)]="newVehicle.transmission" placeholder="Automatic" />
-        </label>
-
-        <label>
-          Seats
-          <input type="number" [(ngModel)]="newVehicle.seats" />
-        </label>
-
-        <label>
-          Base daily price
-          <input type="number" [(ngModel)]="newVehicle.baseDailyPrice" />
-        </label>
-
-        <label>
-          Registration
-          <input type="text" [(ngModel)]="newFleetUnit.registrationNumber" placeholder="Optional first fleet unit" />
-        </label>
-
-        <label>
-          Colour
-          <input type="text" [(ngModel)]="newFleetUnit.colour" placeholder="Optional" />
-        </label>
-
-        <label class="form-wide">
-          Description
-          <textarea [(ngModel)]="newVehicle.description"></textarea>
-        </label>
-
-        <label class="form-wide">
-          Vehicle image, exactly 1024x1024
-          <input type="file" accept="image/*" (change)="onImageSelected($event)" />
-        </label>
-
-        <div class="form-wide image-upload-preview" *ngIf="imagePreview">
-          <img [src]="imagePreview" alt="Vehicle image preview" />
-          <span>Image accepted: 1024x1024</span>
+  <main class="patch3c-admin-main-content">
+    <div class="admin-crud-page patch3f-admin-page">
+      <div class="patch3f-hero-card">
+        <div>
+          <p class="eyebrow">ADMIN OVERVIEW</p>
+          <h1>Vehicle catalogue</h1>
+          <p class="subtitle">Curated vehicle models, live fleet coverage, pricing, images and availability in one operational view.</p>
         </div>
 
-        <div class="form-full validation-error" *ngIf="imageValidationError">
-          {{ imageValidationError }}
-        </div>
-
-        <div class="form-full">
-          <button type="button" class="admin-primary-button" [disabled]="!canAddVehicle()" (click)="addVehicle()">
-            Add vehicle
-          </button>
+        <div class="patch3f-hero-actions">
+          <span class="patch3f-health-pill" [class.patch3f-warning-pill]="missingPriceCount > 0">
+            {{ missingPriceCount === 0 ? 'All prices resolved' : missingPriceCount + ' prices need review' }}
+          </span>
+          <button type="button" class="primary-button patch3f-primary" (click)="startAdd()">Add catalogue vehicle</button>
         </div>
       </div>
-    </section>
 
-    <div class="admin-data-card">
-      <table class="admin-data-table">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Vehicle</th>
-            <th>Category</th>
-            <th>Fuel</th>
-            <th>Transmission</th>
-            <th>Seats</th>
-            <th>Base Price</th>
-            <th>Fleet Units</th>
-            <th>Available</th>
-          </tr>
-        </thead>
+      <div class="patch3f-summary-grid">
+        <div class="patch3f-summary-card">
+          <span>Total catalogue</span>
+          <strong>{{ catalogue.length }}</strong>
+          <small>models/specifications</small>
+        </div>
+        <div class="patch3f-summary-card">
+          <span>Active</span>
+          <strong>{{ activeCount }}</strong>
+          <small>visible in demo data</small>
+        </div>
+        <div class="patch3f-summary-card">
+          <span>Fleet coverage</span>
+          <strong>{{ linkedFleetCount }}</strong>
+          <small>physical units linked</small>
+        </div>
+        <div class="patch3f-summary-card">
+          <span>Needs price review</span>
+          <strong>{{ missingPriceCount }}</strong>
+          <small>fallbacks unavailable</small>
+        </div>
+      </div>
 
-        <tbody>
-          <tr *ngFor="let vehicle of catalogueItems">
-            <td>
-              <img class="vehicle-thumb" [src]="vehicle.imageUrl" [alt]="getDisplayName(vehicle)" />
-            </td>
-            <td>
-              <strong>{{ getDisplayName(vehicle) }}</strong>
-              <div>{{ vehicle.year || 'Year not set' }}</div>
-            </td>
-            <td>{{ vehicle.category || vehicle.bodyType || 'Car' }}</td>
-            <td>{{ vehicle.fuelType }}</td>
-            <td>{{ vehicle.transmission }}</td>
-            <td>{{ vehicle.seats }}</td>
-            <td>£{{ vehicle.baseDailyPrice }}/day</td>
-            <td>{{ getFleetCount(vehicle) }}</td>
-            <td>
-              <span class="status-pill" [class.available]="getAvailableCount(vehicle) > 0">
-                {{ getAvailabilityLabel(vehicle) }}
-              </span>
-            </td>
-          </tr>
+      <div *ngIf="formError" class="alert alert-error">{{ formError }}</div>
+      <div *ngIf="formSuccess" class="alert alert-success">{{ formSuccess }}</div>
 
-          <tr *ngIf="catalogueItems.length === 0">
-            <td colspan="9">No catalogue vehicles found. Clear localStorage migration keys and reload.</td>
-          </tr>
-        </tbody>
-      </table>
+      <form *ngIf="isFormOpen" class="admin-form-card patch3f-form-card" (ngSubmit)="saveVehicle()">
+        <div class="form-heading">
+          <div>
+            <h2>{{ isEditing ? 'Edit catalogue vehicle' : 'Add catalogue vehicle' }}</h2>
+            <p>Changes persist to <code>vehicleCatalogue</code> and are used by the public catalogue/fleet views.</p>
+          </div>
+          <button type="button" class="ghost-button" (click)="cancelForm()">Cancel</button>
+        </div>
+
+        <div class="form-grid patch3f-form-grid">
+          <label>Make <input name="make" [(ngModel)]="catalogueForm.make" required /></label>
+          <label>Model <input name="model" [(ngModel)]="catalogueForm.model" required /></label>
+          <label>Year <input name="year" type="number" min="1980" [(ngModel)]="catalogueForm.year" required /></label>
+          <label>Category <input name="category" [(ngModel)]="catalogueForm.category" required /></label>
+          <label>Seats <input name="seats" type="number" min="1" [(ngModel)]="catalogueForm.seats" /></label>
+          <label>Doors <input name="doors" type="number" min="1" [(ngModel)]="catalogueForm.doors" /></label>
+          <label>
+            Transmission
+            <select name="transmission" [(ngModel)]="catalogueForm.transmission">
+              <option>Automatic</option>
+              <option>Manual</option>
+              <option>Semi-automatic</option>
+            </select>
+          </label>
+          <label>
+            Fuel type
+            <select name="fuelType" [(ngModel)]="catalogueForm.fuelType">
+              <option>Petrol</option>
+              <option>Diesel</option>
+              <option>Hybrid</option>
+              <option>Plug-in Hybrid</option>
+              <option>Electric</option>
+            </select>
+          </label>
+          <label>Daily price <input name="dailyPrice" type="number" min="1" step="0.01" [(ngModel)]="catalogueForm.dailyPrice" required /></label>
+          <label>
+            Status
+            <select name="isActive" [(ngModel)]="catalogueForm.isActive">
+              <option [ngValue]="true">Active</option>
+              <option [ngValue]="false">Inactive</option>
+            </select>
+          </label>
+          <label class="patch3f-wide-field">1024x1024 image <input name="vehicleImage" type="file" accept="image/png,image/jpeg,image/webp" (change)="onImageSelected($event)" /></label>
+        </div>
+
+        <label class="full-width">
+          Description
+          <textarea name="description" rows="3" [(ngModel)]="catalogueForm.description"></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-button">{{ isEditing ? 'Save changes' : 'Add vehicle' }}</button>
+          <button type="button" class="ghost-button" (click)="cancelForm()">Cancel</button>
+        </div>
+      </form>
+
+      <div class="patch3f-filter-bar">
+        <label>Search <input name="catalogueSearch" [(ngModel)]="searchTerm" placeholder="Make, model, category, year..." /></label>
+        <label>
+          Status
+          <select name="statusFilter" [(ngModel)]="statusFilter">
+            <option value="all">All statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </label>
+        <label>
+          Category
+          <select name="categoryFilter" [(ngModel)]="categoryFilter">
+            <option value="all">All categories</option>
+            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
+        </label>
+        <label>
+          Sort
+          <select name="sortBy" [(ngModel)]="sortBy">
+            <option value="make">Make/model</option>
+            <option value="price-low">Price low to high</option>
+            <option value="price-high">Price high to low</option>
+            <option value="year-new">Newest year</option>
+            <option value="availability">Availability</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="patch3f-catalogue-grid">
+        <article *ngFor="let vehicle of filteredCatalogue" class="patch3f-vehicle-card">
+          <div class="patch3f-card-media">
+            <img [src]="getImage(vehicle)" [alt]="getDisplayName(vehicle)" />
+            <span class="status-badge patch3f-status" [class.status-inactive]="getVehicleStatus(vehicle) === 'inactive'">{{ getVehicleStatus(vehicle) }}</span>
+          </div>
+
+          <div class="patch3f-card-body">
+            <div class="patch3f-card-title-row">
+              <div>
+                <h2>{{ getDisplayName(vehicle) }}</h2>
+                <p>{{ getYear(vehicle) }} · {{ getCategory(vehicle) }}</p>
+              </div>
+              <strong class="patch3f-price" [class.patch3f-missing-price]="!hasResolvedPrice(vehicle)">
+                {{ formatDailyPrice(vehicle) }}
+              </strong>
+            </div>
+
+            <div class="patch3f-chip-row">
+              <span>{{ getTransmission(vehicle) }}</span>
+              <span>{{ getFuelType(vehicle) }}</span>
+              <span>{{ getSeats(vehicle) }} seats</span>
+              <span>{{ getDoors(vehicle) }} doors</span>
+            </div>
+
+            <div class="patch3f-card-stats">
+              <div>
+                <span>Fleet</span>
+                <strong>{{ getFleetCount(vehicle.id) }}</strong>
+                <small>units</small>
+              </div>
+              <div>
+                <span>Available</span>
+                <strong>{{ getAvailableFleetCount(vehicle.id) }}</strong>
+                <small>now</small>
+              </div>
+              <div>
+                <span>ID</span>
+                <strong>{{ vehicle.id }}</strong>
+                <small>catalogue</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="patch3f-card-actions">
+            <button type="button" class="ghost-button" (click)="startEdit(vehicle)">Edit</button>
+            <button *ngIf="getVehicleStatus(vehicle) === 'active'" type="button" class="warning-button" (click)="deactivateVehicle(vehicle)">Deactivate</button>
+            <button *ngIf="getVehicleStatus(vehicle) === 'inactive'" type="button" class="ghost-button" (click)="reactivateVehicle(vehicle)">Reactivate</button>
+            <button type="button" class="danger-button" (click)="deleteVehicle(vehicle)">Delete</button>
+          </div>
+        </article>
+
+        <div *ngIf="filteredCatalogue.length === 0" class="empty-state patch3f-empty">
+          No catalogue vehicles match the current filters.
+        </div>
+      </div>
     </div>
   </main>
 </div>

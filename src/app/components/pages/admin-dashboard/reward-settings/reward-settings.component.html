@@ -1,46 +1,269 @@
-<section class="admin-section">
-  <div class="section-header">
-    <div>
-      <span class="eyebrow">Admin rewards</span>
-      <h1>Reward settings</h1>
-      <p>Configure the local demo loyalty rules used by customer rewards and payment redemption.</p>
+<div class="patch3d-admin-page-shell">
+  <aside class="patch3d-admin-sidebar" aria-label="Admin navigation">
+    <div class="patch3d-admin-sidebar-panel">
+      <span class="patch3d-sidebar-eyebrow">ADMIN</span>
+      <strong>Fleet management</strong>
+      <small>Protected local demo console</small>
     </div>
-    <button type="button" class="btn btn-outline-danger" (click)="showResetConfirm = true">Reset defaults</button>
-  </div>
 
-  <div class="settings-grid" *ngIf="settings">
-    <label>Points earned per £1 paid
-      <input class="form-control" type="number" min="0" [(ngModel)]="settings.pointsPerPound" />
-    </label>
-    <label>First paid booking bonus
-      <input class="form-control" type="number" min="0" [(ngModel)]="settings.firstPaidBookingBonus" />
-    </label>
-    <label>Points required for £10 discount
-      <input class="form-control" type="number" min="1" [(ngModel)]="settings.pointsPerTenPoundsDiscount" />
-    </label>
-    <label>Minimum redeemable points
-      <input class="form-control" type="number" min="0" [(ngModel)]="settings.minimumRedeemablePoints" />
-    </label>
-    <label>Maximum redemption percentage
-      <input class="form-control" type="number" min="0" max="100" [(ngModel)]="settings.maximumRedemptionPercent" />
-    </label>
-  </div>
+    <nav class="patch3d-admin-sidebar-nav">
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Dashboard</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/cars" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Cars inventory</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/vehicle-catalogue" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Vehicle Catalogue</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/fleet" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Fleet</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/brands" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Brands inventory</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/colors" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Colours inventory</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/bookings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Bookings</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/customers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Customers</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/customer-activity" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Customer activity</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/rewards" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Rewards</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/discount-codes" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Discount codes</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/extras" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Extras</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/payments" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Payments</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/activity" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Admin activity</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/demo-settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Demo settings</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
 
-  <div class="preview-card" *ngIf="settings">
-    <strong>Demo rule preview</strong>
-    <span>{{ settings.pointsPerTenPoundsDiscount }} points = £10 discount</span>
-    <span>Customers can redeem up to {{ settings.maximumRedemptionPercent }}% of the booking total.</span>
-  </div>
+      <div class="patch3d-sidebar-divider"></div>
 
-  <button type="button" class="btn btn-primary" (click)="save()">Save reward settings</button>
-</section>
+      <a class="patch3d-admin-sidebar-link patch3d-sidebar-secondary-link" routerLink="/booking-lookup">
+        <span>Booking lookup</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link patch3d-sidebar-secondary-link" routerLink="/cars">
+        <span>Public catalogue</span>
+      </a>
+      <a class="patch3d-admin-sidebar-logout" routerLink="/">
+        Logout admin
+      </a>
+    </nav>
+  </aside>
 
-<app-confirm-dialog
-  [visible]="showResetConfirm"
-  title="Reset reward settings?"
-  message="This will restore the default local demo loyalty rules."
-  confirmLabel="Reset settings"
-  [danger]="true"
-  (confirmed)="reset()"
-  (cancelled)="showResetConfirm = false">
-</app-confirm-dialog>
+  <main class="patch3d-admin-main-content">
+    <div class="admin-crud-page">
+      <div class="admin-crud-header">
+        <div>
+          <p class="eyebrow">ADMIN OVERVIEW</p>
+          <h1>Rewards</h1>
+          <p class="subtitle">Manage customer reward balances restored for the local demo booking flow.</p>
+        </div>
+
+        <button type="button" class="primary-button" (click)="startAdd()">Add reward account</button>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span>Total accounts</span>
+          <strong>{{ rewardAccounts.length }}</strong>
+        </div>
+        <div class="summary-card">
+          <span>Active</span>
+          <strong>{{ activeCount }}</strong>
+        </div>
+        <div class="summary-card">
+          <span>Outstanding points</span>
+          <strong>{{ totalOutstandingPoints | number }}</strong>
+        </div>
+        <div class="summary-card">
+          <span>Lifetime points</span>
+          <strong>{{ totalLifetimePoints | number }}</strong>
+        </div>
+      </div>
+
+      <div *ngIf="formError" class="alert alert-error">{{ formError }}</div>
+      <div *ngIf="formSuccess" class="alert alert-success">{{ formSuccess }}</div>
+
+      <form *ngIf="isFormOpen" class="admin-form-card" (ngSubmit)="saveRewardAccount()">
+        <div class="form-heading">
+          <div>
+            <h2>{{ isEditing ? 'Edit reward account' : 'Add reward account' }}</h2>
+            <p class="subtitle">Reward accounts are mirrored across all demo rewards localStorage keys.</p>
+          </div>
+          <button type="button" class="ghost-button" (click)="cancelForm()">Cancel</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Customer name
+            <input name="customerName" [(ngModel)]="rewardForm.customerName" required />
+          </label>
+
+          <label>
+            Email
+            <input name="email" type="email" [(ngModel)]="rewardForm.email" required />
+          </label>
+
+          <label>
+            Points balance
+            <input name="pointsBalance" type="number" min="0" [(ngModel)]="rewardForm.pointsBalance" />
+          </label>
+
+          <label>
+            Lifetime points
+            <input name="lifetimePoints" type="number" min="0" [(ngModel)]="rewardForm.lifetimePoints" />
+          </label>
+
+          <label>
+            Tier
+            <select name="tier" [(ngModel)]="rewardForm.tier">
+              <option>Bronze</option>
+              <option>Silver</option>
+              <option>Gold</option>
+              <option>Platinum</option>
+            </select>
+          </label>
+
+          <label>
+            Status
+            <select name="status" [(ngModel)]="rewardForm.status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </label>
+
+          <label>
+            Last activity
+            <input name="lastActivity" type="date" [(ngModel)]="rewardForm.lastActivity" />
+          </label>
+        </div>
+
+        <label class="full-width">
+          Notes
+          <textarea name="notes" rows="3" [(ngModel)]="rewardForm.notes"></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-button">{{ isEditing ? 'Save changes' : 'Add reward account' }}</button>
+          <button type="button" class="ghost-button" (click)="cancelForm()">Cancel</button>
+        </div>
+      </form>
+
+      <div class="toolbar-card">
+        <label>
+          Search
+          <input name="rewardSearch" [(ngModel)]="searchTerm" placeholder="Customer, email, tier..." />
+        </label>
+
+        <label>
+          Status
+          <select name="rewardStatusFilter" [(ngModel)]="statusFilter">
+            <option value="all">All statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </label>
+
+        <label>
+          Tier
+          <select name="rewardTierFilter" [(ngModel)]="tierFilter">
+            <option value="all">All tiers</option>
+            <option>Bronze</option>
+            <option>Silver</option>
+            <option>Gold</option>
+            <option>Platinum</option>
+          </select>
+        </label>
+
+        <label>
+          Sort
+          <select name="rewardSortBy" [(ngModel)]="sortBy">
+            <option value="points">Points balance</option>
+            <option value="lifetime">Lifetime points</option>
+            <option value="tier">Tier</option>
+            <option value="activity">Recent activity</option>
+            <option value="name">Customer name</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="admin-table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Tier</th>
+              <th>Balance</th>
+              <th>Lifetime</th>
+              <th>Redeemable value</th>
+              <th>Status</th>
+              <th>Last activity</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let account of filteredRewardAccounts">
+              <td>
+                <strong>{{ account.customerName }}</strong>
+                <small>{{ account.email }}</small>
+              </td>
+              <td>{{ account.tier }}</td>
+              <td>{{ account.pointsBalance | number }}</td>
+              <td>{{ account.lifetimePoints | number }}</td>
+              <td>{{ getRedemptionValue(account) }}</td>
+              <td>
+                <span class="status-badge" [class.status-inactive]="account.status === 'inactive'">
+                  {{ account.status }}
+                </span>
+              </td>
+              <td>{{ account.lastActivity }}</td>
+              <td class="actions">
+                <button type="button" class="ghost-button" (click)="startEdit(account)">Edit</button>
+                <button *ngIf="account.status === 'active'" type="button" class="warning-button" (click)="deactivateRewardAccount(account)">Deactivate</button>
+                <button *ngIf="account.status === 'inactive'" type="button" class="ghost-button" (click)="reactivateRewardAccount(account)">Reactivate</button>
+                <button type="button" class="danger-button" (click)="deleteRewardAccount(account)">Delete</button>
+              </td>
+            </tr>
+
+            <tr *ngIf="filteredRewardAccounts.length === 0">
+              <td colspan="8" class="empty-state">No reward accounts match the current filters.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
