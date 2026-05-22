@@ -1,1 +1,286 @@
-<section class="admin-page"><div class="admin-page-header"><div><span class="eyebrow">Promotions</span><h1>Discount codes</h1><p>Create and manage mock payment promo codes used at checkout.</p></div><button class="btn btn-outline-secondary" type="button" (click)="resetDemo()">Reset demo codes</button></div><div class="adjust-card"><h2>{{ form.createdAt && form.code ? 'Edit discount' : 'Add discount' }}</h2><input class="form-control" placeholder="Code" [(ngModel)]="form.code"><input class="form-control" placeholder="Description" [(ngModel)]="form.description"><select class="form-control" [(ngModel)]="form.type"><option value="Percentage">Percentage</option><option value="Fixed">Fixed amount</option></select><input class="form-control" type="number" placeholder="Value" [(ngModel)]="form.value"><input class="form-control" type="number" placeholder="Minimum spend" [(ngModel)]="form.minimumSpend"><input class="form-control" type="number" placeholder="Usage limit" [(ngModel)]="form.usageLimit"><label class="check-row"><input type="checkbox" [(ngModel)]="form.isActive"> Active</label><button class="btn btn-primary" type="button" (click)="save()">Save discount</button><button class="btn btn-outline-secondary" type="button" (click)="resetForm()">Clear</button></div><div class="table-card"><table class="table mb-0"><thead><tr><th>Code</th><th>Description</th><th>Type</th><th>Value</th><th>Min spend</th><th>Used</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let code of codes"><td><strong>{{ code.code }}</strong></td><td>{{ code.description }}</td><td>{{ code.type }}</td><td>{{ code.type === 'Percentage' ? code.value + '%' : ('£' + code.value) }}</td><td>{{ code.minimumSpend | currency:'GBP':'symbol':'1.0-0' }}</td><td>{{ code.usedCount }} / {{ code.usageLimit || '∞' }}</td><td>{{ code.isActive ? 'Active' : 'Inactive' }}</td><td class="actions"><button class="btn btn-sm btn-outline-primary" type="button" (click)="edit(code)">Edit</button><button class="btn btn-sm btn-outline-secondary" type="button" (click)="toggle(code)">{{ code.isActive ? 'Disable' : 'Enable' }}</button><button class="btn btn-sm btn-outline-danger" type="button" (click)="delete(code)">Delete</button></td></tr></tbody></table></div></section>
+<div class="patch3d-admin-page-shell">
+  <aside class="patch3d-admin-sidebar" aria-label="Admin navigation">
+    <div class="patch3d-admin-sidebar-panel">
+      <span class="patch3d-sidebar-eyebrow">ADMIN</span>
+      <strong>Fleet management</strong>
+      <small>Protected local demo console</small>
+    </div>
+
+    <nav class="patch3d-admin-sidebar-nav">
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Dashboard</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/cars" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Cars inventory</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/vehicle-catalogue" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Vehicle Catalogue</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/fleet" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Fleet</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/brands" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Brands inventory</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/colors" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Colours inventory</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/bookings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Bookings</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/customers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Customers</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/customer-activity" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Customer activity</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/rewards" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Rewards</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/discount-codes" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Discount codes</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/extras" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Extras</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/payments" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Payments</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/activity" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Admin activity</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link" routerLink="/admin/demo-settings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span>Demo settings</span>
+        <span class="patch3d-admin-chevron">›</span>
+      </a>
+
+      <div class="patch3d-sidebar-divider"></div>
+
+      <a class="patch3d-admin-sidebar-link patch3d-sidebar-secondary-link" routerLink="/booking-lookup">
+        <span>Booking lookup</span>
+      </a>
+      <a class="patch3d-admin-sidebar-link patch3d-sidebar-secondary-link" routerLink="/cars">
+        <span>Public catalogue</span>
+      </a>
+      <a class="patch3d-admin-sidebar-logout" routerLink="/">
+        Logout admin
+      </a>
+    </nav>
+  </aside>
+
+  <main class="patch3d-admin-main-content">
+    <div class="admin-crud-page">
+      <div class="admin-crud-header">
+        <div>
+          <p class="eyebrow">ADMIN OVERVIEW</p>
+          <h1>Discount codes</h1>
+          <p class="subtitle">Manage promotional codes restored for the local demo booking flow.</p>
+        </div>
+
+        <button type="button" class="primary-button" (click)="startAdd()">Add discount code</button>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span>Total codes</span>
+          <strong>{{ discountCodes.length }}</strong>
+        </div>
+        <div class="summary-card">
+          <span>Active</span>
+          <strong>{{ activeCount }}</strong>
+        </div>
+        <div class="summary-card">
+          <span>Inactive / expired</span>
+          <strong>{{ inactiveCount + expiredCount }}</strong>
+        </div>
+        <div class="summary-card">
+          <span>Total redemptions</span>
+          <strong>{{ totalRedemptions }}</strong>
+        </div>
+      </div>
+
+      <div *ngIf="formError" class="alert alert-error">{{ formError }}</div>
+      <div *ngIf="formSuccess" class="alert alert-success">{{ formSuccess }}</div>
+
+      <form *ngIf="isFormOpen" class="admin-form-card" (ngSubmit)="saveDiscountCode()">
+        <div class="form-heading">
+          <div>
+            <h2>{{ isEditing ? 'Edit discount code' : 'Add discount code' }}</h2>
+            <p class="subtitle">Codes are mirrored across all demo discount-code localStorage keys.</p>
+          </div>
+          <button type="button" class="ghost-button" (click)="cancelForm()">Cancel</button>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Code
+            <input name="code" [(ngModel)]="discountForm.code" placeholder="WELCOME10" required />
+          </label>
+
+          <label>
+            Type
+            <select name="discountType" [(ngModel)]="discountForm.discountType" required>
+              <option value="percentage">Percentage</option>
+              <option value="fixed">Fixed amount</option>
+            </select>
+          </label>
+
+          <label>
+            Value
+            <input name="value" type="number" min="0" step="0.01" [(ngModel)]="discountForm.value" required />
+          </label>
+
+          <label>
+            Minimum spend
+            <input name="minSpend" type="number" min="0" step="0.01" [(ngModel)]="discountForm.minSpend" />
+          </label>
+
+          <label>
+            Max redemptions
+            <input name="maxRedemptions" type="number" min="0" [(ngModel)]="discountForm.maxRedemptions" />
+          </label>
+
+          <label>
+            Redeemed count
+            <input name="redeemedCount" type="number" min="0" [(ngModel)]="discountForm.redeemedCount" />
+          </label>
+
+          <label>
+            Starts
+            <input name="startsAt" type="date" [(ngModel)]="discountForm.startsAt" required />
+          </label>
+
+          <label>
+            Expires
+            <input name="expiresAt" type="date" [(ngModel)]="discountForm.expiresAt" required />
+          </label>
+
+          <label>
+            Status
+            <select name="status" [(ngModel)]="discountForm.status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="expired">Expired</option>
+            </select>
+          </label>
+
+          <label>
+            Applies to
+            <input name="appliesTo" [(ngModel)]="discountForm.appliesTo" placeholder="All vehicles" />
+          </label>
+        </div>
+
+        <label class="full-width">
+          Description
+          <textarea name="description" rows="3" [(ngModel)]="discountForm.description" required></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-button">{{ isEditing ? 'Save changes' : 'Add discount code' }}</button>
+          <button type="button" class="ghost-button" (click)="cancelForm()">Cancel</button>
+        </div>
+      </form>
+
+      <div class="toolbar-card">
+        <label>
+          Search
+          <input name="discountSearch" [(ngModel)]="searchTerm" placeholder="Code, description, applies to..." />
+        </label>
+
+        <label>
+          Status
+          <select name="discountStatusFilter" [(ngModel)]="statusFilter">
+            <option value="all">All statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="expired">Expired</option>
+          </select>
+        </label>
+
+        <label>
+          Type
+          <select name="discountTypeFilter" [(ngModel)]="typeFilter">
+            <option value="all">All types</option>
+            <option value="percentage">Percentage</option>
+            <option value="fixed">Fixed amount</option>
+          </select>
+        </label>
+
+        <label>
+          Sort
+          <select name="discountSortBy" [(ngModel)]="sortBy">
+            <option value="code">Code</option>
+            <option value="value-high">Highest value</option>
+            <option value="expiry">Expiry</option>
+            <option value="redemptions">Redemptions</option>
+            <option value="status">Status</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="admin-table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Discount</th>
+              <th>Validity</th>
+              <th>Usage</th>
+              <th>Status</th>
+              <th>Applies to</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let code of filteredDiscountCodes">
+              <td>
+                <strong>{{ code.code }}</strong>
+                <small>{{ code.description }}</small>
+              </td>
+              <td>
+                <strong>{{ formatValue(code) }}</strong>
+                <small>{{ code.discountType }}</small>
+              </td>
+              <td>
+                <div>{{ code.startsAt }} → {{ code.expiresAt }}</div>
+                <small>Min spend £{{ code.minSpend || 0 }}</small>
+              </td>
+              <td>{{ redemptionLabel(code) }}</td>
+              <td>
+                <span class="status-badge" [class.status-inactive]="getStatus(code) === 'inactive'" [class.status-expired]="getStatus(code) === 'expired'">
+                  {{ getStatus(code) }}
+                </span>
+              </td>
+              <td>{{ code.appliesTo || 'All vehicles' }}</td>
+              <td class="actions">
+                <button type="button" class="ghost-button" (click)="startEdit(code)">Edit</button>
+                <button *ngIf="getStatus(code) === 'active'" type="button" class="warning-button" (click)="deactivateDiscountCode(code)">Deactivate</button>
+                <button *ngIf="getStatus(code) !== 'active'" type="button" class="ghost-button" (click)="reactivateDiscountCode(code)">Reactivate</button>
+                <button type="button" class="danger-button" (click)="deleteDiscountCode(code)">Delete</button>
+              </td>
+            </tr>
+
+            <tr *ngIf="filteredDiscountCodes.length === 0">
+              <td colspan="7" class="empty-state">No discount codes match the current filters.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
