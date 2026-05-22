@@ -1,5 +1,5 @@
 .catalogue-hero { background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, .18), transparent 28%), linear-gradient(135deg, #0f172a 0%, #1e293b 58%, #2563eb 100%); color: #fff; padding: 58px 0 44px; }
-.catalogue-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 520px); gap: 2rem; align-items: end; }
+.catalogue-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 520px); gap: 2rem; align-items: flex-end; }
 .catalogue-hero span { display: inline-flex; color: #bfdbfe; text-transform: uppercase; letter-spacing: .12em; font-weight: 900; font-size: .75rem; margin-bottom: .7rem; }
 .catalogue-hero h1 { font-size: clamp(2.4rem, 4vw, 4.4rem); font-weight: 950; line-height: .95; letter-spacing: -.05em; margin: 0 0 1rem; }
 .catalogue-hero p { color: #dbeafe; font-size: 1.1rem; max-width: 680px; }
@@ -8,7 +8,7 @@
 .search-row { display: grid; grid-template-columns: 1fr auto; gap: .7rem; }
 .search-row .form-control, .search-row .btn { border-radius: 14px; }
 .catalogue-layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 1.5rem; padding-top: 2rem; padding-bottom: 4rem; }
-.filter-column { position: sticky; top: 94px; align-self: start; }
+.filter-column { position: sticky; top: 94px; align-self: flex-start; }
 .filter-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; padding: 1.2rem; box-shadow: 0 12px 36px rgba(15,23,42,.06); display: grid; gap: .75rem; }
 .filter-card h3 { color: #0f172a; font-weight: 950; margin: 0 0 .25rem; }
 .filter-card label { color: #334155; font-size: .82rem; font-weight: 900; margin: .15rem 0 -.35rem; }

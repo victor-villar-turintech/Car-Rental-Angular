@@ -7,7 +7,7 @@ p { color: #64748b; }
 .toolbar-card { padding: 1rem; max-width: 360px; margin-bottom: 1rem; }
 .toolbar-card label { font-weight: 900; color: #334155; }
 .activity-list { display: grid; gap: .75rem; }
-.activity-item { display: grid; grid-template-columns: 110px 1fr; gap: 1rem; padding: 1rem; align-items: start; }
+.activity-item { display: grid; grid-template-columns: 110px 1fr; gap: 1rem; padding: 1rem; align-items: flex-start; }
 .activity-item strong { color: #0f172a; font-weight: 950; }
 .activity-item p { margin: .2rem 0; }
 .activity-item small { color: #64748b; font-weight: 700; }
