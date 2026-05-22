@@ -92,6 +92,8 @@ export class BookingLookupComponent {
 
     const cancelled = this.lifecycleService.cancelBooking(reference);
 
+    this.rentalService.reloadFromStorage();
+
     this.booking = {
       ...this.booking,
       ...(cancelled || {}),

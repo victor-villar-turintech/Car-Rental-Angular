@@ -197,6 +197,10 @@ export class RentalService {
     return this.rentals.filter((booking) => booking.status === status).length;
   }
 
+  reloadFromStorage(): void {
+    this.rentals = this.loadRentals();
+  }
+
   private loadRentals(): Rental[] {
     const raw = localStorage.getItem(this.storageKey);
 
