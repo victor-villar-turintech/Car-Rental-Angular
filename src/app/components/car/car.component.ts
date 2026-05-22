@@ -3,6 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Car } from 'src/app/models/car';
 import { CarService } from 'src/app/services/car.service';
+import { FleetAvailabilityService } from '../../services/fleet-availability.service';
+import { RentalLocation } from '../../models/rental-location.model';
+
+interface VehicleAvailabilityCard {
+  totalUnits: number;
+  availableAtBranch: number;
+  availableTotal: number;
+  branchLabel: string | null;
+}
 
 @Component({ selector: 'app-car', templateUrl: './car.component.html', styleUrls: ['./car.component.css'] })
 export class CarComponent implements OnInit {
@@ -14,11 +23,17 @@ export class CarComponent implements OnInit {
   minPrice: number;
   maxPrice: number;
   sortBy = 'priceAsc';
+  selectedBranchId = '';
+  hideUnavailable = true;
+  branchOptions: RentalLocation[] = [];
 
   constructor(private carService: CarService, private activatedRoute: ActivatedRoute,
-    private favouriteVehicleService: FavouriteVehicleService) {}
+    private favouriteVehicleService: FavouriteVehicleService,
+    private fleetAvailabilityService: FleetAvailabilityService) {}
 
   ngOnInit(): void {
+    this.branchOptions = this.fleetAvailabilityService.getRentalLocations() || [];
+
     this.activatedRoute.params.subscribe((params) => {
       this.dataLoaded = false;
       if (params.brandId && params.colorId) {
@@ -31,6 +46,39 @@ export class CarComponent implements OnInit {
         this.getCars();
       }
     });
+  }
+
+  get selectedBranchLabel(): string | null {
+    if (!this.selectedBranchId) {
+      return null;
+    }
+    const branch = this.branchOptions.find((option) => String(option.id) === String(this.selectedBranchId));
+    return branch ? branch.name : null;
+  }
+
+  getAvailabilityCard(car: Car): VehicleAvailabilityCard {
+    const catalogueId = Number(car.carId || 0);
+    const total = this.fleetAvailabilityService.getFleetUnitsForCatalogueItem(catalogueId).length;
+    const availableTotal = this.fleetAvailabilityService.getAvailableFleetUnits(catalogueId).length;
+
+    let availableAtBranch = availableTotal;
+    const branchLabel = this.selectedBranchLabel;
+
+    if (this.selectedBranchId) {
+      availableAtBranch = this.fleetAvailabilityService.getAvailableFleetUnits(
+        catalogueId,
+        undefined,
+        undefined,
+        Number(this.selectedBranchId)
+      ).length;
+    }
+
+    return {
+      totalUnits: total,
+      availableAtBranch,
+      availableTotal,
+      branchLabel
+    };
   }
 
   get brands(): string[] {
@@ -66,7 +114,20 @@ export class CarComponent implements OnInit {
       const matchesMinPrice = !minPrice || car.dailyPrice >= minPrice;
       const matchesMaxPrice = !maxPrice || car.dailyPrice <= maxPrice;
 
-      return matchesQuery && matchesBrand && matchesColour && matchesMinPrice && matchesMaxPrice;
+      if (!(matchesQuery && matchesBrand && matchesColour && matchesMinPrice && matchesMaxPrice)) {
+        return false;
+      }
+
+      if (this.hideUnavailable) {
+        const card = this.getAvailabilityCard(car);
+        if (this.selectedBranchId) {
+          if (card.availableAtBranch <= 0) { return false; }
+        } else {
+          if (card.availableTotal <= 0) { return false; }
+        }
+      }
+
+      return true;
     });
 
     return filtered.sort((a, b) => this.sortCars(a, b));
@@ -107,6 +168,8 @@ export class CarComponent implements OnInit {
     this.minPrice = undefined;
     this.maxPrice = undefined;
     this.sortBy = 'priceAsc';
+    this.selectedBranchId = '';
+    this.hideUnavailable = true;
   }
 
   getVehicleCategory(car: Car): string {

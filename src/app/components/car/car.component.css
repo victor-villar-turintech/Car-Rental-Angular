@@ -25,6 +25,11 @@
 .vehicle-photo-caption { position: absolute; left: 14px; top: 14px; right: 14px; display: flex; gap: .45rem; align-items: center; flex-wrap: wrap; z-index: 2; }
 .vehicle-photo-caption strong, .vehicle-photo-caption span { color: #0f172a; font-weight: 900; font-size: .78rem; background: rgba(255,255,255,.88); border-radius: 999px; padding: .35rem .6rem; box-shadow: 0 8px 18px rgba(15,23,42,.12); }
 .price-badge { position: absolute; right: 14px; bottom: 14px; background: #0f172a; color: #fff; border-radius: 999px; padding: .45rem .75rem; font-weight: 900; box-shadow: 0 10px 24px rgba(15,23,42,.24); }
+.availability-badge { position: absolute; left: 14px; bottom: 14px; border-radius: 999px; padding: .35rem .65rem; font-size: .72rem; font-weight: 900; letter-spacing: .02em; box-shadow: 0 8px 18px rgba(15,23,42,.18); z-index: 2; }
+.availability-badge.available { background: #dcfce7; color: #166534; }
+.availability-badge.unavailable { background: #fee2e2; color: #991b1b; }
+.availability-toggle { display: inline-flex; gap: .5rem; align-items: center; margin-top: 0; cursor: pointer; font-weight: 800; color: #334155; }
+.availability-toggle input { margin: 0; transform: scale(1.1); }
 .vehicle-body { padding: 1.1rem; flex: 1; }
 .vehicle-heading span { color: #2563eb; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; font-size: .72rem; }
 .vehicle-heading h3 { color: #0f172a; font-size: 1.28rem; font-weight: 950; margin: .15rem 0 .55rem; }
