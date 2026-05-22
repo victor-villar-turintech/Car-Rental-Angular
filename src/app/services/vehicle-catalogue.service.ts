@@ -6,6 +6,7 @@ import { MOCK_FLEET_VEHICLES } from '../data/mock-fleet-vehicles';
 import { getAvailabilitySummary, toCatalogueVehicleViewModel } from '../helpers/vehicle-adapter';
 import { FleetVehicle } from '../models/fleet-vehicle.model';
 import { buildVehicleCatalogueFromLegacyData } from '../helpers/legacy-vehicle-migration';
+import { repairDemoVehicleCatalogueData } from '../helpers/demo-vehicle-catalogue-repair';
 
 @Injectable({ providedIn: 'root' })
 export class VehicleCatalogueService {
@@ -29,6 +30,10 @@ export class VehicleCatalogueService {
     if (!localStorage.getItem(this.migrationKey)) {
       localStorage.setItem(this.migrationKey, 'true');
     }
+
+    if (localStorage.getItem('demoVehicleCataloguePriceRepairV3Complete') !== 'true') {
+      repairDemoVehicleCatalogueData();
+    }
   }
 
         getCatalogueItems(): VehicleCatalogueItem[] {
@@ -50,7 +55,10 @@ export class VehicleCatalogueService {
             localStorage.setItem(migrationKey, 'true');
 
 
-            return migratedCatalogue;
+            repairDemoVehicleCatalogueData();
+
+
+            return JSON.parse(localStorage.getItem(this.catalogueKey) || '[]');
 
 
           }
@@ -87,7 +95,10 @@ export class VehicleCatalogueService {
           localStorage.setItem(migrationKey, 'true');
 
 
-          return initialCatalogue;
+          repairDemoVehicleCatalogueData();
+
+
+          return JSON.parse(localStorage.getItem(this.catalogueKey) || '[]');
 
 
         }
