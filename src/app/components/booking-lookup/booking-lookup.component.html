@@ -1,6 +1,6 @@
 <section class="lookup-page container">
   <div class="lookup-hero">
-    <span>Booking lookup</span>
+    <span class="hero-eyebrow">Booking lookup</span>
     <h1>Find your rental booking</h1>
     <p>Enter the booking reference shown after checkout and the customer email used for the reservation.</p>
   </div>
@@ -8,61 +8,107 @@
   <div class="lookup-grid">
     <form class="lookup-card" (ngSubmit)="searchBooking()">
       <label for="bookingReference">Booking reference</label>
-      <input id="bookingReference" class="form-control" name="bookingReference" type="text" [(ngModel)]="bookingReference" placeholder="CR-BMW-320-20260520-A8F3K2" />
+      <input id="bookingReference" class="form-control" name="bookingReference" type="text" [(ngModel)]="bookingReference" placeholder="CR-BMW-320-20260520-A8F3K2" autocomplete="off" />
 
       <label for="customerEmail">Customer email</label>
-      <input id="customerEmail" class="form-control" name="customerEmail" type="email" [(ngModel)]="customerEmail" placeholder="demo.user@example.com" />
+      <input id="customerEmail" class="form-control" name="customerEmail" type="email" [(ngModel)]="customerEmail" placeholder="demo.user@example.com" autocomplete="off" />
 
       <button class="btn btn-primary btn-block" type="submit">Find booking</button>
       <p class="small-note">Bookings are read from this browser's localStorage demo data.</p>
     </form>
 
     <article class="result-card" *ngIf="booking">
-      <div class="result-header">
-        <div>
-          <span>{{ booking.bookingReference || ('RC-' + booking.rentalId) }}</span>
-          <h2>{{ booking.brandName }} {{ booking.carName }}</h2>
+      <header class="result-header">
+        <div class="result-heading">
+          <span class="reference">{{ booking.bookingReference || ('RC-' + booking.rentalId) }}</span>
+          <h2>{{ vehicleLabel }}</h2>
+          <p class="subtle" *ngIf="fleetUnitId">{{ fleetUnitId }}</p>
         </div>
-        <strong class="status-pill" [ngClass]="booking.status">{{ booking.status }}</strong>
-      </div>
+        <app-status-badge [status]="displayStatus"></app-status-badge>
+      </header>
 
-      <div class="result-grid">
-        <div><small>Customer</small><strong>{{ booking.customerName }}</strong></div>
-        <div><small>Email</small><strong>{{ booking.customerEmail }}</strong></div>
-        <div><small>Pickup date</small><strong>{{ booking.rentDate | date:'mediumDate' }}</strong></div>
-        <div><small>Return</small><strong>{{ booking.returnDate | date:'mediumDate' }}</strong></div>
-        <div><small>Pickup location</small><strong>{{ booking.pickupLocation }}</strong></div>
-        <div><small>Days</small><strong>{{ booking.rentalDays }}</strong></div>
-        <div><small>Vehicle subtotal</small><strong>{{ booking.vehicleSubtotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-        <div><small>Extras</small><strong>{{ booking.extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-        <div><small>Total</small><strong>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-      </div>
+      <section class="result-block">
+        <h3>Vehicle</h3>
+        <div class="result-grid">
+          <div><small>Registration</small><strong>{{ registrationNumber }}</strong></div>
+          <div *ngIf="booking.colorName"><small>Colour</small><strong>{{ booking.colorName }}</strong></div>
+          <div *ngIf="booking.modelYear"><small>Model year</small><strong>{{ booking.modelYear }}</strong></div>
+        </div>
+      </section>
 
-      <div class="extras-summary" *ngIf="booking.selectedExtras?.length">
+      <section class="result-block">
+        <h3>Pickup &amp; drop-off</h3>
+        <div class="result-grid">
+          <div><small>Pickup branch</small><strong>{{ pickupLocationLabel }}</strong></div>
+          <div><small>Drop-off branch</small><strong>{{ returnLocationLabel }}</strong></div>
+          <div><small>Pickup date</small><strong>{{ booking.rentDate | date:'mediumDate' }}</strong></div>
+          <div><small>Return date</small><strong>{{ booking.returnDate | date:'mediumDate' }}</strong></div>
+          <div><small>Rental length</small><strong>{{ booking.rentalDays || 0 }} day(s)</strong></div>
+          <div *ngIf="booking.flightNumber"><small>Flight</small><strong>{{ booking.flightNumber }}</strong></div>
+        </div>
+      </section>
+
+      <section class="result-block">
+        <h3>Customer</h3>
+        <div class="result-grid">
+          <div><small>Name</small><strong>{{ booking.customerName || 'Not provided' }}</strong></div>
+          <div><small>Email</small><strong>{{ booking.customerEmail || 'Not provided' }}</strong></div>
+          <div><small>Phone</small><strong>{{ booking.customerPhone || 'Not provided' }}</strong></div>
+          <div *ngIf="booking.customerAddress"><small>Address</small><strong>{{ booking.customerAddress }}</strong></div>
+        </div>
+
+        <div class="edit-card" *ngIf="editMode">
+          <label for="editableName">Customer name</label>
+          <input id="editableName" class="form-control" type="text" [(ngModel)]="editableName" name="editableName" />
+
+          <label for="editableEmail">Customer email</label>
+          <input id="editableEmail" class="form-control" type="email" [(ngModel)]="editableEmail" name="editableEmail" />
+
+          <label for="editablePhone">Customer phone</label>
+          <input id="editablePhone" class="form-control" type="text" [(ngModel)]="editablePhone" name="editablePhone" />
+        </div>
+      </section>
+
+      <section class="result-block">
+        <h3>Payment</h3>
+        <div class="result-grid">
+          <div><small>Method</small><strong>{{ paymentMethodLabel }}</strong></div>
+          <div>
+            <small>Status</small>
+            <app-status-badge [status]="paymentStatus"></app-status-badge>
+          </div>
+          <div *ngIf="booking.paymentReference"><small>Payment ref.</small><strong>{{ booking.paymentReference }}</strong></div>
+        </div>
+      </section>
+
+      <section class="result-block">
+        <h3>Receipt</h3>
+        <app-price-breakdown
+          [dailyPrice]="dailyPrice"
+          [rentalDays]="booking.rentalDays || 0"
+          [vehicleSubtotal]="booking.vehicleSubtotal || 0"
+          [extrasSubtotal]="booking.extrasTotal || 0"
+          [total]="booking.totalRentPrice || 0"
+          [extras]="extrasList">
+        </app-price-breakdown>
+      </section>
+
+      <section class="result-block" *ngIf="extrasList?.length">
         <h3>Selected services</h3>
-        <div *ngFor="let extra of booking.selectedExtras">
-          <span>{{ extra.name }}</span>
-          <strong>{{ extra.totalPrice | currency:'GBP':'symbol':'1.0-0' }}</strong>
-        </div>
-      </div>
+        <ul class="extras-list">
+          <li *ngFor="let extra of extrasList">
+            <span>{{ extra.name }}<small *ngIf="extra.category"> &middot; {{ extra.category }}</small></span>
+            <strong>{{ extra.totalPrice | currency:'GBP':'symbol':'1.0-0' }}</strong>
+          </li>
+        </ul>
+      </section>
 
-      <div class="edit-card" *ngIf="editMode">
-        <label for="editableName">Customer name</label>
-        <input id="editableName" class="form-control" type="text" [(ngModel)]="editableName" />
-
-        <label for="editableEmail">Customer email</label>
-        <input id="editableEmail" class="form-control" type="email" [(ngModel)]="editableEmail" />
-
-        <label for="editablePhone">Customer phone</label>
-        <input id="editablePhone" class="form-control" type="text" [(ngModel)]="editablePhone" />
-      </div>
-
-      <div class="result-actions">
+      <footer class="result-actions">
         <button class="btn btn-outline-primary" type="button" *ngIf="!editMode" (click)="editMode = true">Edit customer details</button>
         <button class="btn btn-primary" type="button" *ngIf="editMode" (click)="saveCustomerDetails()">Save details</button>
         <button class="btn btn-outline-secondary" type="button" *ngIf="editMode" (click)="editMode = false">Cancel edit</button>
-        <button class="btn btn-outline-danger" type="button" [disabled]="!canCancel()" (click)="cancelBooking()">Cancel booking</button>
-      </div>
+        <button class="btn btn-outline-danger" type="button" [disabled]="!canCancel()" (click)="requestCancel()">Cancel booking</button>
+      </footer>
     </article>
 
     <article class="result-card empty" *ngIf="searched && !booking">
@@ -70,4 +116,15 @@
       <p>Check the reference and email address, then try again.</p>
     </article>
   </div>
+
+  <app-confirm-dialog
+    [visible]="confirmCancelVisible"
+    title="Cancel this booking?"
+    [message]="(booking?.registrationNumber ? 'Cancelling will release fleet unit ' + booking.registrationNumber + ' so it becomes available for new bookings.' : 'Cancelling will mark this booking as Cancelled.')"
+    confirmLabel="Yes, cancel booking"
+    cancelLabel="Keep booking"
+    [danger]="true"
+    (confirmed)="cancelConfirmed()"
+    (cancelled)="cancelDismissed()">
+  </app-confirm-dialog>
 </section>
