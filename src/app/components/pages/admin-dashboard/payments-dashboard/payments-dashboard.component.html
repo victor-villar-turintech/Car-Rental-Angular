@@ -8,20 +8,43 @@
   </div>
 
   <div class="payment-metrics">
-    <div><span>Total payments</span><strong>{{ payments.length }}</strong></div>
-    <div><span>Paid total</span><strong>{{ paidTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
-    <div><span>Refunded total</span><strong>{{ refundedTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    <div><span>Total in view</span><strong>{{ filteredPayments.length }} / {{ payments.length }}</strong></div>
+    <div><span>Paid</span><strong>{{ paidTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    <div><span>Pending</span><strong>{{ pendingTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    <div><span>Refunded</span><strong>{{ refundedTotal | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
   </div>
 
   <div class="payments-toolbar">
-    <label for="paymentStatusFilter">Status</label>
-    <select id="paymentStatusFilter" class="form-control" [(ngModel)]="statusFilter">
-      <option value="">All payments</option>
-      <option value="Pending">Pending</option>
-      <option value="Paid">Paid</option>
-      <option value="Failed">Failed</option>
-      <option value="Refunded">Refunded</option>
-    </select>
+    <div class="toolbar-field">
+      <label for="paymentStatusFilter">Status</label>
+      <select id="paymentStatusFilter" class="form-control" [(ngModel)]="statusFilter">
+        <option value="">All statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="Paid">Paid</option>
+        <option value="Failed">Failed</option>
+        <option value="Refunded">Refunded</option>
+      </select>
+    </div>
+    <div class="toolbar-field">
+      <label for="paymentMethodFilter">Method</label>
+      <select id="paymentMethodFilter" class="form-control" [(ngModel)]="methodFilter">
+        <option value="">All methods</option>
+        <option *ngFor="let method of methods" [value]="method">{{ method }}</option>
+      </select>
+    </div>
+    <div class="toolbar-field">
+      <label for="paymentFrom">From</label>
+      <input id="paymentFrom" type="date" class="form-control" [(ngModel)]="fromDate">
+    </div>
+    <div class="toolbar-field">
+      <label for="paymentTo">To</label>
+      <input id="paymentTo" type="date" class="form-control" [(ngModel)]="toDate">
+    </div>
+    <div class="toolbar-field grow">
+      <label for="paymentSearch">Search</label>
+      <input id="paymentSearch" type="text" class="form-control" placeholder="Reference, booking, customer name or email" [(ngModel)]="searchText">
+    </div>
+    <button class="btn btn-outline-secondary clear-filters" type="button" (click)="clearFilters()">Clear filters</button>
   </div>
 
   <div class="table-card" *ngIf="filteredPayments.length > 0">

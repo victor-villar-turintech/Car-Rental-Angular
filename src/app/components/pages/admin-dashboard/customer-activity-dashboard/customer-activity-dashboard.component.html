@@ -1,5 +1,49 @@
 <section class="admin-page">
-  <div class="admin-page-header"><div><span class="eyebrow">Customer intelligence</span><h1>Customer activity</h1><p>Customer-facing events captured in localStorage for CRM-style auditing.</p></div></div>
-  <input class="form-control search-box" placeholder="Filter by email, activity, booking or text" [(ngModel)]="searchText">
-  <div class="activity-list"><article *ngFor="let item of filteredActivity" class="activity-card"><div><strong>{{ item.activityType }}</strong><p>{{ item.message }}</p><small>{{ item.customerEmail }} · {{ item.createdAt | date:'medium' }}</small></div><code *ngIf="item.entityReference">{{ item.entityReference }}</code></article><div class="empty-state" *ngIf="filteredActivity.length === 0">No customer activity yet.</div></div>
+  <div class="admin-page-header">
+    <div>
+      <span class="eyebrow">Customer intelligence</span>
+      <h1>Customer activity</h1>
+      <p>Customer-facing events captured in localStorage for CRM-style auditing.</p>
+    </div>
+  </div>
+
+  <div class="toolbar-card">
+    <div class="toolbar-field">
+      <label for="activityTypeFilter">Type</label>
+      <select id="activityTypeFilter" class="form-control" [(ngModel)]="typeFilter">
+        <option value="">All types</option>
+        <option *ngFor="let type of activityTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+    <div class="toolbar-field">
+      <label for="customerActivityFrom">From</label>
+      <input id="customerActivityFrom" type="date" class="form-control" [(ngModel)]="fromDate">
+    </div>
+    <div class="toolbar-field">
+      <label for="customerActivityTo">To</label>
+      <input id="customerActivityTo" type="date" class="form-control" [(ngModel)]="toDate">
+    </div>
+    <div class="toolbar-field grow">
+      <label for="customerActivitySearch">Search</label>
+      <input id="customerActivitySearch" type="text" class="form-control" placeholder="Email, activity, booking or text" [(ngModel)]="searchText">
+    </div>
+    <button class="btn btn-outline-secondary clear-filters" type="button" (click)="clearFilters()">Clear filters</button>
+  </div>
+
+  <div class="result-meta">Showing <strong>{{ filteredActivity.length }}</strong> of {{ activity.length }} events.</div>
+
+  <div class="activity-list" *ngIf="filteredActivity.length > 0; else empty">
+    <article *ngFor="let item of filteredActivity" class="activity-card">
+      <div>
+        <strong>{{ item.activityType }}</strong>
+        <p>{{ item.message }}</p>
+        <small>{{ item.customerEmail }} · {{ item.createdAt | date:'medium' }}</small>
+      </div>
+      <code *ngIf="item.entityReference">{{ item.entityReference }}</code>
+    </article>
+  </div>
+
+  <ng-template #empty>
+    <div class="empty-state">No customer activity matches the current filters. Clear filters to see all events, or interact with the public site (register, sign in, make bookings) to generate new events.</div>
+  </ng-template>
 </section>

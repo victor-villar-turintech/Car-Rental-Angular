@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivityLogEntry } from 'src/app/models/activity-log-entry';
+import { ActivityEntityType, ActivityLogEntry } from 'src/app/models/activity-log-entry';
 import { ActivityLogService } from 'src/app/services/activity-log.service';
 
 @Component({
@@ -9,7 +9,10 @@ import { ActivityLogService } from 'src/app/services/activity-log.service';
 })
 export class AdminActivityDashboardComponent implements OnInit {
   entries: ActivityLogEntry[] = [];
-  entityFilter = '';
+  entityFilter: ActivityEntityType | '' = '';
+  searchText = '';
+  fromDate = '';
+  toDate = '';
 
   constructor(private activityLogService: ActivityLogService) {}
 
@@ -18,11 +21,35 @@ export class AdminActivityDashboardComponent implements OnInit {
   }
 
   get filteredEntries(): ActivityLogEntry[] {
-    return this.entityFilter ? this.entries.filter((entry) => entry.entityType === this.entityFilter) : this.entries;
+    const term = this.searchText.trim().toLowerCase();
+    const fromTime = this.fromDate ? new Date(this.fromDate).getTime() : undefined;
+    const toTime = this.toDate ? new Date(this.toDate + 'T23:59:59').getTime() : undefined;
+
+    return this.entries
+      .filter((entry) => !this.entityFilter || entry.entityType === this.entityFilter)
+      .filter((entry) => {
+        if (fromTime === undefined && toTime === undefined) { return true; }
+        const created = new Date(entry.createdAt).getTime();
+        if (fromTime !== undefined && created < fromTime) { return false; }
+        if (toTime !== undefined && created > toTime) { return false; }
+        return true;
+      })
+      .filter((entry) => {
+        if (!term) { return true; }
+        const haystack = `${entry.action} ${entry.message} ${entry.entityReference || ''} ${entry.actor || ''}`.toLowerCase();
+        return haystack.includes(term);
+      });
   }
 
   loadEntries(): void {
     this.activityLogService.getEntries().subscribe((response) => this.entries = response.data);
+  }
+
+  clearFilters(): void {
+    this.entityFilter = '';
+    this.searchText = '';
+    this.fromDate = '';
+    this.toDate = '';
   }
 
   clearLog(): void {

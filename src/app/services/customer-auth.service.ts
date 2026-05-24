@@ -80,6 +80,28 @@ export class CustomerAuthService {
     return of({ success: !!updated, message: updated ? 'Mock reset link generated.' : 'Customer not found.', data: updated ? [updated] : [] });
   }
 
+  updateCustomerProfile(email: string, details: Pick<Customer, 'firstName' | 'lastName' | 'phone'>): Observable<ResponseModel> {
+    const normalised = this.normalise(email);
+    let updated: Customer | undefined;
+    this.customers = this.customers.map((customer) => {
+      if (this.normalise(customer.email) !== normalised) { return customer; }
+      updated = {
+        ...customer,
+        firstName: (details.firstName || '').trim() || customer.firstName,
+        lastName: (details.lastName || '').trim() || customer.lastName,
+        phone: details.phone === undefined ? customer.phone : (details.phone || '').trim() || undefined,
+        updatedAt: new Date().toISOString(),
+      };
+      return updated;
+    });
+    if (!updated) {
+      return of({ success: false, message: 'Customer not found.' });
+    }
+    this.saveCustomers();
+    this.customerActivityService.record(updated.email, 'ProfileUpdated', 'Admin updated customer profile details.', { customerId: updated.customerId });
+    return of({ success: true, message: 'Customer details updated.' });
+  }
+
   setCustomerDisabled(email: string, disabled: boolean): Observable<ResponseModel> {
     const normalised = this.normalise(email);
     let updated = false;

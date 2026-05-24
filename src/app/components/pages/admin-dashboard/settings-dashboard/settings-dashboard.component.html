@@ -2,13 +2,27 @@
   <div class="page-heading">
     <span class="eyebrow">Demo controls</span>
     <h1>Admin settings</h1>
-    <p>Reset localStorage-backed demo data without changing the source code or needing a backend.</p>
+    <p>Reset localStorage-backed demo data without changing the source code or needing a backend. Snapshot tools let you save the current demo state and replay it later.</p>
   </div>
 
   <div class="quick-actions">
     <button class="btn btn-primary" type="button" (click)="restoreDemoExtras()">Restore demo extras</button>
     <button class="btn btn-outline-warning" type="button" (click)="resetBookingsAndPayments()">Reset bookings + payments</button>
     <button class="btn btn-outline-danger" type="button" (click)="resetEverything()">Reset everything</button>
+  </div>
+
+  <div class="snapshot-card">
+    <div>
+      <h3>Snapshot tools</h3>
+      <p>Export the current localStorage demo state to a JSON file, or import a previously-exported snapshot to restore it. Useful for sharing demo states with teammates.</p>
+      <small *ngIf="lastExportedFilename">Last export: <code>{{ lastExportedFilename }}</code></small>
+      <small *ngIf="lastImportedAt">Last import: {{ lastImportedAt | date:'medium' }} <em>(refresh the page to fully apply changes).</em></small>
+    </div>
+    <div class="snapshot-actions">
+      <button class="btn btn-primary" type="button" (click)="exportSnapshot()">Export snapshot</button>
+      <button class="btn btn-outline-primary" type="button" (click)="triggerImport()">Import snapshot</button>
+      <input #snapshotFileInput type="file" accept="application/json,.json" class="hidden-input" (change)="importSnapshot($event)">
+    </div>
   </div>
 
   <div class="settings-grid">

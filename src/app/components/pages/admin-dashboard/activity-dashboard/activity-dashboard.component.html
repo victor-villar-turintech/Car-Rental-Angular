@@ -9,17 +9,36 @@
   </div>
 
   <div class="toolbar-card">
-    <label for="entityFilter">Filter entity</label>
-    <select id="entityFilter" class="form-control" [(ngModel)]="entityFilter">
-      <option value="">All entities</option>
-      <option>Admin</option>
-      <option>Booking</option>
-      <option>Payment</option>
-      <option>Vehicle</option>
-      <option>Extra</option>
-      <option>Customer</option>
-      <option>System</option>
-    </select>
+    <div class="toolbar-field">
+      <label for="entityFilter">Entity</label>
+      <select id="entityFilter" class="form-control" [(ngModel)]="entityFilter">
+        <option value="">All entities</option>
+        <option value="Admin">Admin</option>
+        <option value="Booking">Booking</option>
+        <option value="Payment">Payment</option>
+        <option value="Vehicle">Vehicle</option>
+        <option value="Extra">Extra</option>
+        <option value="Customer">Customer</option>
+        <option value="System">System</option>
+      </select>
+    </div>
+    <div class="toolbar-field">
+      <label for="activityFrom">From</label>
+      <input id="activityFrom" type="date" class="form-control" [(ngModel)]="fromDate">
+    </div>
+    <div class="toolbar-field">
+      <label for="activityTo">To</label>
+      <input id="activityTo" type="date" class="form-control" [(ngModel)]="toDate">
+    </div>
+    <div class="toolbar-field grow">
+      <label for="activitySearch">Search</label>
+      <input id="activitySearch" type="text" class="form-control" placeholder="Action, message, reference or actor" [(ngModel)]="searchText">
+    </div>
+    <button class="btn btn-outline-secondary clear-filters" type="button" (click)="clearFilters()">Clear filters</button>
+  </div>
+
+  <div class="result-meta">
+    Showing <strong>{{ filteredEntries.length }}</strong> of {{ entries.length }} entries.
   </div>
 
   <div class="activity-list" *ngIf="filteredEntries.length > 0; else emptyState">
@@ -28,12 +47,12 @@
       <div>
         <strong>{{ entry.action }}</strong>
         <p>{{ entry.message }}</p>
-        <small>{{ entry.entityType }}<ng-container *ngIf="entry.entityReference"> · {{ entry.entityReference }}</ng-container> · {{ entry.createdAt | date:'medium' }}</small>
+        <small>{{ entry.entityType }}<ng-container *ngIf="entry.entityReference"> · {{ entry.entityReference }}</ng-container><ng-container *ngIf="entry.actor"> · by {{ entry.actor }}</ng-container> · {{ entry.createdAt | date:'medium' }}</small>
       </div>
     </article>
   </div>
 
   <ng-template #emptyState>
-    <div class="empty-state">No activity has been recorded yet. Admin and booking actions will appear here.</div>
+    <div class="empty-state">No activity matches the current filters. Admin and booking actions will appear here once filters are cleared.</div>
   </ng-template>
 </section>

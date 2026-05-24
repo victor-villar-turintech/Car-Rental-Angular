@@ -1,5 +1,107 @@
-<section class="admin-page">
-  <div class="admin-page-header"><div><span class="eyebrow">CRM</span><h1>Registered customers</h1><p>Manage local demo customers, reset links, activity and rewards context.</p></div></div>
+<section class="admin-page customers-page">
+  <div class="admin-page-header">
+    <div>
+      <span class="eyebrow">CRM</span>
+      <h1>Registered customers</h1>
+      <p>Manage local demo customers, edit profile details, generate reset links and review their booking and reward context.</p>
+    </div>
+  </div>
+
   <input class="form-control search-box" placeholder="Search by name, email or phone" [(ngModel)]="searchText">
-  <div class="table-card"><table class="table mb-0"><thead><tr><th>Customer</th><th>Contact</th><th>Bookings</th><th>Total spend</th><th>Points</th><th>Reset token</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let customer of filteredCustomers"><td><strong>{{ customer.firstName }} {{ customer.lastName }}</strong><br><small>ID {{ customer.customerId }} · {{ customer.isDisabled ? 'Disabled' : 'Active' }}</small></td><td>{{ customer.email }}<br><small>{{ customer.phone || 'No phone' }}</small></td><td>{{ bookingCount(customer) }}</td><td>{{ totalSpend(customer) | currency:'GBP':'symbol':'1.0-0' }}</td><td>{{ rewardBalance(customer) }}</td><td><code>{{ customer.resetToken || 'Not generated' }}</code></td><td class="actions"><button class="btn btn-sm btn-outline-primary" type="button" (click)="sendReset(customer)">Send reset link</button><button class="btn btn-sm" [ngClass]="customer.isDisabled ? 'btn-outline-success' : 'btn-outline-danger'" type="button" (click)="toggleCustomer(customer)">{{ customer.isDisabled ? 'Enable' : 'Disable' }}</button><a class="btn btn-sm btn-outline-secondary" [routerLink]="['/admin/customer-activity']" [queryParams]="{ email: customer.email }">Activity</a></td></tr></tbody></table><div class="empty-state" *ngIf="filteredCustomers.length === 0">No registered customers found.</div></div>
+
+  <div class="table-card">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Customer</th>
+          <th>Contact</th>
+          <th>Bookings</th>
+          <th>Total spend</th>
+          <th>Points</th>
+          <th>Reset token</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let customer of filteredCustomers">
+          <tr [class.expanded]="isExpanded(customer)">
+            <td class="toggle-cell">
+              <button type="button" class="btn btn-sm btn-light expand-btn" (click)="toggleExpand(customer)" [attr.aria-expanded]="isExpanded(customer)">
+                {{ isExpanded(customer) ? '−' : '+' }}
+              </button>
+            </td>
+            <td>
+              <strong>{{ customer.firstName }} {{ customer.lastName }}</strong><br>
+              <small>ID {{ customer.customerId }} · {{ customer.isDisabled ? 'Disabled' : 'Active' }}</small>
+            </td>
+            <td>{{ customer.email }}<br><small>{{ customer.phone || 'No phone' }}</small></td>
+            <td>{{ bookingCount(customer) }}</td>
+            <td>{{ totalSpend(customer) | currency:'GBP':'symbol':'1.0-0' }}</td>
+            <td>{{ rewardBalance(customer) }}</td>
+            <td><code>{{ customer.resetToken || 'Not generated' }}</code></td>
+            <td class="actions">
+              <button class="btn btn-sm btn-outline-primary" type="button" (click)="sendReset(customer)">Send reset link</button>
+              <button class="btn btn-sm" [ngClass]="customer.isDisabled ? 'btn-outline-success' : 'btn-outline-danger'" type="button" (click)="toggleCustomer(customer)">{{ customer.isDisabled ? 'Enable' : 'Disable' }}</button>
+              <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/admin/customer-activity']" [queryParams]="{ email: customer.email }">Activity</a>
+            </td>
+          </tr>
+
+          <tr *ngIf="isExpanded(customer)" class="detail-row">
+            <td></td>
+            <td colspan="7">
+              <div class="customer-detail">
+                <div class="detail-section profile-section">
+                  <div class="detail-section-head">
+                    <h3>Profile</h3>
+                    <button *ngIf="!isEditing(customer)" type="button" class="btn btn-sm btn-outline-primary" (click)="startEdit(customer)">Edit details</button>
+                  </div>
+
+                  <dl *ngIf="!isEditing(customer)">
+                    <div><dt>First name</dt><dd>{{ customer.firstName }}</dd></div>
+                    <div><dt>Last name</dt><dd>{{ customer.lastName }}</dd></div>
+                    <div><dt>Email</dt><dd>{{ customer.email }}</dd></div>
+                    <div><dt>Phone</dt><dd>{{ customer.phone || '—' }}</dd></div>
+                    <div><dt>Registered</dt><dd>{{ customer.createdAt | date:'medium' }}</dd></div>
+                    <div><dt>Last updated</dt><dd>{{ (customer.updatedAt || customer.createdAt) | date:'medium' }}</dd></div>
+                  </dl>
+
+                  <form *ngIf="isEditing(customer)" class="edit-form" (ngSubmit)="saveEdit(customer)">
+                    <div class="form-row">
+                      <label>First name<input class="form-control" type="text" name="firstName" [(ngModel)]="editForm.firstName" required></label>
+                      <label>Last name<input class="form-control" type="text" name="lastName" [(ngModel)]="editForm.lastName" required></label>
+                    </div>
+                    <label class="form-block">Phone<input class="form-control" type="tel" name="phone" [(ngModel)]="editForm.phone"></label>
+                    <small class="form-help">Email cannot be changed because it is the customer's unique identifier.</small>
+                    <div class="form-actions">
+                      <button class="btn btn-primary" type="submit">Save changes</button>
+                      <button class="btn btn-outline-secondary" type="button" (click)="cancelEdit()">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="detail-section history-section">
+                  <h3>Booking history ({{ bookingsFor(customer).length }})</h3>
+                  <div class="booking-history" *ngIf="bookingsFor(customer).length > 0; else noBookings">
+                    <article class="history-item" *ngFor="let booking of bookingsFor(customer)">
+                      <header>
+                        <strong>{{ booking.bookingReference }}</strong>
+                        <app-status-badge [status]="booking.status"></app-status-badge>
+                      </header>
+                      <p>{{ booking.brandName }} {{ booking.carName }} · {{ booking.rentDate | date:'mediumDate' }} → {{ booking.returnDate | date:'mediumDate' }}</p>
+                      <small>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }} · {{ booking.paymentStatus }}</small>
+                    </article>
+                  </div>
+                  <ng-template #noBookings>
+                    <p class="muted">No bookings recorded for this customer.</p>
+                  </ng-template>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <div class="empty-state" *ngIf="filteredCustomers.length === 0">No registered customers found.</div>
+  </div>
 </section>
