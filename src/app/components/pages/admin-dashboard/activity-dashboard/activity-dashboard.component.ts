@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivityEntityType, ActivityLogEntry } from 'src/app/models/activity-log-entry';
 import { ActivityLogService } from 'src/app/services/activity-log.service';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 
 @Component({
   selector: 'app-admin-activity-dashboard',
@@ -14,7 +15,7 @@ export class AdminActivityDashboardComponent implements OnInit {
   fromDate = '';
   toDate = '';
 
-  constructor(private activityLogService: ActivityLogService) {}
+  constructor(private activityLogService: ActivityLogService, private confirmDialogService: ConfirmDialogService) {}
 
   ngOnInit(): void {
     this.loadEntries();
@@ -52,10 +53,14 @@ export class AdminActivityDashboardComponent implements OnInit {
     this.toDate = '';
   }
 
-  clearLog(): void {
-    if (!window.confirm('Clear the local Admin activity log?')) {
-      return;
-    }
+  async clearLog(): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: 'Clear admin activity log?',
+      message: 'This permanently removes all locally-recorded admin actions.',
+      confirmLabel: 'Clear',
+      danger: true,
+    });
+    if (!confirmed) { return; }
     this.activityLogService.clear().subscribe(() => this.loadEntries());
   }
 }

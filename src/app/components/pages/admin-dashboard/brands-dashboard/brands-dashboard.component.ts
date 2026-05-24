@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Brand } from 'src/app/models/brand';
 import { BrandService } from 'src/app/services/brand.service';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 
 @Component({
   selector: 'app-brands-dashboard',
@@ -14,7 +15,8 @@ export class BrandsDashboardComponent implements OnInit {
 
   constructor(
     private brandService: BrandService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private confirmDialogService: ConfirmDialogService,
   ) { }
 
   ngOnInit(): void {
@@ -30,10 +32,14 @@ export class BrandsDashboardComponent implements OnInit {
     });
   }
 
-  deleteBrand(brand: Brand): void {
-    if (!window.confirm(`Delete ${brand.brandName}?`)) {
-      return;
-    }
+  async deleteBrand(brand: Brand): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: `Delete ${brand.brandName}?`,
+      message: 'Removes this brand from the local demo catalogue.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) { return; }
 
     this.brandService.deleteBrand(brand).subscribe((response) => {
       this.toastrService.success(response.message || 'Brand deleted.');

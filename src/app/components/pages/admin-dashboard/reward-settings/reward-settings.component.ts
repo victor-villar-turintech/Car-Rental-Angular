@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { restoreDemoCommerceData } from '../../../../helpers/demo-commerce-data-migration';
+import { ConfirmDialogService } from '../../../../services/confirm-dialog.service';
 
 interface AdminRewardAccount {
   id: number;
@@ -20,6 +21,8 @@ interface AdminRewardAccount {
   styleUrls: ['./reward-settings.component.css']
 })
 export class AdminRewardSettingsComponent implements OnInit {
+  constructor(private confirmDialogService: ConfirmDialogService) {}
+
   readonly storageKeys = [
     'rewardAccounts',
     'rent-a-car-demo-reward-accounts',
@@ -179,13 +182,18 @@ export class AdminRewardSettingsComponent implements OnInit {
     this.formSuccess = 'Reward account reactivated.';
   }
 
-  deleteRewardAccount(account: AdminRewardAccount): void {
+  async deleteRewardAccount(account: AdminRewardAccount): Promise<void> {
     if (Number(account.pointsBalance || 0) > 0 || Number(account.lifetimePoints || 0) > 0) {
       this.formError = 'This reward account has point history. Deactivate it instead of deleting it.';
       return;
     }
 
-    const confirmed = window.confirm(`Delete reward account for ${account.customerName} permanently?`);
+    const confirmed = await this.confirmDialogService.confirm({
+      title: `Delete reward account for ${account.customerName}?`,
+      message: 'Permanently removes the reward account from the local catalogue.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
     if (!confirmed) {
       return;
     }

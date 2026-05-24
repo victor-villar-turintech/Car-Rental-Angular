@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 import { DemoResetService, DemoStorageKey } from 'src/app/services/demo-reset.service';
 
 @Component({
@@ -13,19 +14,31 @@ export class AdminSettingsDashboardComponent {
   lastExportedFilename = '';
   lastImportedAt = '';
 
-  constructor(private demoResetService: DemoResetService, private toastrService: ToastrService) {}
+  constructor(
+    private demoResetService: DemoResetService,
+    private toastrService: ToastrService,
+    private confirmDialogService: ConfirmDialogService,
+  ) {}
 
-  resetTarget(target: DemoStorageKey): void {
-    if (!window.confirm(`Reset ${target.label}? This only affects local demo data in this browser.`)) {
-      return;
-    }
+  async resetTarget(target: DemoStorageKey): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: `Reset ${target.label}?`,
+      message: 'This only affects local demo data in this browser. The change is irreversible.',
+      confirmLabel: 'Reset',
+      danger: true,
+    });
+    if (!confirmed) { return; }
     this.demoResetService.resetKey(target.key, target.label).subscribe((response) => this.toastrService.success(response.message));
   }
 
-  resetBookingsAndPayments(): void {
-    if (!window.confirm('Clear bookings and payments from this browser?')) {
-      return;
-    }
+  async resetBookingsAndPayments(): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: 'Clear bookings and payments?',
+      message: 'Removes all bookings and payment records from this browser.',
+      confirmLabel: 'Clear',
+      danger: true,
+    });
+    if (!confirmed) { return; }
     this.demoResetService.resetBookingsAndPayments().subscribe((response) => this.toastrService.success(response.message));
   }
 
@@ -33,10 +46,14 @@ export class AdminSettingsDashboardComponent {
     this.demoResetService.restoreDemoExtras().subscribe((response) => this.toastrService.success(response.message));
   }
 
-  resetEverything(): void {
-    if (!window.confirm('Reset all configured demo data in this browser?')) {
-      return;
-    }
+  async resetEverything(): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: 'Reset everything?',
+      message: 'Clears every configured demo data key in this browser. You will lose all local bookings, payments, customers and edited catalogue/fleet data.',
+      confirmLabel: 'Reset all data',
+      danger: true,
+    });
+    if (!confirmed) { return; }
     this.demoResetService.resetAll().subscribe((response) => this.toastrService.warning(response.message));
   }
 

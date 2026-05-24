@@ -4,6 +4,7 @@ import { Car } from 'src/app/models/car';
 import { DashboardCars } from 'src/app/models/dashboard-cars';
 import { CarService } from 'src/app/services/car.service';
 import { CsvColumn, downloadCsv, timestampedFilename } from '../../../../helpers/csv-export';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 
 @Component({
   selector: 'app-cars-dashboard',
@@ -16,7 +17,8 @@ export class CarsDashboardComponent implements OnInit {
 
   constructor(
     private carService: CarService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private confirmDialogService: ConfirmDialogService,
   ) { }
 
   ngOnInit(): void {
@@ -32,10 +34,14 @@ export class CarsDashboardComponent implements OnInit {
     });
   }
 
-  deleteCar(car: DashboardCars): void {
-    if (!window.confirm(`Delete ${car.brandName} ${car.carName}?`)) {
-      return;
-    }
+  async deleteCar(car: DashboardCars): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: `Delete ${car.brandName} ${car.carName}?`,
+      message: 'This removes the vehicle from the local catalogue. Restore by resetting demo cars in admin settings.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) { return; }
 
     this.carService.deleteCar(car as unknown as Car).subscribe((response) => {
       this.toastrService.success(response.message || 'Car deleted.');
