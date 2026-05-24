@@ -10,6 +10,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { BackendAuthInterceptor } from './services/backend-auth.interceptor';
 import { NaviComponent } from './components/navi/navi.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home/home.component';
@@ -156,7 +157,10 @@ export function tokenGetter() {
     ToastrModule.forRoot({ positionClass: 'toast-bottom-right' }),
     JwtModule.forRoot({ config: { tokenGetter } }),
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: BackendAuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

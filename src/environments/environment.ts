@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  /** Toggle to true to use the in-repo NestJS backend (Phases 7-8). When false the app falls back to its localStorage demo state. */
+  useBackend: false,
+  /** Base URL of the NestJS backend. Used by services when useBackend is true. */
+  backendUrl: 'http://localhost:3001/api',
 };
 
 /*
