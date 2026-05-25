@@ -8,7 +8,7 @@
 /* professional-nav-polish-v2 */
 .app-navbar { position: sticky; top: 0; z-index: 1030; border-bottom: 1px solid #e2e8f0; box-shadow: 0 10px 30px rgba(15,23,42,.06); }
 .nav-shell { min-height: 4.25rem; }
-.navbar-brand { font-size: 1.28rem; font-weight: 950; letter-spacing: -.035em; color: #0f172a !important; margin-right: 1.5rem; }
+.navbar-brand { font-size: 1.28rem; font-weight: 950; letter-spacing: -.035em; margin-right: 1.5rem; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e3a8a 100%); -webkit-background-clip: text; background-clip: text; color: transparent !important; }
 .primary-nav, .account-nav { display: flex; align-items: center; gap: .35rem; flex-wrap: nowrap; }
 .primary-nav .nav-link, .account-nav .nav-link { border-radius: 999px; padding: .55rem .8rem !important; font-weight: 850; color: #475569 !important; text-decoration: none; white-space: nowrap; }
 .primary-nav .nav-link.active, .primary-nav .nav-link:hover, .account-nav .nav-link.active, .account-nav .nav-link:hover { background: #eff6ff; color: #0d6efd !important; }
