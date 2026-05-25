@@ -30,9 +30,8 @@ export class UsersController {
     if (req.user.role !== 'admin' && req.user.sub !== id) {
       throw new ForbiddenException('You can only edit your own profile');
     }
-    const safeBody = req.user.role === 'admin'
-      ? body
-      : { firstName: body.firstName, lastName: body.lastName, phone: body.phone };
+    const { active, rewardPoints, ...customerFields } = body;
+    const safeBody = req.user.role === 'admin' ? body : customerFields;
     const updated = await this.usersService.update(id, safeBody);
     return this.usersService.toSafe(updated);
   }
