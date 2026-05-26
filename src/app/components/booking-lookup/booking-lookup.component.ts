@@ -92,11 +92,19 @@ export class BookingLookupComponent {
 
     const cancelled = this.lifecycleService.cancelBooking(reference);
 
+    if (!cancelled) {
+      this.toastrService.error(
+        'Could not find or cancel the booking. Please try again.',
+        'Cancellation failed'
+      );
+      return;
+    }
+
     this.rentalService.reloadFromStorage();
 
     this.booking = {
       ...this.booking,
-      ...(cancelled || {}),
+      ...cancelled,
       status: 'Cancelled',
       bookingStatus: 'Cancelled',
     };
