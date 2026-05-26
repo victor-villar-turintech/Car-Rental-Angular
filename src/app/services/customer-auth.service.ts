@@ -130,6 +130,9 @@ export class CustomerAuthService {
 
   private describeHttpError(err: any, fallback: string): string {
     if (err && err.error && typeof err.error.message === 'string') { return err.error.message; }
+    if (err && err.error && Array.isArray(err.error.message) && err.error.message.length > 0) {
+      return err.error.message[0];
+    }
     if (err && err.message) { return err.message; }
     return fallback;
   }
