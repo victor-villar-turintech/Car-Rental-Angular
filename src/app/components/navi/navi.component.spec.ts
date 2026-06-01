@@ -15,7 +15,7 @@ describe('NavComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ NaviComponent ],
-      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, FormsModule, JwtModule.forRoot({})],
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, FormsModule, JwtModule.forRoot({ config: { tokenGetter: () => '' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{
         provide: ToastrService,

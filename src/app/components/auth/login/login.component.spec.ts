@@ -15,7 +15,7 @@ describe('LoginComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ LoginComponent ],
-      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, FormsModule, JwtModule.forRoot({})],
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, FormsModule, JwtModule.forRoot({ config: { tokenGetter: () => '' } })],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{
         provide: ToastrService,
