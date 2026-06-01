@@ -44,6 +44,17 @@
         </div>
       </div>
 
+      <label for="branchFilter">Pickup branch</label>
+      <select id="branchFilter" class="form-control" [(ngModel)]="selectedBranchId">
+        <option value="">Any branch</option>
+        <option *ngFor="let branch of branchOptions" [value]="branch.id">{{ branch.name }}</option>
+      </select>
+
+      <label class="availability-toggle">
+        <input type="checkbox" [(ngModel)]="hideUnavailable" />
+        <span>Hide currently unavailable</span>
+      </label>
+
       <label for="sortBy">Sort</label>
       <select id="sortBy" class="form-control" [(ngModel)]="sortBy">
         <option value="priceAsc">Price: low to high</option>
@@ -70,6 +81,7 @@
 
     <div *ngIf="dataLoaded && filteredCars.length > 0" class="vehicle-grid">
       <article class="vehicle-card" *ngFor="let car of filteredCars">
+        <ng-container *ngIf="getAvailabilityCard(car) as availability">
         <div class="vehicle-image">
           <button
             class="favourite-heart"
@@ -83,7 +95,19 @@
 
           <img class="vehicle-photo" [src]="car.imagePath" [alt]="car.colorName + ' ' + car.brandName + ' ' + car.carName" (error)="handleVehicleImageError($event, car)" />
 
-          
+          <span class="availability-badge"
+            [class.available]="selectedBranchId ? availability.availableAtBranch > 0 : availability.availableTotal > 0"
+            [class.unavailable]="selectedBranchId ? availability.availableAtBranch <= 0 : availability.availableTotal <= 0">
+            <ng-container *ngIf="selectedBranchId; else anyBranchAvailability">
+              <ng-container *ngIf="availability.availableAtBranch > 0; else noUnitsAtBranch">{{ availability.availableAtBranch }} at {{ availability.branchLabel }}</ng-container>
+              <ng-template #noUnitsAtBranch>Not at {{ availability.branchLabel }}</ng-template>
+            </ng-container>
+            <ng-template #anyBranchAvailability>
+              <ng-container *ngIf="availability.availableTotal > 0; else allBooked">{{ availability.availableTotal }} available</ng-container>
+              <ng-template #allBooked>Currently unavailable</ng-template>
+            </ng-template>
+          </span>
+
           <div class="vehicle-photo-caption">
             <strong [style.background]="getVehicleColourHex(car.colorName)" [style.color]="getVehicleLabelColour(car.colorName)">{{ car.colorName }}</strong>
             <span>{{ getVehicleCategory(car) }}</span>
@@ -109,6 +133,7 @@
           <a class="btn btn-outline-primary" [routerLink]="['/cars', car.carId]">Details</a>
           <a class="btn btn-primary" [routerLink]="['/car/rental', car.carId]">Rent</a>
         </div>
+        </ng-container>
       </article>
     </div>
 
