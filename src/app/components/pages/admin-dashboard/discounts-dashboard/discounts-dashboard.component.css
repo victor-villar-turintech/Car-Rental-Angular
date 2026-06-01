@@ -382,3 +382,130 @@ th {
     grid-template-columns: 1fr;
   }
 }
+
+/* Fix: /admin/discounts is rendered inside the shared admin shell.
+   The local sidebar was removed; force this component to behave as content only. */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.patch3d-admin-shell,
+.patch3d-admin-layout,
+.patch3d-discounts-shell,
+.patch3d-admin-dashboard-shell {
+  display: block !important;
+  grid-template-columns: 1fr !important;
+}
+
+.patch3d-admin-content,
+.patch3d-discounts-content,
+.patch3d-page-content,
+main {
+  width: 100% !important;
+  margin-left: 0 !important;
+}
+
+/* Final layout repair:
+   The duplicated <aside> was removed, but the component still had old shell/grid styles.
+   Force the discounts component to behave as a normal full-width admin content page. */
+
+:host {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* The first local wrapper used to contain sidebar + content.
+   After removing the sidebar, it must no longer be a narrow grid/flex shell. */
+:host > div,
+:host > section {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 32px !important;
+  box-sizing: border-box !important;
+  grid-template-columns: 1fr !important;
+}
+
+/* Main/content wrapper should fill the admin dashboard content area. */
+:host main,
+:host .patch3d-admin-content,
+:host .patch3d-discounts-content,
+:host .patch3d-page-content,
+:host .discounts-dashboard,
+:host .discounts-page {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Header, cards, filters and table should use normal horizontal layouts again. */
+:host .patch3d-admin-hero,
+:host .patch3d-discounts-header,
+:host .discounts-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+  width: 100% !important;
+}
+
+:host .patch3d-admin-stats,
+:host .patch3d-discounts-stats,
+:host .stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  width: 100% !important;
+}
+
+:host .patch3d-admin-filters,
+:host .patch3d-discounts-filters,
+:host .filters-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr 1fr !important;
+  gap: 16px !important;
+  width: 100% !important;
+}
+
+:host table {
+  width: 100% !important;
+  table-layout: auto !important;
+}
+
+:host .patch3d-admin-table,
+:host .patch3d-discounts-table,
+:host .table-card {
+  width: 100% !important;
+  max-width: none !important;
+  overflow-x: auto !important;
+}
+
+/* Responsive fallback. */
+@media (max-width: 900px) {
+  :host > div,
+  :host > section {
+    padding: 20px !important;
+  }
+
+  :host .patch3d-admin-hero,
+  :host .patch3d-discounts-header,
+  :host .discounts-header {
+    display: block !important;
+  }
+
+  :host .patch3d-admin-stats,
+  :host .patch3d-discounts-stats,
+  :host .stats-grid,
+  :host .patch3d-admin-filters,
+  :host .patch3d-discounts-filters,
+  :host .filters-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
