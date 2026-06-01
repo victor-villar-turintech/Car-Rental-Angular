@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-validation-summary',
@@ -7,7 +7,7 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./validation-summary.component.css'],
 })
 export class ValidationSummaryComponent {
-  @Input() form: FormGroup | null = null;
+  @Input() form: UntypedFormGroup | null = null;
   @Input() title = 'Please correct the following';
   @Input() customErrors: string[] = [];
 

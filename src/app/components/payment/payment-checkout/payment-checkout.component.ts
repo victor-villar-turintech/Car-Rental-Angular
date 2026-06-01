@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DiscountCode } from 'src/app/models/discount-code';
@@ -17,7 +17,7 @@ export class PaymentCheckoutComponent implements OnInit {
   booking: Rental | undefined;
   bookingReference = '';
   method: PaymentMethod = 'Card';
-  paymentForm: FormGroup;
+  paymentForm: UntypedFormGroup;
   errorMessage = '';
   processing = false;
   appliedDiscount: DiscountCode | undefined;
@@ -25,7 +25,7 @@ export class PaymentCheckoutComponent implements OnInit {
   rewardDiscountAmount = 0;
   rewardPointsBalance = 0;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rentalService: RentalService, private paymentService: PaymentService, private discountCodeService: DiscountCodeService, private rewardService: RewardService, private customerAuthService: CustomerAuthService, private customerActivityService: CustomerActivityService, private toastrService: ToastrService) {
+  constructor(private fb: UntypedFormBuilder, private route: ActivatedRoute, private router: Router, private rentalService: RentalService, private paymentService: PaymentService, private discountCodeService: DiscountCodeService, private rewardService: RewardService, private customerAuthService: CustomerAuthService, private customerActivityService: CustomerActivityService, private toastrService: ToastrService) {
     this.paymentForm = this.fb.group({
       method: ['Card', [Validators.required]], discountCode: [''], rewardPointsToRedeem: [0],
       cardholderName: ['', [Validators.required]], cardNumber: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],

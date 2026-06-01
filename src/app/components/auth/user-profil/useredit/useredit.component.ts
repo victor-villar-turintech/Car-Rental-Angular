@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Customer } from 'src/app/models/customer';
 import { PasswordChangeModel } from 'src/app/models/passwordChangeModel';
@@ -13,13 +13,13 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class UsereditComponent implements OnInit {
 
-  passwordUpdateForm: FormGroup;
-  userForm: FormGroup;
-  customerForm: FormGroup;
+  passwordUpdateForm: UntypedFormGroup;
+  userForm: UntypedFormGroup;
+  customerForm: UntypedFormGroup;
   user: User;
   customer: Customer;
   constructor(
-    private formBuilder:FormBuilder,
+    private formBuilder:UntypedFormBuilder,
     private toastrService: ToastrService,
     private authService: AuthService
   ) { }
@@ -37,7 +37,7 @@ export class UsereditComponent implements OnInit {
 
   updatepassord(){
     if(this.passwordUpdateForm.valid){
-      this.passwordUpdateForm.addControl("userId",new FormControl(this.authService.getCurrentUserId()))
+      this.passwordUpdateForm.addControl("userId",new UntypedFormControl(this.authService.getCurrentUserId()))
       let passwordModel:PasswordChangeModel = Object.assign({},this.passwordUpdateForm.value)
       this.authService.changePassword(passwordModel).subscribe(response => {
         this.toastrService.success(response.message,"Successful")
