@@ -22,7 +22,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 460px;
   gap: 30px;
-  align-items: start;
+  align-items: flex-start;
   max-width: 1500px;
   margin: 0 auto;
 }
@@ -439,7 +439,7 @@
 .payment-method-card {
   display: grid !important;
   grid-template-columns: auto 1fr;
-  align-items: start;
+  align-items: flex-start;
   column-gap: 11px !important;
   row-gap: 3px !important;
   border: 1px solid #dbe5f4;

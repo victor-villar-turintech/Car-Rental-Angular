@@ -4,7 +4,7 @@
 h1, h2 { color: #0f172a; font-weight: 900; }
 p { color: #64748b; }
 .account-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
-.account-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.25rem; align-items: start; }
+.account-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.25rem; align-items: flex-start; }
 .account-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 26px; padding: 1.5rem; box-shadow: 0 24px 70px rgba(15,23,42,.08); }
 .two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
 label { margin-top: .8rem; font-weight: 800; color: #334155; }

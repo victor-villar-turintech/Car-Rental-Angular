@@ -2,7 +2,7 @@
 .admin-page-header span, .admin-form-card span { color: #2563eb; font-size: .74rem; font-weight: 950; letter-spacing: .12em; text-transform: uppercase; }
 .admin-page-header h1, .admin-form-card h2 { color: #0f172a; font-weight: 950; letter-spacing: -.04em; margin: .15rem 0; }
 .admin-page-header p { color: #64748b; margin: 0; }
-.extras-admin-grid { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+.extras-admin-grid { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 1.25rem; align-items: flex-start; }
 .admin-form-card, .extras-table-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 24px; box-shadow: 0 18px 46px rgba(15, 23, 42, .07); }
 .admin-form-card { padding: 1.25rem; display: grid; gap: .75rem; position: sticky; top: 1rem; }
 .admin-form-card label { color: #334155; font-weight: 900; margin-bottom: -.4rem; }

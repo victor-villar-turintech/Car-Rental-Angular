@@ -14,7 +14,7 @@
 .admin-sidebar {
   position: sticky;
   top: 0;
-  align-self: start;
+  align-self: flex-start;
   min-height: calc(100vh - 72px);
   padding: 1.25rem;
   background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
