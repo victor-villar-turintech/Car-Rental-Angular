@@ -16,7 +16,7 @@ export class LocalRegisterComponent {
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.pattern(/^[0-9 +()-]{7,20}$/)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]],
     }, { validators: this.passwordsMatch });
   }

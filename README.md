@@ -212,6 +212,40 @@ export NODE_OPTIONS=--openssl-legacy-provider
 npm start
 ```
 
+## Backend + real authentication (Phases 7-8, optional)
+
+This repo now ships with an in-repo NestJS + SQLite backend that implements Phases 7 (real backend split) and 8 (real authentication) of the handover plan. It runs alongside the Angular frontend and can be enabled by flipping a single environment flag.
+
+### One-off install + seed
+
+```bash
+cd backend
+npm install
+npm run build
+npm run seed             # creates admin@rentacar.local / admin123 and demo@rentacar.local / demo1234
+cd ..
+```
+
+### Run both servers together
+
+From the repo root:
+
+```bash
+export NODE_OPTIONS=--openssl-legacy-provider
+npm run start:all         # web on :4200, api on :3001
+```
+
+Or run them independently in separate terminals:
+
+```bash
+npm start                 # frontend
+npm run backend           # backend
+```
+
+### Wire the frontend to the backend
+
+Set `useBackend: true` in `src/environments/environment.ts`, then rebuild / restart the dev server. With the flag off (the default), the app continues to use its localStorage-backed demo state. See `backend/README.md` for the full API reference and a roadmap for migrating to PostgreSQL.
+
 Open:
 
 ```text
