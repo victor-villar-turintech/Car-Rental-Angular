@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminAuthService } from 'src/app/services/admin-auth.service';
 
 @Component({ selector: 'app-admin-login', templateUrl: './admin-login.component.html', styleUrls: ['./admin-login.component.css'] })
 export class AdminLoginComponent {
-  adminLoginForm: FormGroup;
+  adminLoginForm: UntypedFormGroup;
 
-  constructor(public adminAuthService: AdminAuthService, private fb: FormBuilder, private router: Router, private toastrService: ToastrService) {
+  constructor(public adminAuthService: AdminAuthService, private fb: UntypedFormBuilder, private router: Router, private toastrService: ToastrService) {
     this.adminLoginForm = this.fb.group({
       username: [this.adminAuthService.demoUsername, [Validators.required]],
       password: ['', [Validators.required]],

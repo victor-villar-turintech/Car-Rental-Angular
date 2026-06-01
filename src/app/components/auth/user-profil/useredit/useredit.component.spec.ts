@@ -17,7 +17,7 @@ describe('UsereditComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ UsereditComponent ],
-      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, FormsModule, JwtModule.forRoot({}), BrowserAnimationsModule, ToastrModule.forRoot()],
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule, FormsModule, JwtModule.forRoot({ config: { tokenGetter: () => '' } }), BrowserAnimationsModule, ToastrModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{
         provide: ToastrService,

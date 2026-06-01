@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup,FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup,FormControl, Validators } from '@angular/forms';
 import { CarService } from '../../../../../services/car.service';
 import { BrandService } from '../../../../../services/brand.service';
 import { ColorService } from '../../../../../services/color.service';
@@ -18,13 +18,13 @@ export class CarAddComponent implements OnInit {
   apiUrl="https://localhost:44388/api/";
   brands:Brand[];
   colors:Color[];
-  carAddForm:FormGroup;
+  carAddForm:UntypedFormGroup;
 
   constructor(private carService:CarService,
               private brandService:BrandService,
               private colorService:ColorService,
               private toastrService:ToastrService,
-              private formBuilder:FormBuilder,
+              private formBuilder:UntypedFormBuilder,
               private router:Router
               ) { }
 

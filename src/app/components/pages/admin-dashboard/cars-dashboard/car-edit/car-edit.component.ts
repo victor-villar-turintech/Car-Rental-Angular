@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Brand } from 'src/app/models/brand';
@@ -19,7 +19,7 @@ import { ColorService } from 'src/app/services/color.service';
 export class CarEditComponent implements OnInit {
   car: Car;
   carImages:CarImage[]=[];
-  carUpdateForm: FormGroup;
+  carUpdateForm: UntypedFormGroup;
   colors: Color[] = [];
   brands: Brand[] = [];
   selectedColor: number;
@@ -33,7 +33,7 @@ export class CarEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private toastrService: ToastrService,
     private router: Router,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private colorService: ColorService,
     private brandService: BrandService,
     private carImageService:CarImageService

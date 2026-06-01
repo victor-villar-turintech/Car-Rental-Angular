@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BookingExtraSelection } from 'src/app/models/booking-extra';
@@ -19,7 +19,7 @@ import { FavouriteVehicleService } from '../../services/favourite-vehicle.servic
 export class RentalComponent implements OnInit {
   car: Car;
   currentCustomer: Customer | undefined;
-  rentalForm: FormGroup;
+  rentalForm: UntypedFormGroup;
   pickupDate = '';
   returnDate = '';
   rentalDays = 0;
@@ -48,7 +48,7 @@ export class RentalComponent implements OnInit {
     { label: 'Custom', value: 'custom' },
   ];
 
-  constructor(private fb: FormBuilder,
+  constructor(private fb: UntypedFormBuilder,
     private rentalService: RentalService,
     private carService: CarService,
     private bookingExtraService: BookingExtraService,

@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerAuthService } from 'src/app/services/customer-auth.service';
 
 @Component({ selector: 'app-local-register', templateUrl: './local-register.component.html', styleUrls: ['./local-register.component.css'] })
 export class LocalRegisterComponent {
-  registerForm: FormGroup;
+  registerForm: UntypedFormGroup;
   returnUrl = '/account';
 
-  constructor(private fb: FormBuilder, private authService: CustomerAuthService, private router: Router, private route: ActivatedRoute, private toastrService: ToastrService) {
+  constructor(private fb: UntypedFormBuilder, private authService: CustomerAuthService, private router: Router, private route: ActivatedRoute, private toastrService: ToastrService) {
     this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/account';
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required]],

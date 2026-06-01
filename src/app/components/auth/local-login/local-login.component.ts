@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerAuthService } from 'src/app/services/customer-auth.service';
 
 @Component({ selector: 'app-local-login', templateUrl: './local-login.component.html', styleUrls: ['./local-login.component.css'] })
 export class LocalLoginComponent {
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   returnUrl = '/account';
 
-  constructor(private fb: FormBuilder, private authService: CustomerAuthService, private router: Router, private route: ActivatedRoute, private toastrService: ToastrService) {
+  constructor(private fb: UntypedFormBuilder, private authService: CustomerAuthService, private router: Router, private route: ActivatedRoute, private toastrService: ToastrService) {
     this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/account';
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
