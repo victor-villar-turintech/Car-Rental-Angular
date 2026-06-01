@@ -808,3 +808,129 @@ h4, .h4 { font-weight: 800; color: var(--rac-color-text); }
   .admin-page .table { font-size: .9rem; }
   .admin-page .table-card { border-radius: var(--rac-radius-md); overflow: auto; }
 }
+
+/* =====================================================================
+   Phase 14 — sleek/professional design layer
+   Adds Inter + Plus Jakarta Sans, gradient accents, glass nav, refined
+   admin sidebar, polished cards/buttons. Built on the Phase 9 tokens.
+   ===================================================================== */
+
+:root {
+  --rac-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --rac-font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --rac-gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e3a8a 100%);
+  --rac-gradient-accent: linear-gradient(135deg, #06b6d4 0%, #0d6efd 100%);
+  --rac-gradient-warm: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  --rac-glass-bg: rgba(255, 255, 255, 0.78);
+  --rac-glass-border: rgba(15, 23, 42, 0.06);
+  --rac-shadow-lift-sm: 0 6px 16px -8px rgba(15, 23, 42, .18);
+  --rac-shadow-lift-md: 0 18px 36px -12px rgba(15, 23, 42, .22);
+  --rac-shadow-lift-lg: 0 28px 60px -16px rgba(15, 23, 42, .28);
+}
+
+body { font-family: var(--rac-font-sans); font-feature-settings: 'cv11', 'ss01'; }
+
+h1, h2, h3, .hero-copy-block h1, .navbar-brand { font-family: var(--rac-font-display); letter-spacing: -.025em; }
+
+/* Glassmorphic top nav. Inherits the Phase 9 sticky behaviour. */
+.app-navbar {
+  background: var(--rac-glass-bg) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--rac-glass-border) !important;
+  box-shadow: 0 12px 30px -16px rgba(15, 23, 42, .18) !important;
+}
+.app-navbar .navbar-brand {
+  background: var(--rac-gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  font-weight: 800;
+  letter-spacing: -.03em;
+}
+
+/* Sleek primary button — gradient + lift on hover. Applies to .btn-primary by default. */
+.btn.btn-primary {
+  background: var(--rac-gradient-primary);
+  border: 0;
+  color: #fff;
+  box-shadow: var(--rac-shadow-lift-sm);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.btn.btn-primary:hover, .btn.btn-primary:focus { transform: translateY(-1px); box-shadow: var(--rac-shadow-lift-md); filter: saturate(115%); color: #fff; }
+.btn.btn-primary:active { transform: translateY(0); box-shadow: var(--rac-shadow-lift-sm); }
+.btn.btn-primary:disabled { background: #cbd5e1; box-shadow: none; transform: none; }
+
+/* Outline buttons get a subtle border + lift. */
+.btn.btn-outline-primary, .btn.btn-outline-secondary {
+  border-width: 1.5px;
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.btn.btn-outline-primary:hover, .btn.btn-outline-secondary:hover { transform: translateY(-1px); box-shadow: var(--rac-shadow-lift-sm); }
+
+/* Refined card style — opt in by adding class .rac-card; existing cards untouched. */
+.rac-card {
+  background: var(--rac-color-bg-card);
+  border: 1px solid var(--rac-color-border);
+  border-radius: var(--rac-radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--rac-shadow-card);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.rac-card:hover { transform: translateY(-2px); box-shadow: var(--rac-shadow-lift-lg); border-color: #c7d6ea; }
+.rac-card-eyebrow { color: var(--rac-color-primary-strong); font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: var(--rac-eyebrow-letterspacing); margin-bottom: .5rem; }
+
+/* Apply card polish to vehicle cards on /cars without changing markup. */
+app-car .car-card, app-car .vehicle-card, app-car .vehicle-item, .public-catalogue .catalogue-card, .catalogue-card {
+  border-radius: var(--rac-radius-lg);
+  box-shadow: var(--rac-shadow-card);
+  transition: transform .2s ease, box-shadow .25s ease;
+}
+app-car .car-card:hover, app-car .vehicle-card:hover, app-car .vehicle-item:hover, .public-catalogue .catalogue-card:hover, .catalogue-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--rac-shadow-lift-lg);
+}
+
+/* Admin sidebar — soften the slab black to a deep navy gradient. Existing override classes still drive width/padding. */
+.full-admin-menu, .admin-compatible-sidebar.full-admin-menu, .admin-sidebar, .admin-dashboard-sidebar, .dashboard-sidebar, .admin-side-nav, .admin-sidenav, .admin-menu, .admin-navigation, .admin-nav, .fleet-admin-sidebar {
+  background: linear-gradient(180deg, #0b1220 0%, #111c30 60%, #0b1220 100%) !important;
+  box-shadow: 4px 0 24px -8px rgba(0, 0, 0, .35) !important;
+}
+.admin-sidebar a:hover, .admin-dashboard-sidebar a:hover, .dashboard-sidebar a:hover, .admin-side-nav a:hover, .admin-sidenav a:hover, .admin-menu a:hover, .admin-navigation a:hover, .admin-nav a:hover, .full-admin-menu a:hover {
+  background: rgba(59, 130, 246, 0.18) !important;
+}
+
+/* Form controls — slightly larger touch target + soft inner shadow on focus. */
+.form-control { padding: .55rem .85rem; border: 1px solid var(--rac-color-border-strong); }
+.form-control:focus { box-shadow: 0 0 0 4px rgba(13, 110, 253, .14); border-color: var(--rac-color-primary-strong); }
+.form-control:disabled { background: #f8fafc; color: var(--rac-color-text-muted); }
+
+/* Section eyebrow refresh — universal. */
+.eyebrow, .section-eyebrow { font-family: var(--rac-font-sans); font-weight: 900; letter-spacing: var(--rac-eyebrow-letterspacing); text-transform: uppercase; font-size: .76rem; color: var(--rac-color-primary-strong); }
+
+/* Status badge palette — modernised, soft pastel. Layered on top of Phase 9 .status-pill defaults. */
+.status-pill { border: 1px solid transparent; padding: .28rem .65rem; font-size: .7rem; }
+.status-pill.Paid, .status-pill.Confirmed, .status-pill.Success, .status-pill.Available { background: rgba(34, 197, 94, .12); color: #166534; border-color: rgba(34, 197, 94, .25); }
+.status-pill.Pending, .status-pill.Warning { background: rgba(245, 158, 11, .12); color: #92400e; border-color: rgba(245, 158, 11, .28); }
+.status-pill.Failed, .status-pill.Cancelled, .status-pill.Danger, .status-pill.Maintenance { background: rgba(239, 68, 68, .10); color: #991b1b; border-color: rgba(239, 68, 68, .25); }
+.status-pill.Refunded, .status-pill.Info, .status-pill.Booked { background: rgba(99, 102, 241, .12); color: #3730a3; border-color: rgba(99, 102, 241, .25); }
+
+/* Subtle scrollbar refresh for the design system. */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-thumb:hover { background: #94a3b8; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* Toastr — bring its visual identity in line with the rest of the system. */
+.toast-container .ngx-toastr {
+  border-radius: var(--rac-radius-md) !important;
+  box-shadow: var(--rac-shadow-lift-md) !important;
+  font-family: var(--rac-font-sans);
+  border: 1px solid rgba(255, 255, 255, .15);
+}
+
+/* Footer — slightly more refined. */
+.site-footer { background: linear-gradient(160deg, #0b1220 0%, #0f172a 100%) !important; box-shadow: inset 0 1px 0 rgba(148, 163, 184, .08); }
+
+/* Small print everywhere. */
+.text-muted { color: var(--rac-color-text-muted) !important; }

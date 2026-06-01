@@ -336,7 +336,8 @@
   max-width: 240px !important;
   flex: 0 0 240px !important;
   box-sizing: border-box !important;
-  background: #111827 !important;
+  background: linear-gradient(180deg, #0b1220 0%, #111c30 60%, #0b1220 100%) !important;
+  box-shadow: 4px 0 24px -8px rgba(0, 0, 0, .35) !important;
   color: #ffffff !important;
   padding: 18px 14px !important;
   font-family: inherit !important;
