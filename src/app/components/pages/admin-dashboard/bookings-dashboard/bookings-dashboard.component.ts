@@ -3,20 +3,88 @@ import { Rental, RentalStatus } from 'src/app/models/rental';
 import { PaymentService } from 'src/app/services/payment.service';
 import { RentalService } from 'src/app/services/rental.service';
 import { BookingFleetLifecycleService } from '../../../../services/booking-fleet-lifecycle.service';
+import { FleetAvailabilityService } from 'src/app/services/fleet-availability.service';
+
+interface LocationFilterOption {
+  id: string;
+  label: string;
+}
 
 @Component({ selector: 'app-admin-bookings', templateUrl: './bookings-dashboard.component.html', styleUrls: ['./bookings-dashboard.component.css'] })
 export class AdminBookingsComponent implements OnInit {
   bookings: Rental[] = [];
+
   statusFilter = '';
+  paymentFilter = '';
+  locationFilter = '';
+  searchTerm = '';
+  fromDate = '';
+  toDate = '';
+  expandedRef: string | null = null;
+
+  locationOptions: LocationFilterOption[] = [];
 
   constructor(private rentalService: RentalService, private paymentService: PaymentService,
-    private bookingFleetLifecycleService: BookingFleetLifecycleService) {}
+    private bookingFleetLifecycleService: BookingFleetLifecycleService,
+    private fleetAvailabilityService: FleetAvailabilityService) {}
 
-  ngOnInit(): void { this.loadBookings(); }
+  ngOnInit(): void {
+    this.loadBookings();
+    this.loadLocationOptions();
+  }
+
+  private loadLocationOptions(): void {
+    const locations = this.fleetAvailabilityService.getRentalLocations() || [];
+    this.locationOptions = locations.map((location) => ({
+      id: String(location.id),
+      label: location.name || `Location ${location.id}`
+    }));
+  }
 
   get filteredBookings(): Rental[] {
-    const bookings = this.statusFilter ? this.bookings.filter((booking) => booking.status === this.statusFilter) : this.bookings;
-    return [...bookings].sort((a, b) => {
+    const term = this.searchTerm.trim().toLowerCase();
+    const from = this.fromDate ? new Date(this.fromDate).getTime() : null;
+    const to = this.toDate ? new Date(this.toDate).getTime() : null;
+
+    const filtered = this.bookings.filter((booking) => {
+      if (this.statusFilter && booking.status !== this.statusFilter) {
+        return false;
+      }
+
+      if (this.paymentFilter && (booking.paymentStatus || 'Pending') !== this.paymentFilter) {
+        return false;
+      }
+
+      if (this.locationFilter) {
+        const pickupId = booking.pickupLocationId != null ? String(booking.pickupLocationId) : '';
+        const returnId = booking.returnLocationId != null ? String(booking.returnLocationId) : '';
+        if (pickupId !== this.locationFilter && returnId !== this.locationFilter) {
+          return false;
+        }
+      }
+
+      if (term) {
+        const ref = (booking.bookingReference || `RC-${booking.rentalId}`).toLowerCase();
+        const name = (booking.customerName || '').toLowerCase();
+        const email = (booking.customerEmail || '').toLowerCase();
+        const plate = (booking.numberPlate || '').toLowerCase();
+        if (!ref.includes(term) && !name.includes(term) && !email.includes(term) && !plate.includes(term)) {
+          return false;
+        }
+      }
+
+      const pickupAt = booking.rentDate ? new Date(booking.rentDate).getTime() : null;
+      if (from !== null && (pickupAt === null || pickupAt < from)) {
+        return false;
+      }
+      if (to !== null && (pickupAt === null || pickupAt > to)) {
+        return false;
+      }
+
+      return true;
+    });
+
+    return filtered.sort((a, b) => {
       const left = a.createdAt ? new Date(a.createdAt).getTime() : 0;
       const right = b.createdAt ? new Date(b.createdAt).getTime() : 0;
       return right - left;
@@ -24,6 +92,25 @@ export class AdminBookingsComponent implements OnInit {
   }
 
   loadBookings(): void { this.rentalService.getRental().subscribe((response) => this.bookings = response.data); }
+
+  resetFilters(): void {
+    this.statusFilter = '';
+    this.paymentFilter = '';
+    this.locationFilter = '';
+    this.searchTerm = '';
+    this.fromDate = '';
+    this.toDate = '';
+  }
+
+  toggleExpanded(booking: Rental): void {
+    const key = booking.bookingReference || `RC-${booking.rentalId}`;
+    this.expandedRef = this.expandedRef === key ? null : key;
+  }
+
+  isExpanded(booking: Rental): boolean {
+    const key = booking.bookingReference || `RC-${booking.rentalId}`;
+    return this.expandedRef === key;
+  }
 
   updateStatus(booking: Rental, status: RentalStatus): void {
     if (!booking.rentalId || !this.canMoveToStatus(booking, status)) { return; }
@@ -65,7 +152,23 @@ export class AdminBookingsComponent implements OnInit {
     return this.bookings.filter((booking) => booking.status !== 'Cancelled').reduce((total, booking) => total + Number(booking.totalRentPrice || 0), 0);
   }
 
+  filteredRevenue(): number {
+    return this.filteredBookings.filter((booking) => booking.status !== 'Cancelled').reduce((total, booking) => total + Number(booking.totalRentPrice || 0), 0);
+  }
+
   countByStatus(status: RentalStatus): number { return this.bookings.filter((booking) => booking.status === status).length; }
+
+  paymentStatusVariant(status: string | undefined): string {
+    const normalised = (status || 'Pending').toLowerCase();
+    if (normalised === 'paid') { return 'paid'; }
+    if (normalised === 'refunded') { return 'refunded'; }
+    if (normalised === 'failed') { return 'failed'; }
+    return 'pending';
+  }
+
+  bookingStatusVariant(status: string | undefined): string {
+    return (status || 'Pending').toLowerCase();
+  }
 
   getFleetAwareBookingSummary(booking: any): any {
     return this.bookingFleetLifecycleService.getBookingSummary(booking);
@@ -167,8 +270,17 @@ export class AdminBookingsComponent implements OnInit {
   }
 
   private isSameFleetAwareBooking(left: any, right: any): boolean {
-    return String(left?.bookingReference || '') === String(right?.bookingReference || '') ||
-      String(left?.rentalId || '') === String(right?.rentalId || '') ||
-      String(left?.id || '') === String(right?.id || '');
+    if (!left || !right) {
+      return false;
+    }
+
+    if (left.bookingReference && right.bookingReference) {
+      return left.bookingReference === right.bookingReference;
+    }
+
+    const leftId = left.rentalId || left.id;
+    const rightId = right.rentalId || right.id;
+
+    return leftId != null && rightId != null && Number(leftId) === Number(rightId);
   }
 }

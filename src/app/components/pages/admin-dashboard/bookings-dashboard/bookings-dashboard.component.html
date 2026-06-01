@@ -11,7 +11,7 @@
             <span class="booking-reference">{{ summary.bookingReference }}</span>
             <h3>{{ summary.vehicleLabel }}</h3>
           </div>
-          <span class="booking-status">{{ summary.bookingStatus }}</span>
+          <app-status-badge [status]="summary.bookingStatus"></app-status-badge>
         </div>
 
         <div class="booking-detail-grid">
@@ -61,31 +61,118 @@
 <section class="bookings-dashboard">
   <div class="admin-page-header">
     <div><span>Local bookings</span><h1>Bookings</h1><p>Manage booking status, selected extras and payment/refund state.</p></div>
-    <div class="summary-cards"><div><span>Total bookings</span><strong>{{ bookings.length }}</strong></div><div><span>Projected revenue</span><strong>{{ totalRevenue() | currency:'GBP':'symbol':'1.0-0' }}</strong></div></div>
+    <div class="summary-cards">
+      <div><span>Total bookings</span><strong>{{ bookings.length }}</strong></div>
+      <div><span>Filtered subset</span><strong>{{ filteredBookings.length }}</strong></div>
+      <div><span>Projected revenue</span><strong>{{ totalRevenue() | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+      <div><span>Filtered revenue</span><strong>{{ filteredRevenue() | currency:'GBP':'symbol':'1.0-0' }}</strong></div>
+    </div>
   </div>
 
   <div class="status-summary-grid"><div><span>Pending</span><strong>{{ countByStatus('Pending') }}</strong></div><div><span>Confirmed</span><strong>{{ countByStatus('Confirmed') }}</strong></div><div><span>Active</span><strong>{{ countByStatus('Active') }}</strong></div><div><span>Completed</span><strong>{{ countByStatus('Completed') }}</strong></div><div><span>Cancelled</span><strong>{{ countByStatus('Cancelled') }}</strong></div></div>
 
-  <div class="bookings-toolbar"><label for="statusFilter">Status</label><select id="statusFilter" class="form-control" [(ngModel)]="statusFilter"><option value="">All bookings</option><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Active">Active</option><option value="Completed">Completed</option><option value="Cancelled">Cancelled</option></select></div>
+  <div class="bookings-toolbar bookings-toolbar-grid">
+    <label class="toolbar-field toolbar-field-wide">
+      <span>Search</span>
+      <input class="form-control" type="search" placeholder="Reference, customer, email or plate" [(ngModel)]="searchTerm" />
+    </label>
+    <label class="toolbar-field">
+      <span>Status</span>
+      <select class="form-control" [(ngModel)]="statusFilter">
+        <option value="">All statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="Confirmed">Confirmed</option>
+        <option value="Active">Active</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </label>
+    <label class="toolbar-field">
+      <span>Payment</span>
+      <select class="form-control" [(ngModel)]="paymentFilter">
+        <option value="">All payments</option>
+        <option value="Pending">Pending</option>
+        <option value="Paid">Paid</option>
+        <option value="Refunded">Refunded</option>
+        <option value="Failed">Failed</option>
+      </select>
+    </label>
+    <label class="toolbar-field">
+      <span>Location</span>
+      <select class="form-control" [(ngModel)]="locationFilter">
+        <option value="">All branches</option>
+        <option *ngFor="let location of locationOptions" [value]="location.id">{{ location.label }}</option>
+      </select>
+    </label>
+    <label class="toolbar-field">
+      <span>Pickup from</span>
+      <input class="form-control" type="date" [(ngModel)]="fromDate" />
+    </label>
+    <label class="toolbar-field">
+      <span>Pickup to</span>
+      <input class="form-control" type="date" [(ngModel)]="toDate" />
+    </label>
+    <button type="button" class="btn btn-outline-secondary toolbar-reset" (click)="resetFilters()">Reset</button>
+  </div>
 
   <div class="table-card" *ngIf="filteredBookings.length > 0">
     <table class="table table-hover mb-0">
-      <thead><tr><th>Ref</th><th>Customer</th><th>Vehicle</th><th>Dates</th><th>Extras</th><th>Payment</th><th>Total</th><th>Status</th><th class="text-right">Actions</th></tr></thead>
+      <thead><tr><th></th><th>Ref</th><th>Customer</th><th>Vehicle</th><th>Dates</th><th>Locations</th><th>Extras</th><th>Payment</th><th>Total</th><th>Status</th><th class="text-right">Actions</th></tr></thead>
       <tbody>
-        <tr *ngFor="let booking of filteredBookings">
-          <td><strong>{{ booking.bookingReference || ('RC-' + booking.rentalId) }}</strong><small>{{ booking.numberPlate || 'N/A' }}</small></td>
-          <td><strong>{{ booking.customerName || 'Demo customer' }}</strong><small>{{ booking.customerEmail }}</small></td>
-          <td><strong>{{ booking.brandName }} {{ booking.carName }}</strong><small>{{ booking.colorName }} · {{ booking.modelYear }}</small></td>
-          <td><strong>{{ booking.rentDate | date:'mediumDate' }}</strong><small>to {{ booking.returnDate | date:'mediumDate' }} · {{ booking.rentalDays }} day{{ booking.rentalDays === 1 ? '' : 's' }}</small></td>
-          <td><strong>{{ booking.selectedExtras?.length || 0 }} services</strong><small>{{ booking.extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</small></td>
-          <td><strong>{{ booking.paymentStatus || 'Pending' }}</strong><small>{{ booking.paymentMethod || 'No method' }} {{ booking.paymentReference ? '· ' + booking.paymentReference : '' }}</small></td>
-          <td>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</td>
-          <td><span class="status-pill" [ngClass]="booking.status">{{ booking.status }}</span></td>
-          <td class="text-right action-buttons"><ng-container *ngFor="let action of getAvailableActions(booking)"><button class="btn btn-sm" [ngClass]="action === 'Cancelled' ? 'btn-outline-danger' : 'btn-outline-success'" type="button" (click)="updateStatus(booking, action)">{{ getActionLabel(action) }}</button></ng-container><span class="no-actions" *ngIf="getAvailableActions(booking).length === 0">No actions</span></td>
-        </tr>
+        <ng-container *ngFor="let booking of filteredBookings">
+          <tr>
+            <td class="expand-toggle"><button type="button" class="btn btn-sm btn-outline-secondary" (click)="toggleExpanded(booking)" [attr.aria-expanded]="isExpanded(booking)">{{ isExpanded(booking) ? '−' : '+' }}</button></td>
+            <td><strong>{{ booking.bookingReference || ('RC-' + booking.rentalId) }}</strong><small>{{ booking.numberPlate || 'N/A' }}</small></td>
+            <td><strong>{{ booking.customerName || 'Demo customer' }}</strong><small>{{ booking.customerEmail }}</small></td>
+            <td><strong>{{ booking.brandName }} {{ booking.carName }}</strong><small>{{ booking.colorName }} · {{ booking.modelYear }}</small></td>
+            <td><strong>{{ booking.rentDate | date:'mediumDate' }}</strong><small>to {{ booking.returnDate | date:'mediumDate' }} · {{ booking.rentalDays }} day{{ booking.rentalDays === 1 ? '' : 's' }}</small></td>
+            <td><strong>{{ booking.pickupLocationName || 'Branch' }}</strong><small>→ {{ booking.returnLocationName || booking.pickupLocationName || 'Branch' }}</small></td>
+            <td><strong>{{ booking.selectedExtras?.length || 0 }} services</strong><small>{{ booking.extrasTotal | currency:'GBP':'symbol':'1.0-0' }}</small></td>
+            <td><app-status-badge [status]="booking.paymentStatus || 'Pending'"></app-status-badge><small>{{ booking.paymentMethod || 'No method' }}</small></td>
+            <td>{{ booking.totalRentPrice | currency:'GBP':'symbol':'1.0-0' }}</td>
+            <td><app-status-badge [status]="booking.status"></app-status-badge></td>
+            <td class="text-right action-buttons"><ng-container *ngFor="let action of getAvailableActions(booking)"><button class="btn btn-sm" [ngClass]="action === 'Cancelled' ? 'btn-outline-danger' : 'btn-outline-success'" type="button" (click)="updateStatus(booking, action)">{{ getActionLabel(action) }}</button></ng-container><span class="no-actions" *ngIf="getAvailableActions(booking).length === 0">No actions</span></td>
+          </tr>
+          <tr class="booking-detail-row" *ngIf="isExpanded(booking)">
+            <td colspan="11">
+              <div class="booking-detail-grid expanded-detail">
+                <div>
+                  <h4>Fleet unit</h4>
+                  <p><strong>{{ booking.numberPlate || booking.registrationNumber || 'Not assigned' }}</strong></p>
+                  <p class="muted">Fleet ID {{ booking.fleetVehicleId || booking.carId }}</p>
+                </div>
+                <div>
+                  <h4>Payment</h4>
+                  <p><strong>{{ booking.paymentMethod || 'No method' }}</strong></p>
+                  <p class="muted">Status: {{ booking.paymentStatus || 'Pending' }} <span *ngIf="booking.paymentReference">· {{ booking.paymentReference }}</span></p>
+                  <p class="muted" *ngIf="booking.paidAt">Paid at: {{ booking.paidAt | date:'medium' }}</p>
+                </div>
+                <div>
+                  <h4>Extras ({{ booking.selectedExtras?.length || 0 }})</h4>
+                  <ul class="extras-list" *ngIf="booking.selectedExtras?.length">
+                    <li *ngFor="let extra of booking.selectedExtras">{{ extra.name }} <small>· {{ extra.category }}</small></li>
+                  </ul>
+                  <p class="muted" *ngIf="!booking.selectedExtras?.length">No extras selected.</p>
+                </div>
+                <div>
+                  <h4>Price breakdown</h4>
+                  <app-price-breakdown
+                    [dailyPrice]="booking.dailyPrice || 0"
+                    [rentalDays]="booking.rentalDays || 0"
+                    [vehicleSubtotal]="booking.vehicleSubtotal || 0"
+                    [extrasSubtotal]="booking.extrasTotal || 0"
+                    [extras]="booking.selectedExtras || []"
+                    [total]="booking.totalRentPrice || 0"
+                    [compact]="true"
+                  ></app-price-breakdown>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>
 
-  <div class="empty-bookings" *ngIf="filteredBookings.length === 0"><h2>No bookings found</h2><p>Create a booking from a vehicle detail page, or clear the status filter.</p><a class="btn btn-primary" routerLink="/cars">Browse cars</a></div>
+  <div class="empty-bookings" *ngIf="filteredBookings.length === 0"><h2>No bookings found</h2><p>Adjust the filters above or create a booking from a vehicle detail page.</p><a class="btn btn-primary" routerLink="/cars">Browse cars</a></div>
 </section>
