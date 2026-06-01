@@ -186,11 +186,24 @@ Autoprefixer warnings about `start` / `end` alignment are non-blocking.
 
 ## Test
 
+Interactive (watches files, opens a Chrome window):
+
 ```bash
-npm test -- --watch=false
+export NODE_OPTIONS=--openssl-legacy-provider
+npm test
 ```
 
-If Karma/Chrome setup hangs or fails locally, stop it with `Ctrl + C` and use `npm run build` plus the manual validation checklist below as the primary validation path.
+Headless one-shot (used in CI and recommended for local validation):
+
+```bash
+export NODE_OPTIONS=--openssl-legacy-provider
+export CHROME_BIN=$(which google-chrome || which chromium || which chrome)
+npx ng test --watch=false --browsers=ChromeHeadlessNoSandbox
+```
+
+The `ChromeHeadlessNoSandbox` launcher is defined in `karma.conf.js` and runs Chrome with `--no-sandbox --disable-gpu --disable-dev-shm-usage`, which is what GitHub Actions needs.
+
+If Karma/Chrome cannot start at all locally, stop it with `Ctrl + C` and use `npm run build` plus the manual validation checklist below as the fallback validation path.
 
 ## Start
 
@@ -204,6 +217,30 @@ Open:
 ```text
 http://localhost:4200
 ```
+
+## Continuous integration
+
+`.github/workflows/build-and-test.yml` runs on every pull request and every push to `main`:
+
+1. `npm ci --legacy-peer-deps` (Angular 11-era dependency graph)
+2. `npm run build`
+3. `npx ng test --watch=false --browsers=ChromeHeadlessNoSandbox`
+
+All three steps export `NODE_OPTIONS=--openssl-legacy-provider`. The `npm run lint` step is intentionally not part of CI because the legacy TSLint baseline has hundreds of pre-existing violations; lint can still be run locally but should be treated as informational until it is migrated to ESLint.
+
+## Admin reporting
+
+Three admin dashboards now have an **Export CSV** button:
+
+- `/admin/bookings` — exports the rows that match the current status filter.
+- `/admin/fleet` — exports the rows that match the current search / status / location / sort.
+- `/admin/cars` — exports the full catalogue.
+
+Files are timestamped (`admin-bookings-YYYYMMDD-HHMM.csv` etc.), UTF-8 with BOM, and CRLF-terminated for Excel-friendliness. Columns are defined per dashboard inside each component using the shared `src/app/helpers/csv-export.ts` helper.
+
+## Future backend split
+
+A design document for moving the demo away from `localStorage` toward a real PostgreSQL + NestJS backend lives at [`docs/BACKEND_ARCHITECTURE.md`](docs/BACKEND_ARCHITECTURE.md). No production code in this repository depends on that doc yet.
 
 ## Manual validation checklist
 
