@@ -51,4 +51,63 @@ export class DemoResetService {
     this.activityLogService.record('Demo extras restored', 'Extra', 'Default demo booking extras were restored.', { severity: 'Success' });
     return of({ success: true, message: 'Demo extras restored.' });
   }
+
+  exportSnapshot(): { snapshot: DemoSnapshot; payload: string; filename: string } {
+    const data: Record<string, unknown> = {};
+    this.resetTargets.forEach((target) => {
+      const raw = localStorage.getItem(target.key);
+      if (raw === null) { return; }
+      try {
+        data[target.key] = JSON.parse(raw);
+      } catch {
+        data[target.key] = raw;
+      }
+    });
+    const snapshot: DemoSnapshot = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      keys: data,
+    };
+    const payload = JSON.stringify(snapshot, null, 2);
+    const stamp = new Date().toISOString().replace(/[-:]/g, '').slice(0, 13);
+    const filename = `rent-a-car-demo-snapshot-${stamp}.json`;
+    this.activityLogService.record('Demo snapshot exported', 'System', `Exported ${Object.keys(data).length} localStorage keys to ${filename}.`, { entityReference: filename, severity: 'Info' });
+    return { snapshot, payload, filename };
+  }
+
+  importSnapshot(payload: string): Observable<ResponseModel> {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(payload);
+    } catch {
+      return of({ success: false, message: 'Snapshot file is not valid JSON.' });
+    }
+    if (!this.isSnapshot(parsed)) {
+      return of({ success: false, message: 'Snapshot file is not in the expected format.' });
+    }
+    const snapshot: DemoSnapshot = parsed;
+    const knownKeys = new Set(this.resetTargets.map((target) => target.key));
+    let applied = 0;
+    Object.keys(snapshot.keys).forEach((key) => {
+      if (!knownKeys.has(key)) { return; }
+      const value = snapshot.keys[key];
+      const serialised = typeof value === 'string' ? value : JSON.stringify(value);
+      localStorage.setItem(key, serialised);
+      applied += 1;
+    });
+    this.activityLogService.record('Demo snapshot imported', 'System', `Imported ${applied} localStorage keys from snapshot (exported ${snapshot.exportedAt}).`, { severity: 'Warning' });
+    return of({ success: true, message: `Snapshot imported. ${applied} keys restored. Refresh the page to see the new state.` });
+  }
+
+  private isSnapshot(value: unknown): value is DemoSnapshot {
+    if (!value || typeof value !== 'object') { return false; }
+    const candidate = value as Partial<DemoSnapshot>;
+    return typeof candidate.version === 'number' && typeof candidate.exportedAt === 'string' && !!candidate.keys && typeof candidate.keys === 'object';
+  }
+}
+
+export interface DemoSnapshot {
+  version: number;
+  exportedAt: string;
+  keys: Record<string, unknown>;
 }

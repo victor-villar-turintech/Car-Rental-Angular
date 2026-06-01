@@ -4,12 +4,19 @@
 h1 { color: #0f172a; font-weight: 950; margin: .25rem 0; }
 p { color: #64748b; }
 .toolbar-card, .activity-item, .empty-state { background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 18px 50px rgba(15,23,42,.06); }
-.toolbar-card { padding: 1rem; max-width: 360px; margin-bottom: 1rem; }
-.toolbar-card label { font-weight: 900; color: #334155; }
+.toolbar-card { padding: 1rem; margin-bottom: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) auto; align-items: end; gap: .75rem; }
+.toolbar-card .toolbar-field { display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+.toolbar-card .toolbar-field.grow { grid-column: span 2; }
+.toolbar-card label { font-weight: 900; color: #334155; margin: 0; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; }
+.toolbar-card .form-control { border-radius: 14px; }
+.toolbar-card .clear-filters { align-self: end; white-space: nowrap; }
+.result-meta { color: #64748b; margin-bottom: .75rem; font-size: .85rem; }
+.result-meta strong { color: #0f172a; }
 .activity-list { display: grid; gap: .75rem; }
 .activity-item { display: grid; grid-template-columns: 110px 1fr; gap: 1rem; padding: 1rem; align-items: flex-start; }
 .activity-item strong { color: #0f172a; font-weight: 950; }
 .activity-item p { margin: .2rem 0; }
 .activity-item small { color: #64748b; font-weight: 700; }
 .empty-state { padding: 2rem; color: #64748b; font-weight: 800; }
+@media (max-width: 800px) { .toolbar-card .toolbar-field.grow { grid-column: span 1; } }
 @media (max-width: 575.98px) { .page-heading, .activity-item { display: block; } .activity-item app-status-badge { display: inline-block; margin-bottom: .5rem; } }
