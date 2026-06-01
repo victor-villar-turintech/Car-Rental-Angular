@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { restoreDemoCommerceData } from '../../../../helpers/demo-commerce-data-migration';
+import { ConfirmDialogService } from '../../../../services/confirm-dialog.service';
 
 interface AdminDiscountCode {
   id: number;
@@ -24,6 +25,8 @@ interface AdminDiscountCode {
   styleUrls: ['./discounts-dashboard.component.css']
 })
 export class AdminDiscountsDashboardComponent implements OnInit {
+  constructor(private confirmDialogService: ConfirmDialogService) {}
+
   readonly storageKeys = [
     'discountCodes',
     'rent-a-car-demo-discount-codes',
@@ -189,13 +192,18 @@ export class AdminDiscountsDashboardComponent implements OnInit {
     this.formSuccess = status === 'active' ? 'Discount code reactivated.' : 'Discount code is expired and was not reactivated.';
   }
 
-  deleteDiscountCode(code: AdminDiscountCode): void {
+  async deleteDiscountCode(code: AdminDiscountCode): Promise<void> {
     if (Number(code.redeemedCount || 0) > 0) {
       this.formError = 'This discount code has redemption history. Deactivate it instead of deleting it.';
       return;
     }
 
-    const confirmed = window.confirm(`Delete discount code ${code.code} permanently?`);
+    const confirmed = await this.confirmDialogService.confirm({
+      title: `Delete discount code ${code.code}?`,
+      message: 'This permanently removes the discount code from the local catalogue.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
     if (!confirmed) {
       return;
     }

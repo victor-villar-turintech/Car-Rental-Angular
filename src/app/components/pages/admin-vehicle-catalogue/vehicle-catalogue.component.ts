@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfirmDialogService } from '../../../services/confirm-dialog.service';
 
 interface AdminCatalogueVehicle {
   id: number;
@@ -67,6 +68,8 @@ interface LegacyRecord {
   styleUrls: ['./vehicle-catalogue.component.css']
 })
 export class VehicleCatalogueComponent implements OnInit {
+  constructor(private confirmDialogService: ConfirmDialogService) {}
+
   readonly catalogueStorageKey = 'vehicleCatalogue';
   readonly fleetStorageKey = 'fleetVehicles';
   readonly bookingsStorageKey = 'rent-a-car-demo-bookings';
@@ -328,7 +331,7 @@ export class VehicleCatalogueComponent implements OnInit {
     this.formSuccess = 'Catalogue item reactivated.';
   }
 
-  deleteVehicle(vehicle: AdminCatalogueVehicle): void {
+  async deleteVehicle(vehicle: AdminCatalogueVehicle): Promise<void> {
     this.formError = '';
     this.formSuccess = '';
 
@@ -342,7 +345,12 @@ export class VehicleCatalogueComponent implements OnInit {
       return;
     }
 
-    const confirmed = window.confirm(`Delete ${this.getDisplayName(vehicle)} permanently from the catalogue?`);
+    const confirmed = await this.confirmDialogService.confirm({
+      title: `Delete ${this.getDisplayName(vehicle)}?`,
+      message: 'Permanently removes this catalogue entry. This only affects local demo data.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
     if (!confirmed) {
       return;
     }

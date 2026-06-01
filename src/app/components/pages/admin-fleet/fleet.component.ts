@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CsvColumn, downloadCsv, timestampedFilename } from '../../../helpers/csv-export';
+import { ConfirmDialogService } from '../../../services/confirm-dialog.service';
 
 interface AdminCatalogueVehicle {
   id: number;
@@ -66,6 +67,8 @@ interface AdminBooking {
   styleUrls: ['./fleet.component.css']
 })
 export class FleetComponent implements OnInit {
+  constructor(private confirmDialogService: ConfirmDialogService) {}
+
   readonly catalogueStorageKey = 'vehicleCatalogue';
   readonly fleetStorageKey = 'fleetVehicles';
   readonly locationsStorageKey = 'rentalLocations';
@@ -265,7 +268,7 @@ export class FleetComponent implements OnInit {
     this.formSuccess = 'Fleet unit reactivated as available.';
   }
 
-  deleteFleetUnit(unit: AdminFleetVehicle): void {
+  async deleteFleetUnit(unit: AdminFleetVehicle): Promise<void> {
     this.formError = '';
     this.formSuccess = '';
 
@@ -279,7 +282,12 @@ export class FleetComponent implements OnInit {
       return;
     }
 
-    const confirmed = window.confirm(`Delete fleet unit ${unit.registrationNumber || unit.id} permanently?`);
+    const confirmed = await this.confirmDialogService.confirm({
+      title: `Delete fleet unit ${unit.registrationNumber || unit.id}?`,
+      message: 'Permanently removes this fleet unit from the local demo fleet.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
     if (!confirmed) {
       return;
     }

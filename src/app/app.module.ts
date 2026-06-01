@@ -70,6 +70,7 @@ import { AdminRewardSettingsComponent } from './components/pages/admin-dashboard
 import { AdminDiscountAnalyticsComponent } from './components/pages/admin-dashboard/discount-analytics/discount-analytics.component';
 import { VehicleComparisonComponent } from './components/vehicle-comparison/vehicle-comparison.component';
 import { EmptyStateComponent } from './components/shared/empty-state/empty-state.component';
+import { LoadingSpinnerComponent } from './components/shared/loading-spinner/loading-spinner.component';
 import { CustomerFavouritesComponent } from './components/account/customer-favourites/customer-favourites.component';
 import { VehicleCatalogueComponent } from './components/pages/admin-vehicle-catalogue/vehicle-catalogue.component';
 import { FleetComponent } from './components/pages/admin-fleet/fleet.component';
@@ -138,6 +139,7 @@ export function tokenGetter() {
     PriceBreakdownComponent,
     BackToTopComponent,
     EmptyStateComponent,
+    LoadingSpinnerComponent,
     CustomerActivityComponent,
     CustomerRewardsComponent,
     AdminDiscountsDashboardComponent,

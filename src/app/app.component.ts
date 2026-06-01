@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConfirmDialogService } from './services/confirm-dialog.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'RentACar-FrontEnd';
+
+  readonly confirmState$ = this.confirmDialogService.state;
+
+  constructor(private confirmDialogService: ConfirmDialogService) {}
+
+  onConfirmDialogConfirmed(): void { this.confirmDialogService.resolve(true); }
+  onConfirmDialogCancelled(): void { this.confirmDialogService.resolve(false); }
 
 
 

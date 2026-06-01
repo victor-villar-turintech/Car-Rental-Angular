@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { BookingExtra, BookingExtraCategory, BookingExtraPricingType } from 'src/app/models/booking-extra';
 import { BookingExtraService } from 'src/app/services/booking-extra.service';
+import { ConfirmDialogService } from 'src/app/services/confirm-dialog.service';
 
 @Component({
   selector: 'app-admin-extras',
@@ -15,7 +16,11 @@ export class AdminExtrasComponent implements OnInit {
   categories: BookingExtraCategory[] = ['Insurance', 'Driver', 'Equipment', 'Pickup', 'Support', 'Fuel', 'Other'];
   pricingTypes: BookingExtraPricingType[] = ['perDay', 'fixed'];
 
-  constructor(private bookingExtraService: BookingExtraService, private toastrService: ToastrService) {}
+  constructor(
+    private bookingExtraService: BookingExtraService,
+    private toastrService: ToastrService,
+    private confirmDialogService: ConfirmDialogService,
+  ) {}
 
   ngOnInit(): void { this.loadExtras(); }
 
@@ -70,20 +75,28 @@ export class AdminExtrasComponent implements OnInit {
     });
   }
 
-  deleteExtra(extra: BookingExtra): void {
-    if (!window.confirm(`Delete ${extra.name}? This only affects the local demo extras catalogue.`)) {
-      return;
-    }
+  async deleteExtra(extra: BookingExtra): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: `Delete ${extra.name}?`,
+      message: 'This only affects the local demo extras catalogue. Existing bookings keep their extras snapshot.',
+      confirmLabel: 'Delete',
+      danger: true,
+    });
+    if (!confirmed) { return; }
     this.bookingExtraService.deleteExtra(extra.extraId).subscribe((response) => {
       this.toastrService.success(response.message);
       this.loadExtras();
     });
   }
 
-  resetDemoExtras(): void {
-    if (!window.confirm('Restore the default demo extras? Custom extras will be replaced.')) {
-      return;
-    }
+  async resetDemoExtras(): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: 'Restore default demo extras?',
+      message: 'Custom extras you have added in this browser will be replaced with the original demo set.',
+      confirmLabel: 'Restore defaults',
+      danger: true,
+    });
+    if (!confirmed) { return; }
     this.bookingExtraService.resetDemoExtras().subscribe((response) => {
       this.toastrService.success(response.message);
       this.cancelEdit();
