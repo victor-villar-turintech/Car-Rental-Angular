@@ -44,6 +44,7 @@ const LEGACY_CAR_KEYS = [
 const PRICE_KEYS = [
   'dailyPrice',
   'pricePerDay',
+  'baseDailyPrice',
   'dailyRate',
   'dayRate',
   'rentalPrice',
